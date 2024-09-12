@@ -1,0 +1,17 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: chapter_overview/intro
+parts:
+  - caption: Intro
+    numberd: True
+    chapters:
+    - file: chapter_overview/Part1.md
+      title: Why Bayesian Inference ?
+    - file: chapter_overview/Part2.md
+      title: Three examples
+    - file: chapter_overview/Part3.md
+      title: About this course
+
+
