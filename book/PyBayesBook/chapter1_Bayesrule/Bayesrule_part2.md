@@ -220,7 +220,7 @@ result_df2
 
 - 假如一项心理学研究不能被其他研究者独立地重复出来，我们认为一个特定的事件**没有发生**
 
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;————我们使用符号B^c^(B的补集complement)来表示
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;————我们使用符号$B^c$(B的补集complement)来表示
 
 
 根据Science于2015年的文章，我们可以得以下公式：
@@ -235,7 +235,7 @@ result_df2
 </style>
 <div class="center">
 
-| 事件 | B | B^c^ |Total|
+| 事件 | $B$ | $B^c$ |Total|
 | :-----------: | :-----------: |:-----------: |:-----------:|
 | probability|0.4|0.6|1|
 </div>
@@ -297,15 +297,15 @@ result_df2
 在这个例子中，我们比较两种假设：
 - $P（A|B）= 0.56$：在可重复研究的假设下，使用确切语言的概率较高。
 
-- $P（A|B^c^）= 0.45$：在不可重复研究的假设下，使用确切语言的概率较低。
+- $P（A|B^c）= 0.45$：在不可重复研究的假设下，使用确切语言的概率较低。
 
 因此，似然函数表明：当前数据模式（使用确切语言）在可重复的假设下更可能出现：
-$P（A|B）= 0.56 > P（A|B^c^）= 0.45$
+$P（A|B）= 0.56 > P（A|B^c）= 0.45$
 
 **<font color=#EE3B3B>这就是似然函数(likelihood function)的核心：反映了在不同的假设（可重复或不可重复）下，某个数据 A 出现的可能性。**</font>
 
 例如，针对“数据A：研究使用确切语言”的似然可以写成：$L(*|A)$
-&emsp;&emsp;&emsp;&emsp;$L(B|A) = P(A|B)$&emsp;&emsp;&emsp;&emsp; $L(B^c^|A) = P(A|B^c^)$
+&emsp;&emsp;&emsp;&emsp;$L(B|A) = P(A|B)$&emsp;&emsp;&emsp;&emsp; $L(B^c|A) = P(A|B^c)$
 
 上述两个式子分别表示在“研究可重复”和“研究不可重复”两种可能的情况下，使用确切语言的概率。
 
@@ -352,7 +352,7 @@ $P（A|B）= 0.56 > P（A|B^c^）= 0.45$
 </style>
 <div class="center">
 
-| event | B | B^c^ | total| 
+| event | B | $B^c$ | total| 
 | :-----------: | :-----------: |:-----------:|:-----------:|
 | prior |0.4|0.6|1|
 | likelihood |0.56|0.45|≠1|
