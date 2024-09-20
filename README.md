@@ -3,11 +3,12 @@
 ## 关于本项目
 本项目将用于将《贝叶斯统计及其在Python中实现》一课中的录音转为jupyterbook，以便于后续的整理和学习。
 
-课程相关的repo为：https://gitee.com/hcp4715/bayesian-analysis-nnupsy
+课程相关信息：[Gitee仓库](https://gitee.com/hcp4715/bayesian-analysis-nnupsy) | [B站视频](https://www.bilibili.com/video/BV1W6paeLExS/)
+
 
 ## 关于作者
 
-讲者：胡传鹏(博士)，南京师范大学心理学院教授。
+讲者：胡传鹏(博士)，南京师范大学心理学院教授、博士生导师, [实验室网](huchuanpeng.com).
 
 本课程录音的转录及电子录的制作由如下同学协助
 - 朱珊珊，南京师范大学心理学院在读硕士生
@@ -20,7 +21,15 @@
 
 ## 如何贡献
 
-本项目采用[github](https://github.com/hcp4715/PyBayesianBook)进行管理，欢迎大家提交PR。
+本项目采用[github](https://github.com/hcp4715/PyBayesianBook)进行管理，欢迎大家提交PR。具体而言，在`book`这一文件中，有各个章节的md文件以及图片。如果发现哪个章节有问题，找到与之对应的md文件进行修改后在github上提交PR即可。步骤如下：
+
+0. 注册github账号（如果还没有的话）
+1. fork本项目
+2. 在本地克隆你自己的仓库
+3. 在本地仓库中新建一个分支
+4. 修改有问题的章节所对应的md文件
+5. commit后push到你自己的仓库
+6. 在github上提交一个PR
 
 ## 本项目文件目录
 
@@ -28,7 +37,18 @@
 .
 ├── README.md
 ├── book
-│   ├── 01_introduction.ipynb
-│   ├── 02_probability_theory.ipynb
-│   ├── 03_bayesian_inference.ipynb
+|   ├── _config.yml
+|   ├── _toc.yml
+│   ├── _build
+│   |   └── html
+│   ├── chapter_overview
+│   │   ├── intro.md
+│   │   ├── Part1.md
+│   │   ├── Part2.md
+│   │   └── Part3.md
+|   ├── chpater1_Bayesrules
+|   |   ├── Bayesrule_part1.md
+|   |   ├── Bayesrule_part2.md
+|   |   └── Bayesrule_part3.md
+
 ```
