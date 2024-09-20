@@ -52,3 +52,18 @@
 |   |   └── Bayesrule_part3.md
 
 ```
+
+<!--- 如何使用GitHub pages来发布电子书：
+https://jupyterbook.org/en/stable/start/publish.html
+
+1. 使用`jb build book`命令生成html文件
+jupyter-book build book/   
+
+or
+
+jb build book/ 
+
+2. 使用`ghp-import`命令将html文件发布到github上
+cd ./book
+ghp-import -n -p -f _build/html
+->

@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter1_Bayesrule/Bayesrule_part2';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -580,7 +582,7 @@ P = 0.224/（0.224 + 0.27） = 0.453</strong></p>
 <ul class="simple">
 <li><p>假如一项心理学研究不能被其他研究者独立地重复出来，我们认为一个特定的事件<strong>没有发生</strong></p></li>
 </ul>
-<p>                ————我们使用符号B^c^(B的补集complement)来表示</p>
+<p>                ————我们使用符号<span class="math notranslate nohighlight">\(B^c\)</span>(B的补集complement)来表示</p>
 <p>根据Science于2015年的文章，我们可以得以下公式：</p>
 <style>
 .center 
@@ -595,8 +597,8 @@ P = 0.224/（0.224 + 0.27） = 0.453</strong></p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>事件</p></th>
-<th class="head text-center"><p>B</p></th>
-<th class="head text-center"><p>B^c^</p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(B\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(B^c\)</span></p></th>
 <th class="head text-center"><p>Total</p></th>
 </tr>
 </thead>
@@ -628,8 +630,8 @@ P = 0.224/（0.224 + 0.27） = 0.453</strong></p>
 </ul>
 <p>将数据形式化，通过条件概率来量化文章展现出语言确切的可能性。具体如下：</p>
 <ul class="simple">
-<li><p>当研究是可重复的，使用确切语言的概率大约为56%。 P（A|B）≈ 56%</p></li>
-<li><p>当研究不可重复的情况下，使用确切语言的概率大约为45%。 P（A|B^c^）≈ 45%</p></li>
+<li><p>当研究是可重复的，使用确切语言的概率大约为56%。 <span class="math notranslate nohighlight">\(P（A|B）≈ 56\%\)</span></p></li>
+<li><p>当研究不可重复的情况下，使用确切语言的概率大约为45%。 <span class="math notranslate nohighlight">\(P（A|B^c）≈ 45\%\)</span></p></li>
 </ul>
 <center><img width = '700' height ='340' src="image-7.png">
 </center>
@@ -639,25 +641,25 @@ P = 0.224/（0.224 + 0.27） = 0.453</strong></p>
 <p><em>注意：条件概率的定义是有顺序的，P(A|B)与P(B|A)并不相等。</em></p>
 <p>例如：</p>
 <ul class="simple">
-<li><p>P(A|B)表示在研究可重复的情况下，使用确切语言的概率（B是前提，A是结果）</p></li>
-<li><p>P(B|A)表示的是在研究使用确切语言的情况下，该研究是可重复的概率（A是前提，B是结果）</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(A|B)\)</span>表示在研究可重复的情况下，使用确切语言的概率（B是前提，A是结果）</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B|A)\)</span>表示的是在研究使用确切语言的情况下，该研究是可重复的概率（A是前提，B是结果）</p></li>
 </ul>
 <p>很多时候，人们容易混淆这两者，尤其在贝叶斯推理中。因此，<strong>清楚条件的前提和结果</strong>是很重要的。</p>
 <p><strong><font size=4> 2.3.2  似然（likelihood）</strong></font></p>
-<p>从条件概率中，我们知道 P（A|B）= 0.56，P（A|B^c^）= 0.45，即使用确切语言的研究更可能是可重复的。</p>
+<p>从条件概率中，我们知道 <span class="math notranslate nohighlight">\(P（A|B）= 0.56\)</span>，<span class="math notranslate nohighlight">\(P（A|B^c）= 0.45\)</span>，即使用确切语言的研究更可能是可重复的。</p>
 <ul class="simple">
 <li><p><strong>似然（likelihood）：描述的是在不同假设下，某个数据模式出现的可能性。</strong></p></li>
 </ul>
 <p>在这个例子中，我们比较两种假设：</p>
 <ul class="simple">
-<li><p>P（A|B）= 0.56：在可重复研究的假设下，使用确切语言的概率较高。</p></li>
-<li><p>P（A|B^c^）= 0.45：在不可重复研究的假设下，使用确切语言的概率较低。</p></li>
+<li><p><span class="math notranslate nohighlight">\(P（A|B）= 0.56\)</span>：在可重复研究的假设下，使用确切语言的概率较高。</p></li>
+<li><p><span class="math notranslate nohighlight">\(P（A|B^c）= 0.45\)</span>：在不可重复研究的假设下，使用确切语言的概率较低。</p></li>
 </ul>
 <p>因此，似然函数表明：当前数据模式（使用确切语言）在可重复的假设下更可能出现：
-P（A|B）= 0.56 &gt; P（A|B^c^）= 0.45</p>
+<span class="math notranslate nohighlight">\(P（A|B）= 0.56 &gt; P（A|B^c）= 0.45\)</span></p>
 <p><strong><font color=#EE3B3B>这就是似然函数(likelihood function)的核心：反映了在不同的假设（可重复或不可重复）下，某个数据 A 出现的可能性。</strong></font></p>
-<p>例如，针对“数据A：研究使用确切语言”的似然可以写成：L(*|A)
-    L(B|A) = P(A|B)     L(B^c^|A) = P(A|B^c^)</p>
+<p>例如，针对“数据A：研究使用确切语言”的似然可以写成：<span class="math notranslate nohighlight">\(L(*|A)\)</span>
+    <span class="math notranslate nohighlight">\(L(B|A) = P(A|B)\)</span>     <span class="math notranslate nohighlight">\(L(B^c|A) = P(A|B^c)\)</span></p>
 <p>上述两个式子分别表示在“研究可重复”和“研究不可重复”两种可能的情况下，使用确切语言的概率。</p>
 <p><em>注意，在似然函数中，数据是已知发生的，而假设是可能发生的。</em>
 <br></p>
@@ -722,7 +724,7 @@ P（A|B）= 0.56 &gt; P（A|B^c^）= 0.45</p>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>event</p></th>
 <th class="head text-center"><p>B</p></th>
-<th class="head text-center"><p>B^c^</p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(B^c\)</span></p></th>
 <th class="head text-center"><p>total</p></th>
 </tr>
 </thead>
@@ -753,7 +755,7 @@ P（A|B）= 0.56 &gt; P（A|B^c^）= 0.45</p>
 <p><strong><font size=5> 2.5  后验概率模型 (Posterior probability model via Bayes’ Rule)</strong></font></p>
 <p><strong>直觉理解</strong></p>
 <p>最后，我们来计算后事件 B 的后验概率，即，当我们知道某个研究使用了确切的语言风格之后，它能被重复的可能性是多少？</p>
-<p>我们同样通过条件概率来描述它： P(B|A)。</p>
+<p>我们同样通过条件概率来描述它： <span class="math notranslate nohighlight">\(P(B|A)\)</span>。</p>
 <p>在正式计算之前，我们可以回顾一下这个表格来建立一些直觉。</p>
 <style>
 .center 
@@ -793,10 +795,10 @@ P（A|B）= 0.56 &gt; P（A|B^c^）= 0.45</p>
 </table>
 </div>
 <ul class="simple">
-<li><p>A：表示使用确切语言的研究</p></li>
-<li><p>A^c^：表示不使用确切语言的研究</p></li>
-<li><p>B：表示研究是可重复的</p></li>
-<li><p>B^c^：表示研究是不可重复的</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span>：表示使用确切语言的研究</p></li>
+<li><p><span class="math notranslate nohighlight">\(A^c\)</span>：表示不使用确切语言的研究</p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span>：表示研究是可重复的</p></li>
+<li><p><span class="math notranslate nohighlight">\(B^c\)</span>：表示研究是不可重复的</p></li>
 </ul>
 <p>因为我们知道这项研究使用确切语言风格，所以我们直接锁定第一行，</p>
 <ul class="simple">
@@ -825,7 +827,7 @@ P（A|B）= 0.56 &gt; P（A|B^c^）= 0.45</p>
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>event</p></th>
 <th class="head text-center"><p>B</p></th>
-<th class="head text-center"><p>B^c^</p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(B^c\)</span></p></th>
 <th class="head text-center"><p>Total</p></th>
 </tr>
 </thead>
@@ -935,21 +937,21 @@ P（A|B）= 0.56 &gt; P（A|B^c^）= 0.45</p>
 <p>4、计算后验值
 还记得我们的先验概率为：</p>
 <ul class="simple">
-<li><p>可重复研究 P(B)=0.4</p></li>
-<li><p>不可重复性研究 P(B^c^)=0.6</p></li>
+<li><p>可重复研究 <span class="math notranslate nohighlight">\(P(B)=0.4\)</span></p></li>
+<li><p>不可重复性研究 <span class="math notranslate nohighlight">\(P(B^c)=0.6\)</span></p></li>
 </ul>
 <p>由以上结果可计算似然：</p>
 <ul class="simple">
-<li><p>大约58.1%(2340/(2340+1687))的可重复性研究使用了确切语言, P(A|B) = 0.581</p></li>
-<li><p>44.2%的不可重复性研究使用确切语言(2643/(3330+2643)), P(A|B^c^) = 0.442</p></li>
+<li><p>大约58.1%(2340/(2340+1687))的可重复性研究使用了确切语言, <span class="math notranslate nohighlight">\(P(A|B) = 0.581\)</span></p></li>
+<li><p>44.2%的不可重复性研究使用确切语言(2643/(3330+2643)), <span class="math notranslate nohighlight">\(P(A|B^c) = 0.442\)</span></p></li>
 </ul>
 <p>结合先验和似然，我们可以进一步计算分母(边际概率)：</p>
 <ul class="simple">
-<li><p>L(B|A)×P(B) + L(B^c^|A)×P(B^c^) = 0.581×0.4 + 0.442×0.6 = 0.2324 + 0.2652 ≈ 0.498</p></li>
+<li><p><span class="math notranslate nohighlight">\(L(B|A)×P(B) + L(B^c|A)×P(B^c) = 0.581×0.4 + 0.442×0.6 = 0.2324 + 0.2652 ≈ 0.498\)</span></p></li>
 </ul>
 <p>最后，我们可以计算得到的后验（使用确切语言研究中，可重复性研究的概率）：</p>
 <ul class="simple">
-<li><p>P(B|A) = L(B|A)×P(B) / P(A) = (0.581×0.4) / 0.498 ≈ 0.467</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B|A) = L(B|A)×P(B) / P(A) = (0.581×0.4) / 0.498 ≈ 0.467\)</span></p></li>
 <li><p>在10000项研究中，使用确切语言的研究有4980篇(分母)</p></li>
 <li><p>而现在，我们可以知道，在使用确切语言的研究中，47%(2340/4980)的研究为可重复研究</p></li>
 </ul>
