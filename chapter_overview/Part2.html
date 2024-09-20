@@ -1,0 +1,1177 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Part 2: Three examples &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_overview/Part2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Part 3: About this course" href="Part3.html" />
+    <link rel="prev" title="Part 1: Why Bayesian Inference ?" href="Part1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Intro</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Part1.html">Why Bayesian Inference ?</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Three examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Part3.html">About this course</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Bayes'Rule</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">Part1_【和鲸平台】整合教学+练习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">Part2_单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">Part3_随机变量的贝叶斯模型</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapter_overview/Part2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter_overview/Part2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><font size=23>Part 2: Three examples</font></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1、例1 —— 社会关系地位与幸福感的关系</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-multi-level-model">2、例2 —— 贝叶斯分层模型（Hierarchical/Multi-level Model） 可以更准确地估计信度</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3、例3 —— 贝叶斯推断在认知模型中的应用</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="font-size-23-part-2-three-examples-font">
+<h1><strong><font size=23>Part 2: Three examples</font></strong><a class="headerlink" href="#font-size-23-part-2-three-examples-font" title="Permalink to this heading">#</a></h1>
+<section id="id1">
+<h2>1、例1 —— 社会关系地位与幸福感的关系<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<font size=3>
+<p>  实例的数据来自 Many Labs 2 项目中的一个研究。</p>
+<p>  该研究探究了社会关系地位对于幸福感的影响 “Sociometric status and well-being”， (Anderson, Kraus, Galinsky, &amp; Keltner, 2012)。</p>
+<p>  该数据集包括6905个被试的数据。</p>
+<p>参考文献：</p>
+<p>Anderson, C., Kraus, M. W., Galinsky, A. D., &amp; Keltner, D. (2012). The local-ladder effect: Social status and subjective well-being. Psychological Science, 23(7), 764-771. <a class="reference external" href="https://doi.org/10.1177/0956797611434537">https://doi.org/10.1177/0956797611434537</a></p>
+<p>In [1]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">levene</span>
+<span class="kn">from</span> <span class="nn">pingouin</span> <span class="kn">import</span> <span class="n">ttest</span><span class="p">,</span> <span class="n">tost</span><span class="p">,</span> <span class="n">bayesfactor_ttest</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pytensor.tensor</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">pytensor.tensor</span> <span class="kn">import</span> <span class="n">TensorVariable</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">pearsonr</span>
+<span class="kn">import</span> <span class="nn">graphviz</span>
+<span class="kn">from</span> <span class="nn">graphviz</span> <span class="kn">import</span> <span class="n">Digraph</span>
+
+<span class="c1"># 设置随机种子</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">202409</span><span class="p">)</span>
+
+<span class="c1"># 设置APA 7的画图样式</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;figure.figsize&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>      <span class="c1"># 设置画布大小</span>
+    <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>               <span class="c1"># 设置字体大小</span>
+    <span class="s1">&#39;axes.titlesize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>          <span class="c1"># 标题字体大小</span>
+    <span class="s1">&#39;axes.labelsize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>          <span class="c1"># 轴标签字体大小</span>
+    <span class="s1">&#39;xtick.labelsize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>         <span class="c1"># x轴刻度字体大小</span>
+    <span class="s1">&#39;ytick.labelsize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>         <span class="c1"># y轴刻度字体大小</span>
+    <span class="s1">&#39;lines.linewidth&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>          <span class="c1"># 线宽</span>
+    <span class="s1">&#39;axes.linewidth&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>           <span class="c1"># 轴线宽度</span>
+    <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span>     <span class="c1"># 设置轴线颜色为黑色</span>
+    <span class="s1">&#39;axes.facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>     <span class="c1"># 轴背景颜色（白色）</span>
+    <span class="s1">&#39;xtick.direction&#39;</span><span class="p">:</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span>       <span class="c1"># x轴刻度线向内</span>
+    <span class="s1">&#39;ytick.direction&#39;</span><span class="p">:</span> <span class="s1">&#39;out&#39;</span><span class="p">,</span>      <span class="c1"># y轴刻度线向内和向外</span>
+    <span class="s1">&#39;xtick.major.size&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>         <span class="c1"># x轴主刻度线长度</span>
+    <span class="s1">&#39;ytick.major.size&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>         <span class="c1"># y轴主刻度线长度</span>
+    <span class="s1">&#39;xtick.minor.size&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>         <span class="c1"># x轴次刻度线长度（如果启用次刻度线）</span>
+    <span class="s1">&#39;ytick.minor.size&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>         <span class="c1"># y轴次刻度线长度（如果启用次刻度线）</span>
+    <span class="s1">&#39;xtick.major.width&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>        <span class="c1"># x轴主刻度线宽度</span>
+    <span class="s1">&#39;ytick.major.width&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>        <span class="c1"># y轴主刻度线宽度</span>
+    <span class="s1">&#39;xtick.minor.width&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>      <span class="c1"># x轴次刻度线宽度（如果启用次刻度线）</span>
+    <span class="s1">&#39;ytick.minor.width&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>      <span class="c1"># y轴次刻度线宽度（如果启用次刻度线）</span>
+    <span class="s1">&#39;ytick.labelleft&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>       <span class="c1"># y轴标签左侧显示</span>
+    <span class="s1">&#39;ytick.labelright&#39;</span><span class="p">:</span> <span class="kc">False</span>      <span class="c1"># 禁用y轴标签右侧显示</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>In [2]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入数据, 注意在和鲸和在自己电脑（本地）时有差异）</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">SMS_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/mw/input/bayes3797/SMS_Well_being.csv&#39;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">SMS_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/SMS_Well_being.csv&#39;</span><span class="p">)</span>
+<span class="c1"># 选择需要的列</span>
+<span class="n">SMS_data</span> <span class="o">=</span> <span class="n">SMS_data</span><span class="p">[[</span><span class="s1">&#39;uID&#39;</span><span class="p">,</span><span class="s1">&#39;variable&#39;</span><span class="p">,</span><span class="s1">&#39;factor&#39;</span><span class="p">,</span><span class="s1">&#39;Country&#39;</span><span class="p">]]</span>
+<span class="c1"># 查看数据</span>
+<span class="n">SMS_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In [3]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 把数据分为高低两种社会关系的地位的子数据以便画图与后续分析</span>
+<span class="n">factor_high</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">SMS_data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;factor==&quot;High&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3000</span><span class="p">])]</span>
+<span class="n">factor_low</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">SMS_data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;factor==&quot;Low&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3000</span><span class="p">])]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>通过画图可视化两种社会关系地位对幸福感的影响</p></li>
+</ul>
+<p>  图中横坐标代表高低两种社会关系地位，纵坐标代表了主观幸福感评分。</p>
+<p>In [4]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义绘图函数</span>
+<span class="k">def</span> <span class="nf">adjacent_values</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q3</span><span class="p">):</span>
+    <span class="n">upper_adjacent_value</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="p">(</span><span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span>
+    <span class="n">upper_adjacent_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper_adjacent_value</span><span class="p">,</span> <span class="n">q3</span><span class="p">,</span> <span class="n">vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">lower_adjacent_value</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="p">(</span><span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span>
+    <span class="n">lower_adjacent_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower_adjacent_value</span><span class="p">,</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lower_adjacent_value</span><span class="p">,</span> <span class="n">upper_adjacent_value</span>
+
+<span class="k">def</span> <span class="nf">set_axis_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s1">&#39;out&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Soceity Status&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">plot_violin_apa7</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_labels</span><span class="p">,</span> <span class="n">y_label</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 调整图形大小</span>
+
+    <span class="c1"># 创建小提琴图</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">showmeans</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showmedians</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showextrema</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># 设置小提琴图的样式</span>
+    <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">[</span><span class="s1">&#39;bodies&#39;</span><span class="p">]:</span>
+        <span class="n">pc</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#D43F3A&#39;</span><span class="p">)</span>
+        <span class="n">pc</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+        <span class="n">pc</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
+
+    <span class="c1"># 计算分位数和须</span>
+    <span class="n">quartile1</span><span class="p">,</span> <span class="n">medians</span><span class="p">,</span> <span class="n">quartile3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">whiskers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">adjacent_values</span><span class="p">(</span><span class="n">sorted_array</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q3</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">sorted_array</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q3</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">quartile1</span><span class="p">,</span> <span class="n">quartile3</span><span class="p">)])</span>
+
+    <span class="n">whiskers_min</span><span class="p">,</span> <span class="n">whiskers_max</span> <span class="o">=</span> <span class="n">whiskers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">whiskers</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># 绘制中位数和须</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">medians</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">inds</span><span class="p">,</span> <span class="n">medians</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">inds</span><span class="p">,</span> <span class="n">quartile1</span><span class="p">,</span> <span class="n">quartile3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">inds</span><span class="p">,</span> <span class="n">whiskers_min</span><span class="p">,</span> <span class="n">whiskers_max</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># 设置x轴和y轴标签</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_labels</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">x_labels</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">y_label</span><span class="p">)</span>
+
+    <span class="c1"># 设置y轴从0开始</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># 保留左侧和底部的框线，移除右侧和顶部的框线</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># 如果有标题，则设置标题</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># 设置x轴风格</span>
+    <span class="n">set_axis_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x_labels</span><span class="p">)</span>
+
+    <span class="c1"># 图形的显示</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In [5]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 示例数据和函数调用</span>
+<span class="n">plot_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">100</span><span class="p">)]</span>
+<span class="n">plot_violin_apa7</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">],</span> <span class="s1">&#39;Well-being&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;The impact of social status on well-being&#39;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>通过t检验，分析两种社会关系地位下幸福感的差异</p></li>
+</ul>
+<p>In [6]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># levene检验</span>
+<span class="n">levene_stat</span><span class="p">,</span> <span class="n">levene_p</span> <span class="o">=</span> <span class="n">levene</span><span class="p">(</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">][</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;High&#39;</span><span class="p">],</span> 
+                               <span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">][</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Low&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Levene Test p-value: </span><span class="si">{</span><span class="n">levene_p</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>根据独立样本t检验结果，低社会地位组（M = 0.014, SD = 0.66）和高社会地位组（M = -0.014, SD = 0.67）之间的差异在统计学上不显著，t = 1.76, <strong>p = 0.079</strong>。</p></li>
+<li><p>这意味着<strong>我们无法在传统显著性水平（α = 0.05）下拒绝原假设(H0)</strong>。因此高社会地位和低社会地位下的幸福感差异在统计学上不是显著的。</p></li>
+</ul>
+<p>In [7]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SMS_low</span> <span class="o">=</span> <span class="n">SMS_data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;factor==&quot;Low&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">values</span>
+<span class="n">SMS_high</span> <span class="o">=</span> <span class="n">SMS_data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;factor==&quot;High&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">values</span>
+<span class="nb">print</span><span class="p">(</span>
+   <span class="sa">f</span><span class="s2">&quot;Low Social Status：</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SMS_low</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">SMS_low</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">；&quot;</span><span class="p">,</span>
+   <span class="sa">f</span><span class="s2">&quot;High Social Status：</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SMS_high</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">SMS_high</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 进行独立样本t检验  </span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span>
+   <span class="n">a</span><span class="o">=</span> <span class="n">SMS_low</span><span class="p">,</span>
+   <span class="n">b</span><span class="o">=</span> <span class="n">SMS_high</span><span class="p">,</span> 
+   <span class="n">equal_var</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t=</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">, p=</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong><font size=5><a class="reference external" href="https://aaroncaldwell.us/TOSTERpkg/">Two one-sided tests (TOST)检验</a></font></strong></p>
+<p>  这是一种常用于等效性检验(equivalence tests)的方法，其目的是评估两个组之间的差异是否可以被视为“相等”。在该方法中，等效性被定义为组间差异位于预先设定的“等效边界”范围内。如果组间的差异落在这一范围内，则可以认为这两个组在统计上是等效的。</p>
+<p>  在本例中，我们可以将等效边界设定为0.2（bound=0.2），意味着如果两个组之间的差异不超过0.2，就可以认为它们是等效的。</p>
+<p>  因此，检验得出的p值（2.265256e-27）可以表明有非常强的证据表明这两个组之间的差异在等效边界之内。</p>
+<p>In [8]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 双单侧检验（Two one-side test, TOST）</span>
+<span class="n">tost_res</span> <span class="o">=</span> <span class="n">tost</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">][</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;High&#39;</span><span class="p">],</span> 
+                <span class="n">y</span><span class="o">=</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">][</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Low&#39;</span><span class="p">],</span> 
+                <span class="n">bound</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span> <span class="n">paired</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># 将等效边界值设为0.2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tost_res</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><font size=5><strong>通过贝叶斯因子替代t检验</strong></font></p></li>
+</ul>
+<p>  传统的零假设显著性检验（Null hypothesis significance test, NHST）的框架之下，t检验只提供了一个二分的结果：拒绝或者无法拒绝H0。但 <em>p</em> = 0.079这样的结果无法支持H0。</p>
+<p>  <strong>而贝叶斯因子（Bayes Factor, BF）方法可以提供一种更直观和渐进的方式来评估数据支持原假设（无效假设，H0）还是备择假设(H1)。</strong></p>
+<p>In [9]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 贝叶斯因子</span>
+<span class="c1">## 比较高低社会关系地位的社会关系的效应</span>
+<span class="n">ttest_res</span> <span class="o">=</span> <span class="n">ttest</span><span class="p">(</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">][</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;High&#39;</span><span class="p">],</span> 
+                     <span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">][</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Low&#39;</span><span class="p">],</span> 
+                     <span class="n">paired</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1">## 计算贝叶斯因子</span>
+<span class="n">t_value</span> <span class="o">=</span> <span class="n">ttest_res</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># 提取t值</span>
+<span class="n">dof</span> <span class="o">=</span> <span class="n">ttest_res</span><span class="p">[</span><span class="s1">&#39;dof&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># 提取自由度</span>
+
+<span class="c1"># 计算‘High’组和‘Low’组的样本量大小</span>
+<span class="n">sample_size_high</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">][</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;High&#39;</span><span class="p">])</span>
+<span class="n">sample_size_low</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">][</span><span class="n">SMS_data</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Low&#39;</span><span class="p">])</span>
+
+<span class="c1"># 使用默认的r值= 0.707</span>
+<span class="n">BF_sms</span> <span class="o">=</span> <span class="n">bayesfactor_ttest</span><span class="p">(</span><span class="n">t_value</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="n">sample_size_high</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="n">sample_size_low</span><span class="p">,</span> <span class="n">paired</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.707</span><span class="p">)</span>
+
+<span class="c1"># 输出贝叶斯因子</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">BF_sms</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>  贝叶斯因子为BF10= 0.127，或者BF01= 1/0.127 = 7.87，这表明对于<strong>当前数据支持零假设H0</strong>，说明高低社会关系地位组之间的社会关系效应没有显著差异。</p>
+<p>  下面为贝叶斯因子（Bayes Factor，BF）的解释标准</p>
+<center><img width = '410' height ='430' src="image-12.png"></center>
+参考文献：
+<p><a class="reference external" href="https://journal.psych.ac.cn/xlkxjz/CN/10.3724/SP.J.1042.2018.00951">胡传鹏, 孔祥祯, Wagenmakers, E.-J., Ly, A., 彭凯平 (2018). 贝叶斯因子及其在JASP中的实现. 心理科学进展, 26(6), 951-965.</a></p>
+<p><a class="reference external" href="https://psycnet.apa.org/record/2007-10421-012">Wagenmakers, E.-J., &amp; Brown, S. (2007). On the linear relation between the mean and the standard deviation of a response time distribution. Psychological Review, 114(3), 830-841. https://doi.org/10.1037/0033-295X.114.3.830</a></p>
+<p>In [10]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 敏感性分析</span>
+<span class="c1"># Cauchy (0, 1)</span>
+<span class="n">BF_sms_1</span> <span class="o">=</span> <span class="n">bayesfactor_ttest</span><span class="p">(</span><span class="n">t_value</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="n">sample_size_high</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="n">sample_size_low</span><span class="p">,</span> <span class="n">paired</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">BF_sms_1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><font size=5><strong>贝叶斯推断</strong></font></p></li>
+</ul>
+<p>  这个模型是怎么来的呢？</p>
+<p>  一个简单的线性模型：</p>
+<p>  1、通过建立线性模型去替代原本的t检验模型<br>
+  2、通过PyMC对后验进行采样<br>
+  3、通过Arviz对结果进行展示，辅助统计推断</p>
+<p>In [11]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 通过pymc建立基于贝叶斯的线性模型</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">SMS_data</span><span class="o">.</span><span class="n">factor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># high为0，low为1</span>
+<span class="c1"># 设置beta1的先验分布的尺度参数，与r=0.707相匹配</span>
+<span class="n">beta1_scale</span> <span class="o">=</span> <span class="mf">0.707</span>
+
+<span class="c1"># 建立模型</span>
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">linear_regression</span><span class="p">:</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">beta0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta0&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">beta1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">beta1_scale</span><span class="p">)</span>
+    <span class="c1"># beta1 = pm.StudentT(&quot;beta1&quot;, nu=1, mu=0, sigma=beta1_scale)  # 使用 StudentT 分布接近 Cauchy 分布</span>
+    <span class="c1"># beta1 = pm.Cauchy(&quot;beta1&quot;, alpha=0, beta=beta1_scale)  # 使用 Cauchy 分布，参数 beta 与 r 值对应</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Data</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;μ&quot;</span><span class="p">,</span> <span class="n">beta0</span> <span class="o">+</span> <span class="n">beta1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">SMS_data</span><span class="o">.</span><span class="n">variable</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>可以通过PyMC自带的可视化工具将模型关系可视化:</p></li>
+</ul>
+<p>  x为自变量，其中1为低社会关系，0为高社会关系。</p>
+<p>  参数β0是线性模型的截距，而β1是斜率。</p>
+<p>  截距代表了高社会关系地位被试的幸福感，而截距加上斜率表示低社会关系地位被试的幸福感。</p>
+<p>  参数 σ是残差，因变量y即主观幸福感。</p>
+<p>  模型图展示了各参数通过怎样的关系影响到因变量。</p>
+<p>In [12]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">linear_regression</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>  PyMC贝叶斯模型结合Arviz计算得到的贝叶斯因子结果(基于Savage-Dickey方法)与贝叶斯t-test结果接近。</p>
+<p>In [13]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 模型拟合过程 (mcmc采样过程)</span>
+<span class="k">with</span> <span class="n">linear_regression</span><span class="p">:</span>
+    <span class="c1"># 先验采样</span>
+    <span class="n">prior_checks</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+    <span class="c1"># 后验采样</span>
+    <span class="n">idata</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">return_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># 将先验采样的结果合并到推断数据中</span>
+    <span class="n">idata</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">linear_regression</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In [14]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">prior_checks</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="s2">&quot;beta1&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Prior&quot;</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;beta1&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Posterior&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In [15]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The Bayes T-test is </span><span class="si">{</span><span class="n">BF_sms</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_bf</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;beta1&quot;</span><span class="p">,</span> <span class="n">ref_val</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;beta1 </span><span class="se">\n</span><span class="s2">(represents the difference </span><span class="se">\n</span><span class="s2">between two groups)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<br>
+</section>
+<section id="hierarchical-multi-level-model">
+<h2>2、例2 —— 贝叶斯分层模型（Hierarchical/Multi-level Model） 可以更准确地估计信度<a class="headerlink" href="#hierarchical-multi-level-model" title="Permalink to this heading">#</a></h2>
+<p>  在前面的内容中，我们通过社会关系地位（高与低）对幸福感的影响进行了可视化，并使用贝叶斯因子和贝叶斯推断对模型进行了进一步的分析。<br>
+  现实世界的数据往往存在分层结构（例如，数据可能来自不同的群体、地区、时间段等），如何更好地处理数据内在的层次结构，更加准确地估计出感兴趣的效应（如社会关系地位对幸福感的影响），正是分层模型所能解决的。</p>
+<ul class="simple">
+<li><p><font size=4><strong>分层模型（Hierarchical Model）的特殊运用： 信度估计</strong></font></p></li>
+</ul>
+<p>  例2的数据来源于Haines (2020)的论文（ <a class="reference external" href="https://osf.io/preprints/psyarxiv/xr7y3">https://osf.io/preprints/psyarxiv/xr7y3</a> ）。</p>
+<ul class="simple">
+<li><p><strong><font color=#FF8C00>本文的研究问题是：认知任务作为测量个体差异的工具，是否真的信度很差？</font></strong></p></li>
+</ul>
+<p>参考文献：
+<a class="reference external" href="https://osf.io/preprints/psyarxiv/xr7y3">Haines, N., Kvam, P. D., Irving, L. H., Smith, C., Beauchaine, T. P., Pitt, M., &amp; Turner, B. (2020, August 24). Theoretically informed generative models can advance the psychological and brain sciences: Lessons from the reliability paradox. PsyArXiv. https://doi.org/10.31234/osf.io/xr7y3</a></p>
+<p>  例2数据集包括Flanker任务中的反应时间（RT）和正确率数据。Flanker任务要求被试对中央箭头的方向作出反应，同时忽略周围的干扰箭头。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>•	反应时间 (RT)：以秒为单位，记录每次试验的反应时间。    
+•	正确率 (Correct)：记录被试反应是否正确。    
+•	条件 (Condition)：任务分为一致性和不一致性试验，箭头方向是否一致会影响被试的反应时间。    
+•	试验和区块：任务分为多个区块，每个区块包含一系列试验。 
+</pre></div>
+</div>
+<center><img width = '500' height ='330' src="image-13.png"></center>
+(Kim et al., 2022)
+<br>
+<br>
+In [16]:
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入例2数据</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">df_flanker</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/mw/input/bayes3797/flanker_1.csv&#39;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">df_flanker</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/flanker_1.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 分层模型数据预处理</span>
+<span class="n">df_model</span> <span class="o">=</span> <span class="n">df_flanker</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_model</span> <span class="o">=</span> <span class="n">df_model</span><span class="p">[(</span><span class="n">df_model</span><span class="o">.</span><span class="n">RT</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_model</span><span class="o">.</span><span class="n">Condition</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># 将条件进行重新编码，1为不一致，0为一致</span>
+<span class="n">df_model</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_model</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="n">df_model</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">])</span>
+<span class="c1"># 将时间变量进行重新编码</span>
+<span class="n">df_model</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_model</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># 生成所有试次的索引</span>
+<span class="n">df_model</span><span class="p">[</span><span class="s2">&quot;trial_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_model</span><span class="p">))</span>
+<span class="c1"># 重新编码被试编号</span>
+<span class="n">df_model</span><span class="p">[</span><span class="s1">&#39;subj_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_model</span><span class="p">[</span><span class="s1">&#39;subj_num&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="c1"># 每个被试不同时间rt的最小值</span>
+<span class="n">rt_min</span> <span class="o">=</span> <span class="n">df_model</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;subj_num&#39;</span><span class="p">,</span><span class="s1">&#39;Time&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">RT</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In [17]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_model</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><font size=4> <strong>传统方法：初测-重测的相关系数(Two-stage model)</strong></font></p></li>
+</ul>
+<p>In[18]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># two-stage model 数据预处理</span>
+
+<span class="n">df_trad</span> <span class="o">=</span> <span class="n">df_flanker</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1"># 选择反应时大于0且条件不为1</span>
+<span class="n">df_trad</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[(</span><span class="n">df_trad</span><span class="o">.</span><span class="n">RT</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_trad</span><span class="o">.</span><span class="n">Condition</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># 将条件进行重新编码，2为不一致，0为一致</span>
+<span class="n">df_trad</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;incon&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;con&#39;</span><span class="p">})</span>
+<span class="c1"># 将时间变量进行重新编码</span>
+<span class="n">df_trad</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;t1&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;t2&#39;</span><span class="p">})</span>
+<span class="c1"># 根据条件分组</span>
+<span class="n">df_trad</span> <span class="o">=</span> <span class="n">df_trad</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;subj_num&#39;</span><span class="p">,</span><span class="s1">&#39;Condition&#39;</span><span class="p">,</span><span class="s1">&#39;Time&#39;</span><span class="p">])[</span><span class="s1">&#39;RT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span><span class="s1">&#39;std&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="c1"># 将需要做相关的转成长数据</span>
+<span class="n">df_trad</span><span class="o">=</span> <span class="n">df_trad</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;subj_num&#39;</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Condition&#39;</span><span class="p">,</span><span class="s1">&#39;Time&#39;</span><span class="p">],</span><span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span><span class="s1">&#39;std&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">df_trad</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;subj_num&#39;</span> <span class="k">if</span> <span class="n">col1</span> <span class="o">==</span> <span class="s1">&#39;subj_num&#39;</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">col1</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">col2</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">col3</span><span class="si">}</span><span class="s1">&#39;</span> 
+    <span class="k">for</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">,</span> <span class="n">col3</span> <span class="ow">in</span> <span class="n">df_trad</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="c1"># 关注平均值、标准差的差值</span>
+<span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;mean_contrast_t1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;mean_con_t1&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;mean_incon_t1&#39;</span><span class="p">]</span>
+<span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;mean_contrast_t2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;mean_con_t2&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;mean_incon_t2&#39;</span><span class="p">]</span>
+<span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;sd_contrast_t1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;std_con_t1&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;std_incon_t1&#39;</span><span class="p">]</span>
+<span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;sd_contrast_t2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;std_con_t2&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;std_incon_t2&#39;</span><span class="p">]</span>
+<span class="n">df_trad</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[[</span><span class="s1">&#39;subj_num&#39;</span><span class="p">,</span><span class="s1">&#39;mean_contrast_t1&#39;</span><span class="p">,</span><span class="s1">&#39;mean_contrast_t2&#39;</span><span class="p">,</span><span class="s1">&#39;sd_contrast_t1&#39;</span><span class="p">,</span><span class="s1">&#39;sd_contrast_t2&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<br>
+<p>In [19]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 经过数据预处理后，定义函数，计算time 1和time 2数据的皮尔逊相关系数</span>
+<span class="k">def</span> <span class="nf">pearson_df</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">):</span> <span class="c1"># 定义函数，用于计算皮尔逊相关系数</span>
+    <span class="n">contrast_cor</span> <span class="o">=</span> <span class="n">pearsonr</span><span class="p">(</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">)</span> <span class="c1"># 计算皮尔逊相关系数</span>
+    <span class="n">contrast_coef</span> <span class="o">=</span> <span class="n">contrast_cor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ci_low</span><span class="p">,</span> <span class="n">ci_high</span> <span class="o">=</span> <span class="n">contrast_cor</span><span class="o">.</span><span class="n">confidence_interval</span><span class="p">(</span><span class="n">confidence_level</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span> <span class="c1"># 计算置信区间</span>
+    
+    <span class="c1"># 创建结果数据框</span>
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">contrast_coef</span><span class="p">],</span>
+        <span class="s1">&#39;hdi_2.5%&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ci_low</span><span class="p">],</span>
+        <span class="s1">&#39;hdi_97.5%&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ci_high</span><span class="p">]},</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;Two-Stage&#39;</span><span class="p">],</span>
+                <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]])</span>
+
+    <span class="k">return</span> <span class="n">result_df</span>
+</pre></div>
+</div>
+<br>
+<p>In [20]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trad_mu</span> <span class="o">=</span> <span class="n">pearson_df</span><span class="p">(</span><span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;trad&quot;</span><span class="p">,</span>  
+           <span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="c1"># 均值</span>
+           <span class="n">col1</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;mean_contrast_t1&#39;</span><span class="p">],</span> 
+           <span class="n">col2</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;mean_contrast_t2&#39;</span><span class="p">])</span> <span class="c1"># 两个时间点的均值对比</span>
+
+<span class="n">trad_sigma</span> <span class="o">=</span> <span class="n">pearson_df</span><span class="p">(</span><span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;trad&quot;</span><span class="p">,</span> <span class="c1"># 传统方法</span>
+           <span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;sd&quot;</span><span class="p">,</span> 
+           <span class="n">col1</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;sd_contrast_t1&#39;</span><span class="p">],</span> 
+           <span class="n">col2</span> <span class="o">=</span> <span class="n">df_trad</span><span class="p">[</span><span class="s1">&#39;sd_contrast_t2&#39;</span><span class="p">])</span>
+<span class="c1"># 合并结果</span>
+<span class="n">trad_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">trad_mu</span><span class="p">,</span> <span class="n">trad_sigma</span><span class="p">])</span> 
+<span class="n">trad_result</span> <span class="o">=</span> <span class="n">trad_result</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span> <span class="c1"># 重置索引</span>
+<span class="n">trad_result</span><span class="p">[</span><span class="s2">&quot;level_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trad_result</span><span class="p">[</span><span class="s2">&quot;level_1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;trad_mean&#39;</span><span class="p">:</span> <span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="s1">&#39;trad_sd&#39;</span><span class="p">:</span> <span class="s1">&#39;sigma&#39;</span><span class="p">})</span> <span class="c1"># 重命名列名</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">trad_result</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong><font size=4>贝叶斯分层模型（Hierarchical Model）</strong>
+<strong>分层的广义线性模型: Shifted Lognormal model</strong></font></p></li>
+</ul>
+<p>In [21]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logshift_model</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">shifted_lognormal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">loc</span> <span class="o">+</span> <span class="n">pm</span><span class="o">.</span><span class="n">LogNormal</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cond&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Condition&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span>
+            <span class="s2">&quot;subj&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;subj_num&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span>
+            <span class="s2">&quot;trial&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;trial_idx&#39;</span><span class="p">]}</span>
+
+
+    <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+
+        <span class="n">rho_R_mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">LKJCorr</span><span class="p">(</span><span class="s1">&#39;rho_R_mu&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">rho_R_sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">LKJCorr</span><span class="p">(</span><span class="s1">&#39;rho_R_sigma&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1">######</span>
+        <span class="n">triu_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">mu_corr_upper</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">set_subtensor</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))[</span><span class="n">triu_idx</span><span class="p">],</span> <span class="n">rho_R_mu</span><span class="p">)</span>
+        <span class="n">sigma_corr_upper</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">set_subtensor</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))[</span><span class="n">triu_idx</span><span class="p">],</span> <span class="n">rho_R_sigma</span><span class="p">)</span>
+        <span class="n">R_mu</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">mu_corr_upper</span> <span class="o">+</span> <span class="n">mu_corr_upper</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">R_sigma</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">sigma_corr_upper</span> <span class="o">+</span> <span class="n">sigma_corr_upper</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">L_R_mu</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">R_mu</span><span class="p">)</span>
+        <span class="n">L_R_sigma</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">R_sigma</span><span class="p">)</span>
+
+        <span class="c1">#####</span>
+
+        <span class="c1"># Group-level parameter means</span>
+        <span class="n">mu_mean_base</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;mu_mean_base&#39;</span><span class="p">,</span><span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="n">mu_sd_base</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s1">&#39;mu_sd_base&#39;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+
+        
+        <span class="n">sigma_mean_base</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;sigma_mean_base&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="n">sigma_sd_base</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s1">&#39;sigma_sd_base&#39;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+
+        <span class="n">mu_mean_delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;mu_mean_delta&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="n">mu_sd_delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s1">&#39;mu_sd_delta&#39;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span> <span class="c1">#/*</span>
+
+        <span class="n">sigma_mean_delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;sigma_mean_delta&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="n">sigma_sd_delta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s1">&#39;sigma_sd_delta&#39;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span> <span class="c1">#/*</span>
+
+        <span class="n">ndt_mean</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;ndt_mean&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="n">ndt_sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;ndt_sigma&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+
+        <span class="c1"># to make diagnol matrix/ can multiply with L_R_mu/L_R_sigma</span>
+        <span class="n">mu_sd_delta_re</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">mu_sd_delta</span><span class="p">)</span>
+        <span class="n">sigma_sd_delta_re</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">sigma_sd_delta</span><span class="p">)</span>
+        <span class="n">L_S_mu</span> <span class="o">=</span>  <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;L_S_mu&quot;</span><span class="p">,</span><span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mu_sd_delta_re</span><span class="p">,</span><span class="n">L_R_mu</span><span class="p">))</span>
+        <span class="n">L_S_sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;L_S_sigma&quot;</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sigma_sd_delta_re</span><span class="p">,</span> <span class="n">L_R_sigma</span><span class="p">))</span>
+        
+        <span class="c1"># individual-level parameters/congruent</span>
+        <span class="n">mu_i_base_pr</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;mu_i_base_pr&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="n">sigma_i_base_pr</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;sigma_i_base_pr&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="c1"># individual-level parameters/incongruent</span>
+        <span class="n">mu_i_delta_pr</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;mu_i_delta_pr&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;subj&quot;</span><span class="p">])</span>
+        <span class="n">sigma_i_delta_pr</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;sigma_i_delta_pr&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;subj&quot;</span><span class="p">])</span>
+
+        <span class="n">ndt_i_pr</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;ndt_i_pr&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">logcdf</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span><span class="n">ndt_mean</span><span class="o">+</span><span class="n">ndt_sigma</span><span class="o">*</span><span class="n">ndt_i_pr</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+        <span class="n">ndt_i</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;ndt_i&#39;</span><span class="p">,</span> <span class="n">phi</span><span class="o">*</span><span class="n">rt_min</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+
+    
+        <span class="c1"># 得到公式2的后半部分</span>
+        <span class="n">mu_i_delta_tilde</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu_i_delta_tilde&quot;</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">L_S_mu</span><span class="p">,</span> <span class="n">mu_i_delta_pr</span><span class="p">))</span>
+        <span class="n">sigma_i_delta_tilde</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;sigma_i_delta_tilde&quot;</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">L_S_sigma</span><span class="p">,</span> <span class="n">sigma_i_delta_pr</span><span class="p">))</span>
+
+        <span class="c1">#----------------------------</span>
+        
+        <span class="c1"># mu congruent</span>
+        <span class="n">mu_i_base</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu_i_base&quot;</span><span class="p">,</span> <span class="n">mu_mean_base</span> <span class="o">+</span> <span class="n">mu_sd_base</span><span class="o">*</span><span class="n">mu_i_base_pr</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="c1"># sigma congruent</span>
+        <span class="n">sigma_i_base</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;sigma_i_base&quot;</span><span class="p">,</span> <span class="n">sigma_mean_base</span> <span class="o">+</span> <span class="n">sigma_sd_base</span><span class="o">*</span><span class="n">sigma_i_base_pr</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="c1"># congruent effect</span>
+        <span class="n">mu_i_effect</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu_i_effect&quot;</span><span class="p">,</span> <span class="n">mu_mean_delta</span> <span class="o">+</span> <span class="n">mu_i_delta_tilde</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="c1"># sigma incongruent</span>
+        <span class="n">sigma_i_effect</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;sigma_i_effect&quot;</span><span class="p">,</span> <span class="n">sigma_mean_delta</span> <span class="o">+</span> <span class="n">sigma_i_delta_tilde</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="c1"># mu incongruent</span>
+        <span class="n">mu_i_incon</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu_i_incon&quot;</span><span class="p">,</span> <span class="n">mu_i_base</span> <span class="o">+</span> <span class="n">mu_i_effect</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="c1"># sigma incongruent</span>
+        <span class="n">sigma_i_incon</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;sigma_i_incon&quot;</span><span class="p">,</span> <span class="n">sigma_i_base</span> <span class="o">+</span> <span class="n">sigma_i_effect</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">mu_i_base</span><span class="p">,</span><span class="n">mu_i_incon</span><span class="p">]),</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cond&quot;</span><span class="p">,</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="n">sigma_stack</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;sigma_stack&quot;</span><span class="p">,</span><span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">sigma_i_base</span><span class="p">,</span><span class="n">sigma_i_incon</span><span class="p">]),</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cond&quot;</span><span class="p">,</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">sigma_stack</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cond&quot;</span><span class="p">,</span><span class="s2">&quot;subj&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+
+        <span class="n">time_idx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;time_idx&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">Time</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;trial&quot;</span><span class="p">)</span>
+        <span class="n">subj_idx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;subj_idx&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">subj_num</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;trial&quot;</span><span class="p">)</span>
+        <span class="n">cond_idx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;cond_idx&quot;</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">Condition</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;trial&quot;</span><span class="p">)</span>
+
+        <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">CustomDist</span><span class="p">(</span><span class="s2">&quot;likelihood&quot;</span><span class="p">,</span>
+                    <span class="n">mu</span><span class="p">[</span><span class="n">cond_idx</span><span class="p">,</span> <span class="n">subj_idx</span><span class="p">,</span> <span class="n">time_idx</span><span class="p">],</span> 
+                    <span class="n">sigma</span><span class="p">[</span><span class="n">cond_idx</span><span class="p">,</span> <span class="n">subj_idx</span><span class="p">,</span> <span class="n">time_idx</span><span class="p">],</span>
+                    <span class="n">ndt_i</span><span class="p">[</span><span class="n">subj_idx</span><span class="p">,</span> <span class="n">time_idx</span><span class="p">],</span>
+                    <span class="n">dist</span> <span class="o">=</span> <span class="n">shifted_lognormal</span><span class="p">,</span>
+                    <span class="n">observed</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">RT</span><span class="p">,</span>
+                    <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;trial&quot;</span><span class="p">)</span>
+                                    
+        <span class="c1"># pred = pm.Deterministic(&quot;pred&quot;, likelihood + ndt_i[subj_idx, time_idx], dims=&quot;trial&quot;)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+<br>
+<p>In [22]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 根据不同的方法选择不同的模型</span>
+<span class="k">def</span> <span class="nf">process_model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">distribution</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">distribution</span> <span class="o">==</span> <span class="s1">&#39;log_shift&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">logshift_model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<br>
+<p>In [23]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进行先验预测检验并输出</span>
+<span class="k">def</span> <span class="nf">prior_predictive_check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">43201</span><span class="p">):</span>
+    <span class="n">model_prior_check</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">(</span>
+        <span class="n">samples</span><span class="o">=</span><span class="n">samples</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+        <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span><span class="s2">&quot;sigma&quot;</span><span class="p">],</span>
+        <span class="n">random_seed</span><span class="o">=</span><span class="n">random_seed</span>
+    <span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Prior predictive check&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">)</span>
+    <span class="n">az</span><span class="o">.</span><span class="n">plot_dist</span><span class="p">(</span><span class="n">model_prior_check</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">)</span>
+    <span class="n">az</span><span class="o">.</span><span class="n">plot_dist</span><span class="p">(</span><span class="n">model_prior_check</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="s2">&quot;sigma&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+<br>
+<p>In [24]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进行采样</span>
+<span class="k">def</span> <span class="nf">model_sampling</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>            <span class="c1"># 使用mcmc方法进行采样，draws为采样次数</span>
+                    <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>                    <span class="c1"># tune为调整采样策略的次数，可以决定这些结果是否要被保留</span>
+                    <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>                     <span class="c1"># 链数</span>
+                    <span class="n">cores</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                    <span class="n">discard_tuned_samples</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># tune的结果将在采样结束后被丢弃</span>
+                    <span class="n">random_seed</span><span class="o">=</span><span class="mi">43201</span><span class="p">,</span>
+                    <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+                    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">trace</span>
+</pre></div>
+</div>
+<br>
+<p>In [25]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 对重测信度参数进行总结</span>
+<span class="k">def</span> <span class="nf">diagnostic_summary</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+    <span class="n">diagnostic</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span>
+                               <span class="n">var_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rho_R_mu&quot;</span><span class="p">,</span> <span class="s2">&quot;rho_R_sigma&quot;</span><span class="p">],</span>
+                               <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">hdi_sum</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> 
+                        <span class="n">var_names</span> <span class="o">=</span><span class="p">[</span><span class="s2">&quot;rho_R_mu&quot;</span><span class="p">,</span> <span class="s2">&quot;rho_R_sigma&quot;</span><span class="p">],</span>
+                        <span class="n">hdi_prob</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">)</span>
+    <span class="n">hdi_sum</span> <span class="o">=</span> <span class="n">hdi_sum</span><span class="p">[[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span><span class="s2">&quot;hdi_2.5%&quot;</span><span class="p">,</span><span class="s2">&quot;hdi_97.5%&quot;</span><span class="p">]]</span>
+
+    <span class="n">hdi_sum</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">([[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">hdi_sum</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="n">hdi_sum</span><span class="o">.</span><span class="n">index</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">diagnostic</span><span class="p">,</span> <span class="n">hdi_sum</span>
+</pre></div>
+</div>
+<br>
+<p>In [26]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 集合需要的结果并输出</span>
+<span class="kn">import</span> <span class="nn">gc</span>
+
+<span class="k">def</span> <span class="nf">result_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">distribution</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">process_model</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="n">distribution</span><span class="p">)</span>
+    <span class="n">prior_plot</span> <span class="o">=</span> <span class="n">prior_predictive_check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">43201</span><span class="p">)</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">model_sampling</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">diag</span><span class="p">,</span> <span class="n">hdi</span> <span class="o">=</span> <span class="n">diagnostic_summary</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">trace</span>
+    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">diag</span><span class="p">,</span> <span class="n">hdi</span><span class="p">,</span> <span class="n">prior_plot</span>
+</pre></div>
+</div>
+<br>
+<p>In [27]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用4核16G的计算资源，运行以下代码，需要约2小时</span>
+<span class="n">diag_logshift</span><span class="p">,</span> <span class="n">hdi_logshift</span><span class="p">,</span> <span class="n">priorplot_logshift</span> <span class="o">=</span> <span class="n">result_output</span><span class="p">(</span><span class="n">df_model</span><span class="p">,</span> <span class="s2">&quot;log_shift&quot;</span><span class="p">,</span><span class="s2">&quot;Shifted Lognormal&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Two-Stage model vs. Shifted Lognormal model</strong>
+与Two-Stage model相比，Shifted Lognormal model具有更高的信度。</p></li>
+</ul>
+<p>In [28]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 对变量名进行修改</span>
+<span class="k">def</span> <span class="nf">rename_hdi</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;level_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;level_1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;rho_R_mu[0]&#39;</span><span class="p">:</span> <span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="s1">&#39;rho_R_sigma[0]&#39;</span><span class="p">:</span> <span class="s1">&#39;sigma&#39;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">data</span>
+<span class="n">hdi_logshift</span> <span class="o">=</span> <span class="n">rename_hdi</span><span class="p">(</span><span class="n">hdi_logshift</span><span class="p">)</span>
+</pre></div>
+</div>
+<br>
+<p>In[29]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#选择mu的重测信度参数进行绘制</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">trad_result</span><span class="p">,</span> <span class="n">hdi_logshift</span><span class="p">])</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">plot</span><span class="p">[</span><span class="n">plot</span><span class="p">[</span><span class="s1">&#39;level_1&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;mu&#39;</span><span class="p">]</span>
+<span class="n">plot</span>
+</pre></div>
+</div>
+<br>
+<p>In [30]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+
+<span class="c1"># 计算可信区间</span>
+<span class="n">ci</span> <span class="o">=</span> <span class="p">[</span><span class="n">plot</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">plot</span><span class="p">[</span><span class="s1">&#39;hdi_2.5%&#39;</span><span class="p">],</span> <span class="n">plot</span><span class="p">[</span><span class="s1">&#39;hdi_97.5%&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">plot</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]]</span>
+
+<span class="c1"># 通过error bar的形式展现区间和均值</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">plot</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">plot</span><span class="p">[</span><span class="s1">&#39;level_0&#39;</span><span class="p">],</span> <span class="n">xerr</span><span class="o">=</span><span class="n">ci</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mfc</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">mec</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="c1"># 调整y轴的刻度使其更集中</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot</span><span class="p">[</span><span class="s1">&#39;level_0&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Adjust based on your data</span>
+
+<span class="c1"># 添加标题</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Test-Retest Correlation&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>3、例3 —— 贝叶斯推断在认知模型中的应用<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>  在实验数据的收集时，研究者往往会采集个体反应的正确率与反应时。</p>
+<p>  而传统分析方法并不能同时对两种数据进行分析，从而推断潜在的认知机制。比如，个体是否愿意牺牲更多的反应时间去获得一个更准确的判断。</p>
+<p>  <strong>认知模型能有效的弥补这一问题，比如 drift-diffusion model, DDM (<a class="reference external" href="https://osf.io/preprints/psyarxiv/6uzga">Pan et al, 2022</a>)。</strong></p>
+<center><img width = '600' height ='320' src="image-14.png"></center></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_overview"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Part1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong><font size=23>Part 1: Why Bayesian Inference ?</font></strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Part3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong><font size=23>Part 3: About this course</font></strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1、例1 —— 社会关系地位与幸福感的关系</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-multi-level-model">2、例2 —— 贝叶斯分层模型（Hierarchical/Multi-level Model） 可以更准确地估计信度</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3、例3 —— 贝叶斯推断在认知模型中的应用</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
