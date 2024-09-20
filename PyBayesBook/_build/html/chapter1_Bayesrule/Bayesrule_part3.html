@@ -1,0 +1,1229 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Part 3: 随机变量的贝叶斯模型 &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter1_Bayesrule/Bayesrule_part3';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Part 2: 单一事件的贝叶斯模型" href="Bayesrule_part2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">Why Bayesian Inference ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">Three examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">About this course</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Bayes'Rule</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part1.html">Part1_【和鲸平台】整合教学+练习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part2.html">Part2_单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Part3_随机变量的贝叶斯模型</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapter1_Bayesrule/Bayesrule_part3.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter1_Bayesrule/Bayesrule_part3.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><font size=23>Part 3: 随机变量的贝叶斯模型</font></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1、随机变量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2、二项式模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-pmf">3、概率质量密度函数（probability mass function, pmf）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-binomial-likelihood-function">4、二项似然函数(The Binomial likelihood function)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5、似然函数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-probability-model">6、先验概率模型(Prior probability model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-probability-model">7、后验概率模型(Posterior probability model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-simulation-with-code">8、Posterior simulation (with code)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="font-size-23-part-3-font">
+<h1><strong><font size=23>Part 3: 随机变量的贝叶斯模型</font></strong><a class="headerlink" href="#font-size-23-part-3-font" title="Permalink to this heading">#</a></h1>
+<section id="id1">
+<h2>1、随机变量<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>  在之前的分析中，我们讨论的是对某项研究的“可重复性”这样一个单一事件。</p>
+<p>  同样的逻辑可以应用于更加抽象和一般性的<strong>随机变量</strong>进行分析。</p>
+<p>  假设为了研究可重复性问题，一个有能力且资金充足的研究团队计划进行一系列可重复性实验，他们希望知道这些实验成功重复的比例是多少。</p>
+<p>  首先我们来了解一个概念：胜率或成功率</p>
+<ul class="simple">
+<li><p>想象你玩斗地主，有五局三胜，七局四胜这一说，一轮玩下来，就会出现胜率</p></li>
+<li><p>然而，胜率并不是一成不变的，它会随着每次游戏的输赢而变化</p></li>
+<li><p>在每一轮开始前，你并不会知道你这次的胜率是多少</p></li>
+</ul>
+<p>在我们的例子中，假设计划对6项研究进行重复实验：</p>
+<ul class="simple">
+<li><p>假设该团队对于任何研究成功复现的成功率为<span class="math notranslate nohighlight">\( π，π \)</span>是未知的且可能会变化，所以<span class="math notranslate nohighlight">\( π \)</span>是一个随机变量。</p></li>
+<li><p>根据团队先前的经验以及心理学研究的现状，我们猜测其成功复现的成功率为<span class="math notranslate nohighlight">\( π \)</span>=50%。</p></li>
+<li><p>他接下来可能成功复现的次数<span class="math notranslate nohighlight">\(Y\)</span>可能是0，可能是1，也可能是6，可以有7种可能的成功复现次数，<span class="math notranslate nohighlight">\( Y∈ \)</span> {0,1,2,3,4,5,6}。</p></li>
+</ul>
+<p>  <strong>思考一个问题：虽然我们知道他们的平均成功率为 <span class="math notranslate nohighlight">\( π \)</span>=50%，但问题在于，对于每一种复现成功的次数（1～6），其可能性分别是多少呢？</strong></p>
+</section>
+<section id="id2">
+<h2>2、二项式模型<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>  由于每次重复实验，结果只有两种可能：<strong>成功 vs 失败</strong></p>
+<p>  该团队总共进行6次重复实验，我们想要知道的是成功1次，成功2次，成功3次，…，的概率。</p>
+<p>  对于这种情况，我们可以用二项分布来分析。</p>
+<ul class="simple">
+<li><p>该团队的成功率为<span class="math notranslate nohighlight">\(π\)</span>，在<span class="math notranslate nohighlight">\(π\)</span>下某成功次数发生的概率可表示为：
+<font size=5><center>
+<span class="math notranslate nohighlight">\( f(y|π)=(^n_y)π^y(1-π)^{n-y} ~~~~~~for~y∈ \)</span> {<span class="math notranslate nohighlight">\( 0,1,2....,n \)</span>}
+<span class="math notranslate nohighlight">\( (^n_y)=\frac{n!}{y!(n-y)!} \)</span>
+</font></center></p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\( π \)</span>表示成功的可能性，<span class="math notranslate nohighlight">\( y \)</span>表示在n个试次中成功的次数，二项模型含有的前提假设是：</p>
+<p>(1) 所有试次发生都是相互独立的
+(2) 在每个试次中，成功的概率都是一个固定的值<span class="math notranslate nohighlight">\(π\)</span></p>
+<p>成功次数为0~6 的可能性可以分别写成：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(Y=0|π=0.5)=(^6_0)0.5^0(1-0.5)^6 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.5)=(^6_1)0.5^1(1-0.5)^5 \)</span></p>
+<p>…</p>
+<p><span class="math notranslate nohighlight">\( f(Y=5|π=0.5)=(^6_5)0.5^5(1-0.5)^1 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(Y=6|π=0.5)=(^6_6)0.5^6(1-0.5)^0 \)</span></p>
+</center>
+<p>我们可以使用代码帮助计算，其中P对应公式中的<span class="math notranslate nohighlight">\( π \)</span>。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In [1]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入数据加载和处理包：pandas</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># 导入数字和向量处理包：numpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># 导入基本绘图工具：matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># 导入高级绘图工具 seaborn 为 sns</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="c1"># 导入统计建模工具包 scipy.stats 为 st</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span> 
+
+<span class="c1"># 设置APA 7的画图样式</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;figure.figsize&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>      <span class="c1"># 设置画布大小</span>
+    <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>               <span class="c1"># 设置字体大小</span>
+    <span class="s1">&#39;axes.titlesize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>          <span class="c1"># 标题字体大小</span>
+    <span class="s1">&#39;axes.labelsize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>          <span class="c1"># 轴标签字体大小</span>
+    <span class="s1">&#39;xtick.labelsize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>         <span class="c1"># x轴刻度字体大小</span>
+    <span class="s1">&#39;ytick.labelsize&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>         <span class="c1"># y轴刻度字体大小</span>
+    <span class="s1">&#39;lines.linewidth&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>          <span class="c1"># 线宽</span>
+    <span class="s1">&#39;axes.linewidth&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>           <span class="c1"># 轴线宽度</span>
+    <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span>     <span class="c1"># 设置轴线颜色为黑色</span>
+    <span class="s1">&#39;axes.facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>     <span class="c1"># 轴背景颜色（白色）</span>
+    <span class="s1">&#39;xtick.direction&#39;</span><span class="p">:</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span>       <span class="c1"># x轴刻度线向内</span>
+    <span class="s1">&#39;ytick.direction&#39;</span><span class="p">:</span> <span class="s1">&#39;out&#39;</span><span class="p">,</span>      <span class="c1"># y轴刻度线向内和向外</span>
+    <span class="s1">&#39;xtick.major.size&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>         <span class="c1"># x轴主刻度线长度</span>
+    <span class="s1">&#39;ytick.major.size&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>         <span class="c1"># y轴主刻度线长度</span>
+    <span class="s1">&#39;xtick.minor.size&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>         <span class="c1"># x轴次刻度线长度（如果启用次刻度线）</span>
+    <span class="s1">&#39;ytick.minor.size&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>         <span class="c1"># y轴次刻度线长度（如果启用次刻度线）</span>
+    <span class="s1">&#39;xtick.major.width&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>        <span class="c1"># x轴主刻度线宽度</span>
+    <span class="s1">&#39;ytick.major.width&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>        <span class="c1"># y轴主刻度线宽度</span>
+    <span class="s1">&#39;xtick.minor.width&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>      <span class="c1"># x轴次刻度线宽度（如果启用次刻度线）</span>
+    <span class="s1">&#39;ytick.minor.width&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>      <span class="c1"># y轴次刻度线宽度（如果启用次刻度线）</span>
+    <span class="s1">&#39;ytick.labelleft&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>       <span class="c1"># y轴标签左侧显示</span>
+    <span class="s1">&#39;ytick.labelright&#39;</span><span class="p">:</span> <span class="kc">False</span>      <span class="c1"># 禁用y轴标签右侧显示</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>In[2]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>  <span class="c1"># 成功次数 </span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>                <span class="c1"># 重复研究总次数</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span>              <span class="c1"># 假设的成功概率</span>
+
+<span class="c1"># 计算概率值</span>
+<span class="n">prob</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+<span class="n">result_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;成功次数&quot;</span><span class="p">:</span><span class="n">y</span><span class="p">,</span> <span class="s2">&quot;概率&quot;</span><span class="p">:</span><span class="n">prob</span><span class="p">})</span>
+<span class="n">result_table</span>
+</pre></div>
+</div>
+<p>显然，当团队的成功概率为 0.5 时，其在六次研究中获得 y = 3 次成功的概率最高(p = 0.3125)。</p>
+<p>In [3]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 绘制灰色竖线</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y</span> <span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
+
+<span class="c1"># 绘制黑色点(各成功率次数的成功率)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">prob</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$f(y|\pi)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">6.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<center><img width = '400' height ='300' src="image-17.png">
+</center>
+</section>
+<section id="probability-mass-function-pmf">
+<h2>3、概率质量密度函数（probability mass function, pmf）<a class="headerlink" href="#probability-mass-function-pmf" title="Permalink to this heading">#</a></h2>
+<p><strong>概率质量密度函数：是用来描述离散型随机变量在各特定取值上的概率。</strong></p>
+<p>从上图我们可以看出，成功次数y在不同的取值上的概率不同。</p>
+<ul class="simple">
+<li><p>由于y的个数是有限的，并且是随机发生的，我们把y称为离散型随机变量，而y发生的概率<span class="math notranslate nohighlight">\( f(y) \)</span>则被称为<strong>概率质量函数</strong>。</p></li>
+</ul>
+<p>对于离散型随机变量<span class="math notranslate nohighlight">\( Y \)</span>，<span class="math notranslate nohighlight">\( Y \)</span>各取值的概率由<span class="math notranslate nohighlight">\( f(y) \)</span>指定：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(y)=P(Y = y) \)</span></p>
+</center>
+<p>并且有如下性质：</p>
+<ul class="simple">
+<li><p>对所有y的取值来说，<span class="math notranslate nohighlight">\( 0 ≤ f(y) ≤ 1 \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( ∑_{ally} f(y)=1 \)</span>，y取值的所有概率之和为1</p></li>
+</ul>
+<p>In [4]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">sum</span><span class="p">(</span><span class="n">result_table</span><span class="p">[</span><span class="s1">&#39;概率&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="the-binomial-likelihood-function">
+<h2>4、二项似然函数(The Binomial likelihood function)<a class="headerlink" href="#the-binomial-likelihood-function" title="Permalink to this heading">#</a></h2>
+<p><strong>不同的信念</strong></p>
+<p>  虽然我们认为该团队重复6个实验的成功率是50%，但并非所有人都这么认为。</p>
+<ul class="simple">
+<li><p>乐观派认为该团队的成功概率为 0.8，表示对实验成功复现持高度信心。</p></li>
+<li><p>悲观派则认为该团队的成功概率仅为 0.2，意味着对实验成功复现不太乐观。</p></li>
+</ul>
+<p>  成功的概率影响着他们对研究复现结果的预期：</p>
+<ul class="simple">
+<li><p>如果团队的成功概率高，那么6次研究中成功复现的次数会更多。</p></li>
+<li><p>反之，如果成功概率低，那么研究复现的失败次数就会更多。</p></li>
+</ul>
+<p>我们可以计算持不同信念的人心中，该团队在6项研究中成功复现的次数的概率分布并画图。</p>
+<p>In [5]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>  <span class="c1"># 成功次数 </span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>                <span class="c1"># 研究总次数</span>
+
+<span class="c1"># 计算似然值</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span>              <span class="c1"># 根据以往战绩假设的成功概率</span>
+<span class="n">likelihood1</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.8</span>              <span class="c1"># Kasparov支持者眼中的成功概率</span>
+<span class="n">likelihood2</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.2</span>              <span class="c1"># 深蓝支持者眼中的成功概率</span>
+<span class="n">likelihood3</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+<span class="n">result_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+  <span class="s2">&quot;成功次数&quot;</span><span class="p">:</span><span class="n">y</span><span class="p">,</span> 
+  <span class="s2">&quot;本团队(pi=0.5)&quot;</span><span class="p">:</span><span class="n">likelihood1</span><span class="p">,</span> 
+  <span class="s2">&quot;悲观派(pi=0.2)&quot;</span><span class="p">:</span><span class="n">likelihood2</span><span class="p">,</span> 
+  <span class="s2">&quot;乐观派(pi=0.8)&quot;</span><span class="p">:</span><span class="n">likelihood3</span><span class="p">})</span>
+<span class="n">result_table</span>
+</pre></div>
+</div>
+<p>In [6]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建子图</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># 绘制三个图,每个子图类似原图</span>
+<span class="n">three_pi</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Team itself ($\pi = 0.5$)&quot;</span><span class="p">,</span><span class="s2">&quot;Optimists ($\pi = 0.8$)&quot;</span><span class="p">,</span><span class="s2">&quot;Pessimists ($\pi = 0.2$)&quot;</span><span class="p">]</span>
+<span class="n">likelihoods</span> <span class="o">=</span> <span class="p">[</span><span class="n">likelihood1</span><span class="p">,</span> <span class="n">likelihood2</span><span class="p">,</span> <span class="n">likelihood3</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="p">):</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">likelihoods</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">likelihoods</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">],</span> <span class="p">[</span><span class="n">yy</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># 添加facet</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">three_pi</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">6.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.4</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;$f(y|\pi)$&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>  显然，对于乐观派来说，团队取得六次成功的概率远高于其他成功次数。而对于悲观派来说，团队全败的可能性远高于其他成功次数。</p>
+<ul class="simple">
+<li><p>换句话说，若团队在6项研究中仅成功复现一次，这种情况在低成功率下(悲观派设想的情境)更可能出现，在高成功率下(乐观派设想的情境)几乎不可能出现。</p></li>
+<li><p>那么团队成功重复的成功率，更可能(likelihood)是悲观派设想的那样(<span class="math notranslate nohighlight">\( π=0.2 \)</span>)。</p></li>
+</ul>
+<p>  例如，在乐观派和悲观派眼中(不同成功率<span class="math notranslate nohighlight">\( π \)</span>下)，6项研究只成功1次的可能性(即似然，likelihood)。</p>
+<p>In [7]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义成功次数和研究总次数</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># 成功次数，作为数组处理以便向量化计算</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># 研究总次数</span>
+
+<span class="c1"># 计算似然值，对于三种不同的成功概率 p</span>
+<span class="n">p_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]</span>          <span class="c1"># 定义三种成功率</span>
+<span class="n">likelihoods</span> <span class="o">=</span> <span class="p">[]</span>                    <span class="c1"># 用于存储每种成功率的似然值结果</span>
+
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">p_values</span><span class="p">:</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>  <span class="c1"># 使用st.binom.pmf计算似然值</span>
+    <span class="n">likelihoods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">likelihood</span><span class="p">)</span>      <span class="c1"># 将结果添加到列表中</span>
+
+
+<span class="c1"># 创建图形和子图</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>  <span class="c1"># 此处应该是 plt.subplots() 而不是 plt.subplot()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">p_values</span><span class="p">,</span> <span class="n">likelihoods</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="c1"># 设置x轴和y轴的限制应该在绘制线条之前完成，以避免重复设置</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>  <span class="c1"># x轴范围根据p_values调整，最大不应超过1</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">p_values</span><span class="p">,</span> <span class="n">likelihoods</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">yy</span><span class="p">],</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># 注意这里的顺序是 [0, yy] 而不是 [yy, 0]，因为我们希望从x轴画到对应的似然值</span>
+<span class="c1"># 设置坐标轴标签，直接使用ax的方法，而不是fig的方法</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$f(\pi|y)$&#39;</span><span class="p">)</span>  <span class="c1"># 使用ax.set_ylabel而不是fig.supylabel</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">)</span>         <span class="c1"># 使用ax.set_xlabel而不是fig.supxlabel</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>  <span class="c1"># 调整布局以避免标签重叠</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>5、似然函数<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<p>当团队只成功复现一次时，该事件在不同成功率下出现的可能性可以写为：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.2)=(^6_1)0.2^1(1-0.2)^5 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.5)=(^6_1)0.5^1(1-0.5)^5 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.8)=(^6_1)0.8^1(1-0.8)^5 \)</span></p>
+</center>
+<p>因此，成功复现次数为1时的似然函数可以写成：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( L(π|y=1)=f(y=1|π)=(^6_1)π^1(1-π)^{6-1}=6π(1-π)^5 \)</span></p>
+</center>
+<p>不同成功率下的似然：</p>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
+<th class="head text-center"><p>0.2</p></th>
+<th class="head text-center"><p>0.5</p></th>
+<th class="head text-center"><p>0.8</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π \vert y=1) \)</span></p></td>
+<td class="text-center"><p>0.3932</p></td>
+<td class="text-center"><p>0.0938</p></td>
+<td class="text-center"><p>0.0015</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>注意：</strong></p>
+<p>似然函数表示的是，在各种可能的成功率π下,成功次数Y=1的可能性，所以</p>
+<ul class="simple">
+<li><p>该似然函数公式只取决于π</p></li>
+<li><p>似然函数的总和加起来不为1（从条件概率的公式来看，似然函数的分母是不同的）</p></li>
+</ul>
+<p><strong>条件概率 vs 似然函数</strong></p>
+<p>当<span class="math notranslate nohighlight">\( π \)</span>是一定时，条件概率质量函数<span class="math notranslate nohighlight">\( f(·|π) \)</span>可以帮我们计算在π取值下（各种模型），不同的数据<span class="math notranslate nohighlight">\( Y(e.g., y1,y2) \)</span>发生的可能性。</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(y_1|π)~vs~f(y_2|π) \)</span></p>
+</center>
+<p>当<span class="math notranslate nohighlight">\( Y=y \)</span>一定时，似然函数<span class="math notranslate nohighlight">\( L(·|y)=f(y|·) \)</span>允许我们比较在各种不同的模型，即二项式的<span class="math notranslate nohighlight">\( π \)</span>取值<span class="math notranslate nohighlight">\( （e.g., π_1,π_2） \)</span>下，观察到这个数据y的可能性（relative likelihood）</p>
+<center>
+<p><span class="math notranslate nohighlight">\( L(π_1|y)与L(π_2|y) \)</span></p>
+<p>即</p>
+<p><span class="math notranslate nohighlight">\( f(y|π_1)与f(y|π_2) \)</span></p>
+</center>
+<p><strong>在二项分布模型下：</strong></p>
+<p>进行n=6个重复实验时，成功次数与成功率的关系符合二项式模型，可以用如下的形式来表示：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( Y|π\sim Bin(6,π) \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(y|π)=(^6_y)π^y(1-π)^{6-y}~~~~~~~for~y\in \)</span> {0,1,2,3,4,5,6}</p>
+</center>
+<p>下图给出了几种<span class="math notranslate nohighlight">\( π \)</span>的取值，我们可以通过概率模型得到每种<span class="math notranslate nohighlight">\( Y \)</span>发生的可能性。</p>
+<ul class="simple">
+<li><p>同时，我们可以看到，<span class="math notranslate nohighlight">\( Y=1 \)</span>(赢一次)这一特定的数据模式，在各个<span class="math notranslate nohighlight">\( π \)</span>
+取值(模型)下的似然。</p></li>
+</ul>
+<p>In [8]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Values for Y (number of successes in n trials)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="c1"># Number of trials (n) and different probabilities (π values)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">pi_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+
+<span class="c1"># Create subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="c1"># Loop over each pi value to plot the corresponding binomial distribution</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pi_values</span><span class="p">):</span>
+    <span class="c1"># Calculate binomial probabilities for each y (number of successes)</span>
+    <span class="n">likelihoods</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">pi</span><span class="p">)</span>
+    
+    <span class="c1"># Scatter plot of the likelihoods</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">likelihoods</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="c1"># Draw gray vertical lines</span>
+    <span class="k">for</span> <span class="n">yy</span><span class="p">,</span> <span class="n">likelihood</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">likelihoods</span><span class="p">):</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">yy</span><span class="p">,</span> <span class="n">yy</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Highlight y = 1 with a black line</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">pi</span><span class="p">)],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    
+    <span class="c1"># Title with binomial parameters</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Bin(</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">pi</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Set y and x axis limits</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Global labels</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$f(y|\pi)$&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+
+<span class="c1"># Adjust layout for better fit</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<center><img width = '800' height ='220' src="image-22.png">
+</center>
+</section>
+<section id="prior-probability-model">
+<h2>6、先验概率模型(Prior probability model)<a class="headerlink" href="#prior-probability-model" title="Permalink to this heading">#</a></h2>
+<p><strong>建立先验模型</strong></p>
+<p>从前面的描述可以看到，二项分布的参数π也可以变化，也可以成为一个随机变量。</p>
+<ul class="simple">
+<li><p>例如，我们想当一个更有深度的观察者，融合了乐观派、悲观派和中立者三者关于π的估计。</p></li>
+<li><p>但是，我们对三种观点的可能性有不同的信念。</p></li>
+</ul>
+<p>假如我们总体上是一个乐观派，但不排除悲观派的观点，我们给三派观点分配了一定的概率(先验)。</p>
+<ul class="simple">
+<li><p>例如，设定<span class="math notranslate nohighlight">\( π_{0.2}=0.1 \)</span>，或者<span class="math notranslate nohighlight">\( π_{0.2}=0.5 \)</span>。但需要所有<span class="math notranslate nohighlight">\( f(π) \)</span>的总和为1。</p></li>
+</ul>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
+<th class="head text-center"><p>0.2</p></th>
+<th class="head text-center"><p>0.5</p></th>
+<th class="head text-center"><p>0.8</p></th>
+<th class="head text-center"><p>total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π) \)</span></p></td>
+<td class="text-center"><p>0.10</p></td>
+<td class="text-center"><p>0.25</p></td>
+<td class="text-center"><p>0.65</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们设定的π的数量也是可以变化的。</p>
+<ul class="simple">
+<li><p>例如，我们还可以将一种非常悲观的可能性也纳入进来，认为该团队成功率为0.01，即<span class="math notranslate nohighlight">\( π \)</span>=0.01。</p></li>
+<li><p>那么新形成的先验分布可能如下。</p></li>
+</ul>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
+<th class="head text-center"><p>0.01</p></th>
+<th class="head text-center"><p>0.2</p></th>
+<th class="head text-center"><p>0.5</p></th>
+<th class="head text-center"><p>0.8</p></th>
+<th class="head text-center"><p>total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π) \)</span></p></td>
+<td class="text-center"><p>0.10</p></td>
+<td class="text-center"><p>0.10</p></td>
+<td class="text-center"><p>0.25</p></td>
+<td class="text-center"><p>0.55</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="posterior-probability-model">
+<h2>7、后验概率模型(Posterior probability model)<a class="headerlink" href="#posterior-probability-model" title="Permalink to this heading">#</a></h2>
+<p>前述第一个先验模型，我们总体上是乐观的，认为团队高成功率的可能性很高 (<span class="math notranslate nohighlight">\( π_{0.8}=0.65 \)</span>)。</p>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
+<th class="head text-center"><p>0.2</p></th>
+<th class="head text-center"><p>0.5</p></th>
+<th class="head text-center"><p>0.8</p></th>
+<th class="head text-center"><p>total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π) \)</span></p></td>
+<td class="text-center"><p>0.10</p></td>
+<td class="text-center"><p>0.25</p></td>
+<td class="text-center"><p>0.65</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>然而，最终结果发现：该团队只成功复现一次。</p>
+<p><strong>这个新的数据会如何改变我们的信念？</strong></p>
+<p>我们可以综合先验和似然，根据贝叶斯的思路，计算后验概率。</p>
+<p>其中 团队成功复现的概率从<span class="math notranslate nohighlight">\( π_{0.8}=0.65 \)</span>降低为<span class="math notranslate nohighlight">\( π_{0.8}=0.015 \)</span>。意味着，他成功率为0.2的可能性是最大的<span class="math notranslate nohighlight">\( π_{0.2}=0.617 \)</span>。</p>
+<ul class="simple">
+<li><p>左图为先验模型</p></li>
+<li><p>中间的图为似然模型</p></li>
+<li><p>右边的图为后验模型</p></li>
+</ul>
+<p>In [9]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pi values and corresponding data</span>
+<span class="n">pi_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+<span class="n">f_pi</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">]</span>  <span class="c1"># Prior probabilities</span>
+<span class="n">L_pi_given_Y1</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.617</span><span class="p">,</span> <span class="mf">0.367</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">]</span>  <span class="c1"># Likelihoods given Y=1</span>
+<span class="n">posterior</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.617</span><span class="p">,</span> <span class="mf">0.367</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">]</span>  <span class="c1"># Posterior, assumed same as likelihoods here</span>
+
+<span class="c1"># Create subplots for prior, likelihood, and posterior</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Prior Probability f(π)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">f_pi</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">f_pi</span><span class="p">):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">yy</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Prior $f(\pi)$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c1"># Likelihood L(π|Y=1)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">L_pi_given_Y1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">L_pi_given_Y1</span><span class="p">):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">yy</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Likelihood $L(\pi|Y=1)$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c1"># Posterior Probability f(π|Y=1)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">posterior</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">posterior</span><span class="p">):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">yy</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Posterior $f(\pi|Y=1)$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c1"># Set labels and layout</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;Probability&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<center><img width = '800' height ='240' src="image-23.png">
+</center>
+<p><strong>后验模型的计算过程</strong></p>
+<p>上图所表示的后验可写成：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(π|y)=1 \)</span></p>
+</center>
+<p>表示当团队只成功复现一项研究时，他成功率<span class="math notranslate nohighlight">\(π\)</span>的概率分布</p>
+<p>根据贝叶斯公式，我们可以进一步对后验概率公式进行展开：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( posterior=\frac{prior*likelihood}{normalizing~constant} \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(π|y=1)=\frac{f(π)L(π|y=1)}{f(y=1)}~~~~~for~π\in 0.2,0.5,0.8 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(π=0.2|y=1)=\frac{0.10×0.3932}{0.0637}≈0.617 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(π=0.5|y=1)=\frac{0.25×0.0938}{0.0637}≈0.368 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(π=0.8|y=1)=\frac{0.65×0.0015}{0.0637}≈0.015 \)</span></p>
+</center>
+<p>下表对后验概率模型进行了总结，我们可知，经过了先前只成功了一项研究的复现经历后，该团队取得成功(<span class="math notranslate nohighlight">\( π=0.8 \)</span>)的可能性已经从0.65降到了0.015</p>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
+<th class="head text-center"><p>0.2</p></th>
+<th class="head text-center"><p>0.5</p></th>
+<th class="head text-center"><p>0.8</p></th>
+<th class="head text-center"><p>total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π) \)</span></p></td>
+<td class="text-center"><p>0.10</p></td>
+<td class="text-center"><p>0.25</p></td>
+<td class="text-center"><p>0.65</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π \vert y=1 \)</span>)</p></td>
+<td class="text-center"><p>0.617</p></td>
+<td class="text-center"><p>0.368</p></td>
+<td class="text-center"><p>0.015</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>补充材料</strong></p>
+<p>省略分母的计算</p>
+<ul class="simple">
+<li><p>考虑到分母是一个常数，我们常常会成功率计算它</p></li>
+</ul>
+<p>省略分母后验的计算可写成：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(π=0.2|y=1)=c·0.10·0.3932∝0.039320 \)</span>
+<span class="math notranslate nohighlight">\( f(π=0.5|y=1)=c·0.25·0.0938∝0.023450 \)</span>
+<span class="math notranslate nohighlight">\( f(π=0.8|y=1)=c·0.65·0.0015∝0.000975 \)</span></p>
+<p>∝表示成比例，尽管这些未经标准化的后验概率总和不等于1</p>
+<p>0.039320+0.023450+0.000975=0.063745</p>
+</center>
+但它们的比例关系并未改变（见下图）
+<p>In [10]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pi values and corresponding unnormalized posterior data</span>
+<span class="n">pi_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+<span class="n">unnormalized_posterior</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.03932</span><span class="p">,</span> <span class="mf">0.02345</span><span class="p">,</span> <span class="mf">0.000975</span><span class="p">]</span>  <span class="c1"># Unnormalized posterior values</span>
+<span class="n">normalized_posterior</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">unnormalized_posterior</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">unnormalized_posterior</span><span class="p">]</span>  <span class="c1"># Normalized</span>
+
+<span class="c1"># Create subplots for normalized and unnormalized posteriors</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Normalized posterior</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">normalized_posterior</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">normalized_posterior</span><span class="p">):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">yy</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Normalized $f(\pi | y=1)$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c1"># Unnormalized posterior</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">unnormalized_posterior</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pi_values</span><span class="p">,</span> <span class="n">unnormalized_posterior</span><span class="p">):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xx</span><span class="p">,</span> <span class="n">xx</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">yy</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Unnormalized $f(\pi | y=1)$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+
+<span class="c1"># Set labels and layout</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;Probability&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<center><img width = '550' height ='250' src="image-26.png">
+</center>
+<p>我们可以使用这些未经标准化的后验概率总和作为分母，来对后验概率进行标准化，会得到相同的计算结果。</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(π=0.2|y=1)=\frac{0.039320}{0.039320+0.023450+0.000975} \)</span></p>
+<p>注意，分母为所有似然值的总和，因此后验概率的计算公式还可以写成：</p>
+<p><span class="math notranslate nohighlight">\( f(π|y)=\frac{f(π)L(π|y)}{f(y)}=\frac{f(π)L(π|y)}{\sum _{allπ}f(π)L(π|y)} \)</span></p>
+</center>
+<p><strong>Proportionality</strong></p>
+<p>既然<span class="math notranslate nohighlight">\( f(y) \)</span>是一个用来标准化的常数，它并不受<span class="math notranslate nohighlight">\( π \)</span>的影响，那么后验概率质量函数<span class="math notranslate nohighlight">\( f(π|y) \)</span>就与<span class="math notranslate nohighlight">\( f(π) \)</span>和<span class="math notranslate nohighlight">\( L(π|y) \)</span>成正比</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(π|y)=\frac{f(π)L(π|y)}{f(y)}∝f(π)L(π|y) \)</span></p>
+<p><span class="math notranslate nohighlight">\( posterior∝prior·likelihood \)</span></p>
+</center>
+<ul class="simple">
+<li><p>😜<strong>这个性质很重要。因为分母的计算量往往比较大，需要遍历所有参数，如果参数不止一个，计算量可想而知。因此，如过能不计算分母也能计算后验，那么这样的方法(后面会介绍的MCMC算法)将会非常有实践意义。</strong></p></li>
+</ul>
+</section>
+<section id="posterior-simulation-with-code">
+<h2>8、Posterior simulation (with code)<a class="headerlink" href="#posterior-simulation-with-code" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>定义先验模型</p></li>
+</ol>
+<ul class="simple">
+<li><p>定义多个可能的成功率</p></li>
+<li><p>定义每个成功率出现的可能性 (注意，其和为1)</p></li>
+</ul>
+<p>In [11]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># 定义可能的成功率</span>
+<span class="n">replicated</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;pi&#39;</span><span class="p">:[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]})</span>
+
+<span class="c1"># 定义先验模型</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>模拟在特定成功率下，6项研究中的成功次数</p></li>
+</ol>
+<ul class="simple">
+<li><p>重复这个过程10000次</p></li>
+</ul>
+<p>In [12]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 设置随机数种子保证可重复性</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">84735</span><span class="p">)</span>
+
+<span class="c1"># 从先验中抽取10000个 pi 值，并生成对应的y值</span>
+
+<span class="n">replicated_sim</span> <span class="o">=</span> <span class="n">replicated</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">prior</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">replicated_sim</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">replicated_sim</span><span class="p">[</span><span class="s1">&#39;pi&#39;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">replicated_sim</span><span class="p">))</span>
+<span class="n">replicated_sim</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In [13]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#对pi的抽取情况进行总结</span>
+<span class="n">replicated_counts</span> <span class="o">=</span>  <span class="n">replicated_sim</span><span class="p">[</span><span class="s1">&#39;pi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">replicated_counts</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span><span class="s1">&#39;n&#39;</span><span class="p">]</span>
+
+<span class="n">replicated_counts</span><span class="p">[</span><span class="s1">&#39;percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">replicated_counts</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">replicated_sim</span><span class="p">))</span>
+
+<span class="n">replicated_counts</span> <span class="o">=</span> <span class="n">replicated_counts</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;pi&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">replicated_counts</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>不同成功率下，不同成功次数的分布情况f(y|π)</p></li>
+</ol>
+<p>In [14]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入绘图工具 seaborn</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="c1"># 通过 facegrid 方法根据不同变量绘制不同的图形</span>
+<span class="n">replicated_lik</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">replicated_sim</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="s2">&quot;pi&quot;</span><span class="p">)</span>
+<span class="n">replicated_lik</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">stat</span><span class="o">=</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span><span class="n">discrete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>查看<span class="math notranslate nohighlight">\(y=1\)</span>时，对应的<span class="math notranslate nohighlight">\(π\)</span>的分布情况</p></li>
+</ol>
+<p>In [15]:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">replicated_post</span> <span class="o">=</span> <span class="n">replicated_sim</span><span class="p">[</span><span class="n">replicated_sim</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">replicated_post</span>
+
+<span class="n">replicated_post</span> <span class="o">=</span> <span class="n">replicated_sim</span><span class="p">[</span><span class="n">replicated_sim</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="n">replicated_post_plot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">replicated_post</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;pi&quot;</span><span class="p">)</span>
+
+<span class="c1">#plt.xticks(np.arange(0.2,0.8,0.3))</span>
+
+<span class="n">replicated_post_plot</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.8</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>思考：频率学派(经典统计)会如何处理上述两个问题？</strong></p>
+<ul class="simple">
+<li><p>某项研究的可重复性</p></li>
+<li><p>重复6次的成功率</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter1_Bayesrule"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Bayesrule_part2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong><font size=23>Part 2: 单一事件的贝叶斯模型</font></strong></p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1、随机变量</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2、二项式模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-pmf">3、概率质量密度函数（probability mass function, pmf）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-binomial-likelihood-function">4、二项似然函数(The Binomial likelihood function)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5、似然函数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-probability-model">6、先验概率模型(Prior probability model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-probability-model">7、后验概率模型(Posterior probability model)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-simulation-with-code">8、Posterior simulation (with code)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
