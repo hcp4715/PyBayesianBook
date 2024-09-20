@@ -1,0 +1,635 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Part 1: Why Bayesian Inference ? &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_overview/Part1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Part 2: Three examples" href="Part2.html" />
+    <link rel="prev" title="序言" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Intro</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Why Bayesian Inference ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Part2.html">Three examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Part3.html">About this course</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Bayes'Rule</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">Part1_【和鲸平台】整合教学+练习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">Part2_单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">Part3_随机变量的贝叶斯模型</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapter_overview/Part1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter_overview/Part1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><font size=23>Part 1: Why Bayesian Inference ?</font></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1、如何定义人类的心理和行为规律</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2、如何研究——研究的方法和工具</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3、一种更好的统计方法</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="font-size-23-part-1-why-bayesian-inference-font">
+<h1><strong><font size=23>Part 1: Why Bayesian Inference ?</font></strong><a class="headerlink" href="#font-size-23-part-1-why-bayesian-inference-font" title="Permalink to this heading">#</a></h1>
+<p><font size=6>思考：</font></p>
+<ul class="simple">
+<li><p><font size=5>研究人类心理和行为的规律，容易吗？</p></li>
+<li><p>相比之下，发论文容易吗？</font></p></li>
+</ul>
+<section id="id1">
+<h2>1、如何定义人类的心理和行为规律<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p><font size=4><strong>1.1 心理学的定义</font></strong></p>
+<p><font size=3>  我们心理学一般从个体角度来去研究人类的心理与行为，因此绝大部分研究都是从一个单独的个体入手，即便他是在一定的社会文化历史条件之下，那么他的行为是什么样的？</p>
+<p>  再比如说，在发展心理学当中，重点是研究人类的心理与行为如何发展？社会心理学当中，个体的心理与行为是如何受到社会情境的影响？组织心理学当中，主要是研究如何提高组织的效率？由此看来，不同领域的定义不同，当我们在定义的时候会发现心理与行为规律的概念本身就很复杂，而选择其中一个定义去研究，又是一个很复杂的问题。</font></p>
+<p><font size=4><strong>1.2 其他领域</font></strong>
+<font size=3></p>
+<p>  下面这张图片是Science创刊125周年的封面，它列出了125个重要但还未被完全回答的问题。其中，最重要的两个问题分别是：1、宇宙的起源   2、意识的生物学基础
+</font></p>
+<center><img width = '230' height ='310' src="image-6.png"></center>
+<p><a class="reference external" href="https://www.science.org/toc/science/309/5731">Source: https://www.science.org/toc/science/309/5731</a></p>
+<font size=4>
+Q1: What is the Uiverse Made of ? (physics)
+<p><strong><font color=#FF8C00>Q2: What is the Biological Basis of Consciouness ? (psychological/cognitive science)
+</font></strong></p>
+</section>
+<section id="id2">
+<h2>2、如何研究——研究的方法和工具<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>思考：重要性或复杂性相似的问题，是否意味着研究方法也趋于复杂 ？</p>
+<p><strong>2.1  物理学中的方法 (Methods in Physics)</strong></p>
+<p>Example 1: Webb telescope (韦伯望远镜) (equipment)</p>
+<p>Example 2: Big-team science (CERN, the European Organization for Nuclear Research) —- equipment &amp; practices</p>
+<p>Example 3: Mathematics</p>
+<center><img width = '370' height ='210' src="image-7.png"></center>
+<br>
+<p><strong>2.2  其他研究人类智能的领域所采用的方法 (Methods in other fields that also study “intelligence”)</strong></p>
+<p>Example: Artificial Intelligence (e.g., Chat-gpt)</p>
+<center><img width = '370' height ='210' src="image-8.png"></center>
+<br>
+<p><strong>2.3  心理科学的研究方法 (What do psychological scientists have?)</strong></p>
+<p><em>你们能够想到的研究方法有哪些？</em></p>
+<center><img width = '400' height ='210' src="image-9.png"></center>
+<p><strong>实证研究：</strong></p>
+<ul class="simple">
+<li><p>质性研究</p></li>
+<li><p>观察法</p></li>
+<li><p>问卷</p></li>
+<li><p>行为实验</p></li>
+<li><p>眼动、生理数据记录</p></li>
+<li><p>EEG/ERP/MEG</p></li>
+<li><p>fMRI/PET/fNIRs</p></li>
+<li><p>TMS/tDCS</p></li>
+<li><p>…</p></li>
+</ul>
+<p><strong>统计方法：</strong></p>
+<ul class="simple">
+<li><p>t-test</p></li>
+<li><p>ANOVA</p></li>
+<li><p>Correlation
+-Structural equation model (SEM)</p></li>
+<li><p>?</p></li>
+</ul>
+<p><strong>相关方法课程：</strong></p>
+<ul class="simple">
+<li><p>心理测量</p></li>
+<li><p>心理统计（包括SPSS等）</p></li>
+<li><p>实验心理学（包括E-prime等）</p></li>
+<li><p>？</p></li>
+</ul>
+<p><strong>针对更复杂的数据</strong></p>
+<ul class="simple">
+<li><p>数据字化的时代，大数据</p></li>
+<li><p>神经成像/生理数据</p></li>
+<li><p>多模态的数据融合</p></li>
+<li><p>…</p></li>
+</ul>
+<p><strong>如果要研究更复杂的问题，我们可能需要：</strong></p>
+<ul class="simple">
+<li><p>更好的仪器</p></li>
+<li><p><font color=#FF8C00><strong>更好的统计/数据分析</strong></font></p></li>
+<li><p>更好的实践 (e.g., big-team science)</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>3、一种更好的统计方法<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<p><font size=5><strong>贝叶斯统计 (Bayesian statistics)</strong></font></p>
+<br>
+<center><img width = '600' height ='320' src="image-10.png"></center>
+<p><a class="reference external" href="https://www.nature.com/articles/s43586-020-00001-2">Souce: https://www.nature.com/articles/s43586-020-00001-2</a></p>
+<p><font size=5><strong>贝叶斯统计的优势</strong></font></p>
+<p><strong>1、通用/灵活/强大</strong></p>
+<ul class="simple">
+<li><p>通用：贝叶斯推断在多个学科特别是AI领域得到了广泛应用。</p></li>
+<li><p>灵活：结合先验知识与新数据，灵活调整模型以适应不同数据情境。</p></li>
+<li><p>强大：与频率主义学派相比，贝叶斯方法适用范围更广。</p></li>
+</ul>
+<p><strong>2、相对易用</strong></p>
+<ul class="simple">
+<li><p>概率编程语言(Probabilistic Programming Languages, PPLs)的发展和普及使得研究者可以相对快速地掌握贝叶斯统计</p></li>
+</ul>
+<p>  PPLs: computational languages for statistical modeling</p>
+<p>  e.g.</p>
+<ul class="simple">
+<li><p>Python (PyMC、NumPyro)</p></li>
+<li><p>R (Stan、JAGS)</p></li>
+<li><p>BUGS</p></li>
+<li><p>Julia (Mamba、Turing.jl)</p></li>
+<li><p>…</p></li>
+</ul>
+<p><strong>3、可拓展</strong></p>
+<ul class="simple">
+<li><p>贝叶斯概念已经应用到以深度学习为中心的新技术的发展，包括深度学习框架(TensorFlow, Pytorch)，创建能力更强、数据驱动的模型。</p></li>
+</ul>
+<p><strong>4、方便交流</strong></p>
+<ul class="simple">
+<li><p>大部分PPLs都有类似的数据结构，但是不同的学科使用的语言不同。</p></li>
+<li><p>心理学/社会科学/神经科学：</p></li>
+</ul>
+<p>  PyMC (bambi)</p>
+<p>  Stan (brms)</p>
+<p>  BUGS</p>
+<p><em>大部分情况下，开发者使用它可以轻松地定义概率模型，然后程序会自动地求解模型</em></p>
+<center><img width = '600' height ='420' src="image-11.png"></center>
+<p><a class="reference external" href="https://towardsdatascience.com/intro-to-probabilistic-programming-b47c4e926ec5">Source: https://towardsdatascience.com/intro-to-probabilistic-programming-b47c4e926ec5</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter_overview"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">序言</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Part2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong><font size=23>Part 2: Three examples</font></strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1、如何定义人类的心理和行为规律</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2、如何研究——研究的方法和工具</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3、一种更好的统计方法</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
