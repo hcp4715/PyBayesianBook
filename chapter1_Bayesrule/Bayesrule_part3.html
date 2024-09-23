@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter1_Bayesrule/Bayesrule_part3';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -407,11 +409,11 @@ document.write(`
 </ul>
 <p>在我们的例子中，假设计划对6项研究进行重复实验：</p>
 <ul class="simple">
-<li><p>假设该团队对于任何研究成功复现的成功率为π，π是未知的且可能会变化，所以π是一个随机变量。</p></li>
-<li><p>根据团队先前的经验以及心理学研究的现状，我们猜测其成功复现的成功率为π=50%。</p></li>
-<li><p>他接下来可能成功复现的次数Y可能是0，可能是1，也可能是6，可以有7种可能的成功复现次数，Y∈{0,1,2,3,4,5,6}。</p></li>
+<li><p>假设该团队对于任何研究成功复现的成功率为<span class="math notranslate nohighlight">\( π，π \)</span>是未知的且可能会变化，所以<span class="math notranslate nohighlight">\( π \)</span>是一个随机变量。</p></li>
+<li><p>根据团队先前的经验以及心理学研究的现状，我们猜测其成功复现的成功率为<span class="math notranslate nohighlight">\( π \)</span>=50%。</p></li>
+<li><p>他接下来可能成功复现的次数<span class="math notranslate nohighlight">\(Y\)</span>可能是0，可能是1，也可能是6，可以有7种可能的成功复现次数，<span class="math notranslate nohighlight">\( Y∈ \)</span> {0,1,2,3,4,5,6}。</p></li>
 </ul>
-<p>  <strong>思考一个问题：虽然我们知道他们的平均成功率为 π=50%，但问题在于，对于每一种复现成功的次数（1～6），其可能性分别是多少呢？</strong></p>
+<p>  <strong>思考一个问题：虽然我们知道他们的平均成功率为 <span class="math notranslate nohighlight">\( π \)</span>=50%，但问题在于，对于每一种复现成功的次数（1～6），其可能性分别是多少呢？</strong></p>
 </section>
 <section id="id2">
 <h2>2、二项式模型<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
@@ -419,17 +421,24 @@ document.write(`
 <p>  该团队总共进行6次重复实验，我们想要知道的是成功1次，成功2次，成功3次，…，的概率。</p>
 <p>  对于这种情况，我们可以用二项分布来分析。</p>
 <ul class="simple">
-<li><p>该团队的成功率为π，在π下某成功次数发生的概率可表示为：</p></li>
+<li><p>该团队的成功率为<span class="math notranslate nohighlight">\(π\)</span>，在<span class="math notranslate nohighlight">\(π\)</span>下某成功次数发生的概率可表示为：
+<font size=5><center>
+<span class="math notranslate nohighlight">\( f(y|π)=(^n_y)π^y(1-π)^{n-y} ~~~~~~for~y∈ \)</span> {<span class="math notranslate nohighlight">\( 0,1,2....,n \)</span>}
+<span class="math notranslate nohighlight">\( (^n_y)=\frac{n!}{y!(n-y)!} \)</span>
+</font></center></p></li>
 </ul>
-<center><img width = '680' height ='160' src="image-15.png">
-</center>
-<p>π表示成功的可能性，y表示在n个试次中成功的次数，二项模型含有的前提假设是：</p>
+<p><span class="math notranslate nohighlight">\( π \)</span>表示成功的可能性，<span class="math notranslate nohighlight">\( y \)</span>表示在n个试次中成功的次数，二项模型含有的前提假设是：</p>
 <p>(1) 所有试次发生都是相互独立的
-(2) 在每个试次中，成功的概率都是一个固定的值 π</p>
+(2) 在每个试次中，成功的概率都是一个固定的值<span class="math notranslate nohighlight">\(π\)</span></p>
 <p>成功次数为0~6 的可能性可以分别写成：</p>
-<center><img width = '300' height ='340' src="image-16.png">
+<center>
+<p><span class="math notranslate nohighlight">\( f(Y=0|π=0.5)=(^6_0)0.5^0(1-0.5)^6 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.5)=(^6_1)0.5^1(1-0.5)^5 \)</span></p>
+<p>…</p>
+<p><span class="math notranslate nohighlight">\( f(Y=5|π=0.5)=(^6_5)0.5^5(1-0.5)^1 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(Y=6|π=0.5)=(^6_6)0.5^6(1-0.5)^0 \)</span></p>
 </center>
-<p>我们可以使用代码帮助计算，其中P对应公式中的π。</p>
+<p>我们可以使用代码帮助计算，其中P对应公式中的<span class="math notranslate nohighlight">\( π \)</span>。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -501,7 +510,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<center><img width = '400' height ='320' src="image-17.png">
+<center><img width = '400' height ='300' src="image-17.png">
 </center>
 </section>
 <section id="probability-mass-function-pmf">
@@ -509,14 +518,16 @@ document.write(`
 <p><strong>概率质量密度函数：是用来描述离散型随机变量在各特定取值上的概率。</strong></p>
 <p>从上图我们可以看出，成功次数y在不同的取值上的概率不同。</p>
 <ul class="simple">
-<li><p>由于y的个数是有限的，并且是随机发生的，我们把y称为离散型随机变量，而y发生的概率f(y)则被称为<strong>概率质量函数</strong>。</p></li>
+<li><p>由于y的个数是有限的，并且是随机发生的，我们把y称为离散型随机变量，而y发生的概率<span class="math notranslate nohighlight">\( f(y) \)</span>则被称为<strong>概率质量函数</strong>。</p></li>
 </ul>
-<p>对于离散型随机变量Y，Y各取值的概率由f(y)指定：</p>
-<center>f(y)=P(Y = y)</center>
+<p>对于离散型随机变量<span class="math notranslate nohighlight">\( Y \)</span>，<span class="math notranslate nohighlight">\( Y \)</span>各取值的概率由<span class="math notranslate nohighlight">\( f(y) \)</span>指定：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(y)=P(Y = y) \)</span></p>
+</center>
 <p>并且有如下性质：</p>
 <ul class="simple">
-<li><p>对所有y的取值来说，0 ≤ f(y) ≤ 1</p></li>
-<li><p>∑~ally~ f(y)=1，y取值的所有概率之和为1</p></li>
+<li><p>对所有y的取值来说，<span class="math notranslate nohighlight">\( 0 ≤ f(y) ≤ 1 \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( ∑_{ally} f(y)=1 \)</span>，y取值的所有概率之和为1</p></li>
 </ul>
 <p>In [4]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">sum</span><span class="p">(</span><span class="n">result_table</span><span class="p">[</span><span class="s1">&#39;概率&#39;</span><span class="p">])</span>
@@ -586,9 +597,9 @@ document.write(`
 <p>  显然，对于乐观派来说，团队取得六次成功的概率远高于其他成功次数。而对于悲观派来说，团队全败的可能性远高于其他成功次数。</p>
 <ul class="simple">
 <li><p>换句话说，若团队在6项研究中仅成功复现一次，这种情况在低成功率下(悲观派设想的情境)更可能出现，在高成功率下(乐观派设想的情境)几乎不可能出现。</p></li>
-<li><p>那么团队成功重复的成功率，更可能(likelihood)是悲观派设想的那样(π=0.2)。</p></li>
+<li><p>那么团队成功重复的成功率，更可能(likelihood)是悲观派设想的那样(<span class="math notranslate nohighlight">\( π=0.2 \)</span>)。</p></li>
 </ul>
-<p>  例如，在乐观派和悲观派眼中(不同成功率π下)，6项研究只成功1次的可能性(即似然，likelihood)。</p>
+<p>  例如，在乐观派和悲观派眼中(不同成功率<span class="math notranslate nohighlight">\( π \)</span>下)，6项研究只成功1次的可能性(即似然，likelihood)。</p>
 <p>In [7]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义成功次数和研究总次数</span>
 <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># 成功次数，作为数组处理以便向量化计算</span>
@@ -623,10 +634,14 @@ document.write(`
 <section id="id3">
 <h2>5、似然函数<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
 <p>当团队只成功复现一次时，该事件在不同成功率下出现的可能性可以写为：</p>
-<center><img width = '300' height ='220' src="image-18.png">
+<center>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.2)=(^6_1)0.2^1(1-0.2)^5 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.5)=(^6_1)0.5^1(1-0.5)^5 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.8)=(^6_1)0.8^1(1-0.8)^5 \)</span></p>
 </center>
 <p>因此，成功复现次数为1时的似然函数可以写成：</p>
-<center><img width = '500' height ='60' src="image-19.png">
+<center>
+<p><span class="math notranslate nohighlight">\( L(π|y=1)=f(y=1|π)=(^6_1)π^1(1-π)^{6-1}=6π(1-π)^5 \)</span></p>
 </center>
 <p>不同成功率下的似然：</p>
 <style>
@@ -641,14 +656,14 @@ document.write(`
 <div class="center">
 <table class="table">
 <thead>
-<tr class="row-odd"><th class="head text-center"><p>π</p></th>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
 <th class="head text-center"><p>0.2</p></th>
 <th class="head text-center"><p>0.5</p></th>
 <th class="head text-center"><p>0.8</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p>f(π l y=1)</p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π \vert y=1) \)</span></p></td>
 <td class="text-center"><p>0.3932</p></td>
 <td class="text-center"><p>0.0938</p></td>
 <td class="text-center"><p>0.0015</p></td>
@@ -663,15 +678,25 @@ document.write(`
 <li><p>似然函数的总和加起来不为1（从条件概率的公式来看，似然函数的分母是不同的）</p></li>
 </ul>
 <p><strong>条件概率 vs 似然函数</strong></p>
-<center><img width = '800' height ='380' src="image-20.png">
+<p>当<span class="math notranslate nohighlight">\( π \)</span>是一定时，条件概率质量函数<span class="math notranslate nohighlight">\( f(·|π) \)</span>可以帮我们计算在π取值下（各种模型），不同的数据<span class="math notranslate nohighlight">\( Y(e.g., y1,y2) \)</span>发生的可能性。</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(y_1|π)~vs~f(y_2|π) \)</span></p>
+</center>
+<p>当<span class="math notranslate nohighlight">\( Y=y \)</span>一定时，似然函数<span class="math notranslate nohighlight">\( L(·|y)=f(y|·) \)</span>允许我们比较在各种不同的模型，即二项式的<span class="math notranslate nohighlight">\( π \)</span>取值<span class="math notranslate nohighlight">\( （e.g., π_1,π_2） \)</span>下，观察到这个数据y的可能性（relative likelihood）</p>
+<center>
+<p><span class="math notranslate nohighlight">\( L(π_1|y)与L(π_2|y) \)</span></p>
+<p>即</p>
+<p><span class="math notranslate nohighlight">\( f(y|π_1)与f(y|π_2) \)</span></p>
 </center>
 <p><strong>在二项分布模型下：</strong></p>
 <p>进行n=6个重复实验时，成功次数与成功率的关系符合二项式模型，可以用如下的形式来表示：</p>
-<center><img width = '500' height ='100' src="image-21.png">
+<center>
+<p><span class="math notranslate nohighlight">\( Y|π\sim Bin(6,π) \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(y|π)=(^6_y)π^y(1-π)^{6-y}~~~~~~~for~y\in \)</span> {0,1,2,3,4,5,6}</p>
 </center>
-<p>下图给出了几种π的取值，我们可以通过概率模型得到每种Y发生的可能性。</p>
+<p>下图给出了几种<span class="math notranslate nohighlight">\( π \)</span>的取值，我们可以通过概率模型得到每种<span class="math notranslate nohighlight">\( Y \)</span>发生的可能性。</p>
 <ul class="simple">
-<li><p>同时，我们可以看到，Y=1(赢一次)这一特定的数据模式，在各个π
+<li><p>同时，我们可以看到，<span class="math notranslate nohighlight">\( Y=1 \)</span>(赢一次)这一特定的数据模式，在各个<span class="math notranslate nohighlight">\( π \)</span>
 取值(模型)下的似然。</p></li>
 </ul>
 <p>In [8]:</p>
@@ -714,7 +739,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<center><img width = '800' height ='300' src="image-22.png">
+<center><img width = '800' height ='220' src="image-22.png">
 </center>
 </section>
 <section id="prior-probability-model">
@@ -727,7 +752,7 @@ document.write(`
 </ul>
 <p>假如我们总体上是一个乐观派，但不排除悲观派的观点，我们给三派观点分配了一定的概率(先验)。</p>
 <ul class="simple">
-<li><p>例如，设定π~0.2~=0.1，或者π~0.2~=0.5。但需要所有f(π)的总和为1。</p></li>
+<li><p>例如，设定<span class="math notranslate nohighlight">\( π_{0.2}=0.1 \)</span>，或者<span class="math notranslate nohighlight">\( π_{0.2}=0.5 \)</span>。但需要所有<span class="math notranslate nohighlight">\( f(π) \)</span>的总和为1。</p></li>
 </ul>
 <style>
 .center 
@@ -741,7 +766,7 @@ document.write(`
 <div class="center">
 <table class="table">
 <thead>
-<tr class="row-odd"><th class="head text-center"><p>π</p></th>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
 <th class="head text-center"><p>0.2</p></th>
 <th class="head text-center"><p>0.5</p></th>
 <th class="head text-center"><p>0.8</p></th>
@@ -749,7 +774,7 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p>f(π)</p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π) \)</span></p></td>
 <td class="text-center"><p>0.10</p></td>
 <td class="text-center"><p>0.25</p></td>
 <td class="text-center"><p>0.65</p></td>
@@ -760,7 +785,7 @@ document.write(`
 </div>
 <p>我们设定的π的数量也是可以变化的。</p>
 <ul class="simple">
-<li><p>例如，我们还可以将一种非常悲观的可能性也纳入进来，认为该团队成功率为0.01，即π=0.01。</p></li>
+<li><p>例如，我们还可以将一种非常悲观的可能性也纳入进来，认为该团队成功率为0.01，即<span class="math notranslate nohighlight">\( π \)</span>=0.01。</p></li>
 <li><p>那么新形成的先验分布可能如下。</p></li>
 </ul>
 <style>
@@ -775,7 +800,7 @@ document.write(`
 <div class="center">
 <table class="table">
 <thead>
-<tr class="row-odd"><th class="head text-center"><p>π</p></th>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
 <th class="head text-center"><p>0.01</p></th>
 <th class="head text-center"><p>0.2</p></th>
 <th class="head text-center"><p>0.5</p></th>
@@ -784,7 +809,7 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p>f(π)</p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π) \)</span></p></td>
 <td class="text-center"><p>0.10</p></td>
 <td class="text-center"><p>0.10</p></td>
 <td class="text-center"><p>0.25</p></td>
@@ -797,7 +822,7 @@ document.write(`
 </section>
 <section id="posterior-probability-model">
 <h2>7、后验概率模型(Posterior probability model)<a class="headerlink" href="#posterior-probability-model" title="Permalink to this heading">#</a></h2>
-<p>前述第一个先验模型，我们总体上是乐观的，认为团队高成功率的可能性很高 (π~0.8~=0.65)。</p>
+<p>前述第一个先验模型，我们总体上是乐观的，认为团队高成功率的可能性很高 (<span class="math notranslate nohighlight">\( π_{0.8}=0.65 \)</span>)。</p>
 <style>
 .center 
 {
@@ -810,7 +835,7 @@ document.write(`
 <div class="center">
 <table class="table">
 <thead>
-<tr class="row-odd"><th class="head text-center"><p>π</p></th>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
 <th class="head text-center"><p>0.2</p></th>
 <th class="head text-center"><p>0.5</p></th>
 <th class="head text-center"><p>0.8</p></th>
@@ -818,7 +843,7 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p>f(π)</p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π) \)</span></p></td>
 <td class="text-center"><p>0.10</p></td>
 <td class="text-center"><p>0.25</p></td>
 <td class="text-center"><p>0.65</p></td>
@@ -830,7 +855,7 @@ document.write(`
 <p>然而，最终结果发现：该团队只成功复现一次。</p>
 <p><strong>这个新的数据会如何改变我们的信念？</strong></p>
 <p>我们可以综合先验和似然，根据贝叶斯的思路，计算后验概率。</p>
-<p>其中 团队成功复现的概率从π~0.8~=0.65降低为π~0.8~=0.015。意味着，他成功率为0.2的可能性是最大的π~0.2~=0.617。</p>
+<p>其中 团队成功复现的概率从<span class="math notranslate nohighlight">\( π_{0.8}=0.65 \)</span>降低为<span class="math notranslate nohighlight">\( π_{0.8}=0.015 \)</span>。意味着，他成功率为0.2的可能性是最大的<span class="math notranslate nohighlight">\( π_{0.2}=0.617 \)</span>。</p>
 <ul class="simple">
 <li><p>左图为先验模型</p></li>
 <li><p>中间的图为似然模型</p></li>
@@ -879,12 +904,23 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<center><img width = '800' height ='260' src="image-23.png">
+<center><img width = '800' height ='240' src="image-23.png">
 </center>
 <p><strong>后验模型的计算过程</strong></p>
-<center><img width = '700' height ='560' src="image-24.png">
+<p>上图所表示的后验可写成：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(π|y)=1 \)</span></p>
 </center>
-<p>下表对后验概率模型进行了总结，我们可知，经过了先前只成功了一项研究的复现经历后，该团队取得成功(π=0.8)的可能性已经从0.65降到了0.015</p>
+<p>表示当团队只成功复现一项研究时，他成功率<span class="math notranslate nohighlight">\(π\)</span>的概率分布</p>
+<p>根据贝叶斯公式，我们可以进一步对后验概率公式进行展开：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( posterior=\frac{prior*likelihood}{normalizing~constant} \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(π|y=1)=\frac{f(π)L(π|y=1)}{f(y=1)}~~~~~for~π\in 0.2,0.5,0.8 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(π=0.2|y=1)=\frac{0.10×0.3932}{0.0637}≈0.617 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(π=0.5|y=1)=\frac{0.25×0.0938}{0.0637}≈0.368 \)</span></p>
+<p><span class="math notranslate nohighlight">\( f(π=0.8|y=1)=\frac{0.65×0.0015}{0.0637}≈0.015 \)</span></p>
+</center>
+<p>下表对后验概率模型进行了总结，我们可知，经过了先前只成功了一项研究的复现经历后，该团队取得成功(<span class="math notranslate nohighlight">\( π=0.8 \)</span>)的可能性已经从0.65降到了0.015</p>
 <style>
 .center 
 {
@@ -897,7 +933,7 @@ document.write(`
 <div class="center">
 <table class="table">
 <thead>
-<tr class="row-odd"><th class="head text-center"><p>π</p></th>
+<tr class="row-odd"><th class="head text-center"><p><span class="math notranslate nohighlight">\( π \)</span></p></th>
 <th class="head text-center"><p>0.2</p></th>
 <th class="head text-center"><p>0.5</p></th>
 <th class="head text-center"><p>0.8</p></th>
@@ -905,13 +941,13 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p>f(π)</p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π) \)</span></p></td>
 <td class="text-center"><p>0.10</p></td>
 <td class="text-center"><p>0.25</p></td>
 <td class="text-center"><p>0.65</p></td>
 <td class="text-center"><p>1</p></td>
 </tr>
-<tr class="row-odd"><td class="text-center"><p>f(π l y=1)</p></td>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\( f(π \vert y=1 \)</span>)</p></td>
 <td class="text-center"><p>0.617</p></td>
 <td class="text-center"><p>0.368</p></td>
 <td class="text-center"><p>0.015</p></td>
@@ -926,11 +962,14 @@ document.write(`
 <li><p>考虑到分母是一个常数，我们常常会成功率计算它</p></li>
 </ul>
 <p>省略分母后验的计算可写成：</p>
-<center><img width = '400' height ='110' src="image-25.png">
-</center>
+<center>
+<p><span class="math notranslate nohighlight">\( f(π=0.2|y=1)=c·0.10·0.3932∝0.039320 \)</span>
+<span class="math notranslate nohighlight">\( f(π=0.5|y=1)=c·0.25·0.0938∝0.023450 \)</span>
+<span class="math notranslate nohighlight">\( f(π=0.8|y=1)=c·0.65·0.0015∝0.000975 \)</span></p>
 <p>∝表示成比例，尽管这些未经标准化的后验概率总和不等于1</p>
 <p>0.039320+0.023450+0.000975=0.063745</p>
-<p>但它们的比例关系并未改变（见下图）</p>
+</center>
+但它们的比例关系并未改变（见下图）
 <p>In [10]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pi values and corresponding unnormalized posterior data</span>
 <span class="n">pi_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
@@ -965,17 +1004,19 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<center><img width = '650' height ='300' src="image-26.png">
+<center><img width = '550' height ='250' src="image-26.png">
 </center>
 <p>我们可以使用这些未经标准化的后验概率总和作为分母，来对后验概率进行标准化，会得到相同的计算结果。</p>
-<center><img width = '430' height ='60' src="image-27.png">
-</center>
+<center>
+<p><span class="math notranslate nohighlight">\( f(π=0.2|y=1)=\frac{0.039320}{0.039320+0.023450+0.000975} \)</span></p>
 <p>注意，分母为所有似然值的总和，因此后验概率的计算公式还可以写成：</p>
-<center><img width = '400' height ='60' src="image-28.png">
+<p><span class="math notranslate nohighlight">\( f(π|y)=\frac{f(π)L(π|y)}{f(y)}=\frac{f(π)L(π|y)}{\sum _{allπ}f(π)L(π|y)} \)</span></p>
 </center>
 <p><strong>Proportionality</strong></p>
-<p>既然f(y)是一个用来标准化的常数，它并不受π的影响，那么后验概率质量函数f(π|y)就与f(π)和L(π|y)成正比</p>
-<center><img width = '400' height ='150' src="image-29.png">
+<p>既然<span class="math notranslate nohighlight">\( f(y) \)</span>是一个用来标准化的常数，它并不受<span class="math notranslate nohighlight">\( π \)</span>的影响，那么后验概率质量函数<span class="math notranslate nohighlight">\( f(π|y) \)</span>就与<span class="math notranslate nohighlight">\( f(π) \)</span>和<span class="math notranslate nohighlight">\( L(π|y) \)</span>成正比</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(π|y)=\frac{f(π)L(π|y)}{f(y)}∝f(π)L(π|y) \)</span></p>
+<p><span class="math notranslate nohighlight">\( posterior∝prior·likelihood \)</span></p>
 </center>
 <ul class="simple">
 <li><p>😜<strong>这个性质很重要。因为分母的计算量往往比较大，需要遍历所有参数，如果参数不止一个，计算量可想而知。因此，如过能不计算分母也能计算后验，那么这样的方法(后面会介绍的MCMC算法)将会非常有实践意义。</strong></p></li>
@@ -1045,7 +1086,7 @@ document.write(`
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
-<li><p>查看y=1时，对应的π的分布情况</p></li>
+<li><p>查看<span class="math notranslate nohighlight">\(y=1\)</span>时，对应的<span class="math notranslate nohighlight">\(π\)</span>的分布情况</p></li>
 </ol>
 <p>In [15]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">replicated_post</span> <span class="o">=</span> <span class="n">replicated_sim</span><span class="p">[</span><span class="n">replicated_sim</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
