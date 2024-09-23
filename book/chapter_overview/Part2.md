@@ -463,8 +463,22 @@ trad_result = trad_result.reset_index() # 重置索引
 trad_result["level_1"] = trad_result["level_1"].replace({'trad_mean': 'mu', 'trad_sd': 'sigma'}) # 重命名列名
 print(trad_result)
 ```
+
+<center><img width = '560' height ='70' src="image-19.png"></center>
+
+- 从上述结果可以看出，如果我们按照传统信度解读的标准来看的话（一个可接受的问卷通常信度在0.8以上），此处的0.32是一个很低的信度值。
+
+- **那我们是否可以得出一个结论：Flanker任务作为一个测量人个体差异的任务而言是不靠谱的？**
+
+从统计学来看，这个两阶段模型实际上忽略了很多数据信息。
+
+接下来，我们看看贝叶斯分层模型是如何处理的：
+
 - **<font size=4>贝叶斯分层模型（Hierarchical Model）**
 **分层的广义线性模型: Shifted Lognormal model**</font>
+
+&emsp;&emsp;分析逻辑：
+&emsp;&emsp;贝叶斯分层模型的思路认为：一个人在两个测验上的表现都能反映出他的能力，因此需要从个体层面（subject level）估计，再进行群体层面（group level）的估计。
 
 In [21]:
 ```python
@@ -665,8 +679,6 @@ In [27]:
 diag_logshift, hdi_logshift, priorplot_logshift = result_output(df_model, "log_shift","Shifted Lognormal")
 ```
 
-- **Two-Stage model vs. Shifted Lognormal model**
-与Two-Stage model相比，Shifted Lognormal model具有更高的信度。
 
 In [28]:
 ```python
@@ -709,6 +721,14 @@ plt.xlabel('Test-Retest Correlation', fontsize=8)
 
 sns.despine()
 ```
+
+<center><img width = '540' height ='260' src="image-20.png"></center>
+
+- **Two-Stage model vs. Shifted Lognormal model**
+与Two-Stage model相比，Shifted Lognormal model具有更高的信度。
+
+- 因此，如果数据本身具有一个嵌套的结构，那么合适的方法选用能够估计出模型真正的参数，就像这个例子一样。
+
 
 ## 3、例3 —— 贝叶斯推断在认知模型中的应用
 
