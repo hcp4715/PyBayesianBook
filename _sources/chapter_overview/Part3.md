@@ -1,4 +1,4 @@
-# **<font size=23>Part 3: About this course</font>**
+# Part 3: About this course
 
 ## 1、教学目标
 （1）使用Python进行基本的数据处理

@@ -1,4 +1,4 @@
-# **<font size=23>Part 1: Why Bayesian Inference ?</font>**
+# Part 1: Why Bayesian Inference ?</font>
 
 <font size=6>思考：</font>
 
