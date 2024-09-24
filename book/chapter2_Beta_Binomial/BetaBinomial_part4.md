@@ -12,30 +12,30 @@
 
 <center>
 
-$ Y|ACC\sim Bin(n,ACC) $
+$Y|ACC\sim Bin(n,ACC)$
 
-$ ACC\sim Beta(α,β) $
+$ACC\sim Beta(\alpha,\beta)$
 </center>
 
-无论是哪种情况，在观察到 n 次时间中有$ Y=y $次目标事件后，ACC的后验分布可以用Beta模型来描述，反映了先验（通过$ α和β $）和数据（通过$ y和n $）的影响：
+无论是哪种情况，在观察到 $n$ 次时间中有$Y=y$次目标事件后，ACC的后验分布可以用Beta模型来描述，反映了先验（通过$\alpha$和$\beta$）和数据（通过$y$和$n$）的影响：
 
 <center>
 
-$ ACC|(Y=y)\sim Beta(α+y,β+n-y) $
+$ACC|(Y=y)\sim Beta(\alpha+y,\beta+n-y)$
 </center>
 
 ***需要注意的是：后验与先验是相同的概率模型，只是参数不同。***
 
-- 在这个例子中，Beta($ α,β $)模型是对应数据模型的$ Bin(n,ACC) $的共轭先验(conjugate prior)。
-- 如果$ f(ACC)是L(ACC|y) $的共轭先验，后验$ f(ACC|y)\propto f(ACC)L(ACC|y) $与先验来自相同的模型族。
-- 我们将在第五次课详细介绍共轭先验的相关知识。
+- 在这个例子中，$Beta(\alpha, \beta)$模型是对应数据模型的$Bin(n, ACC)$的共轭先验(conjugate prior)。
+- 如果$f(ACC)$是$L(ACC|y)$的共轭先验，后验$f(ACC|y) \propto f(ACC)L(ACC|y)$与先验来自相同的模型族。
+- 我们将在第五次课介绍共轭先验的相关知识。
 
 **代码实现**
 
 让我们模拟正确率ACC的后验模型。
 
-- 首先，我们从Beta(45,55)先验中模拟10,000个ACC值
-- 然后, 使用从每个ACC值中模拟Bin(50,ACC)的潜在正确判断次数Y：
+- 首先，我们从$Beta(45,55)$先验中模拟10,000个ACC值
+- 然后, 使用从每个ACC值中模拟$Bin(50, ACC)$的潜在正确判断次数Y：
 模拟结果：10,000对ACC和y值的模拟数据
 
 ```python
@@ -176,35 +176,35 @@ print(f"50,000次模拟中, {king_posterior2.shape[0]}次与观测到的Y = 30�
 &emsp;&emsp;在第3章中，我们对一个真实的现象(随机点运动任务中特定条件下正确判断的能力)，构建了Beta-Binomial模型，并通过数据进行了一次信念更新：
 <center>
 
-$ Y|ACC\sim Bin(n,ACC) $
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; $ \Rightarrow ACC|(Y=y) $
-$ ACC\sim Beta(α,β) $
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;$ \sim Beta(α+y,β+n-y) $
+$Y|ACC\sim Bin(n,ACC)$
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; $\Rightarrow ACC|(Y=y)$
+$ACC\sim Beta(\alpha,\beta)$
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;$\sim Beta(\alpha+y,\beta+n-y)$
 
 </center>
 
 - 这个模型反映了贝叶斯分析的四个通用要素:
 
 1、先验模型Beta先验模型可以通过调节参数来反映不同的ACC值在[0,1]范围内的相对先验可能性。
-$ f(ACC)=\frac{Γ(α+β)}{Γ(α)Γ(β)}ACC^{α-1}(1-ACC)^{β-1} $
+$f(ACC)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}ACC^{\alpha-1}(1-ACC)^{\beta-1}$
 
-2、数据模型 为了学习ACC,我们收集数据$ Y $，即n次独立试验中成功的次数,其中每次试验正确的概率为ACC。$ Y $对ACC的依赖关系由二项分布$ Bin(n,ACC) $描述。
+2、数据模型 为了学习ACC,我们收集数据$ Y $，即n次独立试验中成功的次数,其中每次试验正确的概率为ACC。$Y$对ACC的依赖关系由二项分布$Bin(n,ACC)$描述。
 
 3、似然函数 在观测到数据$ Y=y $,其中$ y∈ 0,1,...,n$后,ACC的似然函数通过将y代入二项式概率质量函数而获得,它提供了一种机制来比较不同ACC与数据的兼容性:
 
-$ L(ACC|y)=(^n_y)ACC^y(1-ACC)^{n-y}~for~ACC\in [0,1] $
+$L(ACC|y)=(^n_y)ACC^y(1-ACC)^{n-y}~for~ACC\in [0,1]$
 
-4、后验模型 通过贝叶斯规则,共轭的Beta先验和二项式数据模型结合产生ACC的Beta后验模型。更新的Beta后验参数$ (α+y,β+n-y) $反映了先验的影响(通过α和β)和观测数据的影响(通过y和n)。
+4、后验模型 通过贝叶斯规则,共轭的Beta先验和二项式数据模型结合产生ACC的Beta后验模型。更新的Beta后验参数$(\alpha+y, \beta+n-y)$反映了先验的影响(通过$\alpha$和$\beta$)和观测数据的影响(通过$y$和$n$)。
 
-$ f(ACC|y)\propto f(ACC)L(ACC|y)\propto ACC^{(a+y)-1}(1-ACC^{(β+n-y)-1}) $
+$f(ACC|y)\propto f(ACC)L(ACC|y)\propto ACC^{(a+y)-1}(1-ACC^{(\beta+n-y)-1})$
 
 ## 练习
 
-- 假设心理学研究中的可重复研究出现的概率为 0.4（这里概率用π表示），请自行选择一个合适的 Beta 分布，模拟10000个$ π $值。
-- 请根据$ π $模拟相应的数据$ Y $(可重复研究的数量)，假设总的可重复研究数量n=100。
+- 假设心理学研究中的可重复研究出现的概率为 0.4（这里概率用π表示），请自行选择一个合适的 Beta 分布，模拟10000个$\pi$值。
+- 请根据$\pi$模拟相应的数据$Y$(可重复研究的数量)，假设总的可重复研究数量n=100。
 - 绘制先验分布和后验分布的图像。
 
-## Bonus 1：Beta(70,30)这个先验是怎么选取的?
+## Bonus 1：$Beta(70, 30)$这个先验是怎么选取的?
 
 在回答这个问题之前，我们先来了解一下**Beta分布的集中趋势量数**
 
@@ -218,41 +218,41 @@ $ f(ACC|y)\propto f(ACC)L(ACC|y)\propto ACC^{(a+y)-1}(1-ACC^{(β+n-y)-1}) $
 
 - ACC的平均取值
 
-$ E(ACC)=\frac{α}{α+β} $
+$E(ACC)=\frac{\alpha}{\alpha+\beta}$
 
-$ E(ACC)=\int ACC·f(ACC)dACC $
+$E(ACC)=\int ACC·f(ACC)dACC$
 
 **2、众数(mode)**
 
 - ACC最可能的取值。即，在ACC下，f(ACC)能取到的最大值
 
-$ Mode(ACC)=\frac{α-1}{α+β-2}~~when~ α,β>1 $
+$Mode(ACC)=\frac{\alpha-1}{\alpha+\beta-2}~~ when~ \alpha, \space \beta>1$
 
-$ Mode(ACC)=argmax_{ACC}f(ACC) $
+$Mode(ACC)=argmax_{ACC}f(ACC)$
 
 **3、方差(variance)**
 - ACC取值的变异性（variability）
 
-$ Var(ACC)=E((ACC-E(ACC))^2)=\int (ACC-E(ACC))^2·f(ACC)dACC $
+$Var(ACC)=E((ACC-E(ACC))^2)=\int (ACC-E(ACC))^2·f(ACC)dACC$
 
-$ Var(ACC)=\frac{αβ}{(α+β)^2(α+β+1)} $
+$Var(ACC)=\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$
 
 **4、标准差（standard deviation）**
 
-$ SD(ACC)=\sqrt{Var(ACC)} $
+$SD(ACC)=\sqrt{Var(ACC)}$
 
 **调整Beta先验**
 
-我们已经知道，在先前的推测中，在 5% 一致性条件下，被试的平均正确率约为 70%。根据这一点，我们可以计算出Beta分布的$ α和β $参数。
+我们已经知道，在先前的推测中，在 5% 一致性条件下，被试的平均正确率约为 70%。根据这一点，我们可以计算出Beta分布的$\alpha$和$\beta$参数。
 
-$ E(ACC)=\frac{α}{α+β}=0.70 $
+$E(ACC)=\frac{\alpha}{\alpha + \beta}=0.70$
 
 重新整理后：
 
-$ α=0.7(α+β) $
-$ α≈\frac{7}{3}β $
+$\alpha=0.7(\alpha+\beta)$
+$\alpha≈\frac{7}{3}\beta$
 
-一个合适的分布中，$ α和β $需要满足的条件如上，我们可以选择 Beta(70,30), Beta(7,3), Beta(14,6)，我们可以通过以下代码来画出这些分布的形状：
+一个合适的分布中，$\alpha$和$\beta$需要满足的条件如上，我们可以选择 $Beta(70, 30)$, $Beta(7,3)$, $Beta(14,6)$，我们可以通过以下代码来画出这些分布的形状：
 
 ```python
 import numpy as np
@@ -271,52 +271,52 @@ plt.show()
 
 如图所示，我们选择ACC∼Beta(70,30)作为先验模型
 
-带入公式，可以计算出先验$ f(ACC) $的pdf、平均数、众数、方差和标准差：
+带入公式，可以计算出先验$f(ACC)$的pdf、平均数、众数、方差和标准差：
 
 - pdf:
 
-$ f(ACC)=\frac{Γ(100)}{Γ(70)Γ(30)}ACC^{69}(1-ACC)^{29}~for~ACC\in [0,1] $
+$f(ACC)=\frac{\Gamma(100)}{\Gamma(70)\Gamma(30)}ACC^{69}(1-ACC)^{29}~for~ACC\in [0,1]$
 
 - 平均数
 
-$ E(ACC)=\frac{70}{70+30}=0.70 $
+$E(ACC)=\frac{70}{70+30}=0.70$
 
 - 众数
 
-$ Mode(ACC)=\frac{70-1}{70+30-2}=0.6939 $
+$Mode(ACC)=\frac{70-1}{70+30-2}=0.6939$
 
 - 方差
 
-$ Var(ACC)=\frac{70·30}{(70+30)^2(70+30+1)}=0.0021 $
+$Var(ACC)=\frac{70·30}{(70+30)^2(70+30+1)}=0.0021$
 
 - 标准差
 
-$ SD(ACC)=\sqrt{0.0021}=0.0458 $
+$SD(ACC)=\sqrt{0.0021}=0.0458$
 
 ## Bonus 2: Beta-Binomial 模型生成的后验仍是Beta分布
 
 **公式推导**
 
-对于ACC的后验模型为Beta(α+y,β+n-y)的推导过程（其中，正确次数为y，总试次为n）
+对于ACC的后验模型为$Beta(\alpha+y,\beta+n-y)$的推导过程（其中，正确次数为y，总试次为n）
 
 **1、首先写出先验的公式**
 
-$ f(ACC)=\frac{Γ(α+β)}{Γ(α)Γ(β)}ACC^{α-1}(1-ACC)^{β-1} $
+$f(ACC)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}ACC^{\alpha-1}(1-ACC)^{\beta-1}$
 
-$ L(ACC|y)=(^n_y)ACC^y(1-ACC)^{n-y} $
+$L(ACC|y)=(^n_y)ACC^y(1-ACC)^{n-y}$
 
 **2、结合先验和似然函数 (暂时忽略分母)，后验概率密度函数可以由贝叶斯定理得到：**
 
-$ f(ACC|y)\propto f(ACC)L(ACC|y)=\frac{Γ(α+β)}{Γ(α)Γ(β)}ACC^{α-1}(1-ACC)^{β-1}·(^n_y)ACC^y(1-ACC)^{n-y}\propto ACC^{(a+y)-1}(1-ACC)^{(β+n-y)-1} $
+$f(ACC|y)\propto f(ACC)L(ACC|y)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}ACC^{\alpha-1}(1-ACC)^{\beta-1}·(^n_y)ACC^y(1-ACC)^{n-y}\propto ACC^{(a+y)-1}(1-ACC)^{(\beta+n-y)-1}$
 
 **3、最后，我们加上归一化因子（分母部分）**
 
-$ f(ACC|y)=\frac{Γ(α+β+n)}{Γ(α+y)Γ(β+n-y)}ACC^{(α+y)-1}(1-ACC)^{(β+n-y)-1} $
+$f(ACC|y)=\frac{\Gamma(\alpha+\beta+n)}{\Gamma(\alpha+y)\Gamma(\beta+n-y)}ACC^{(\alpha+y)-1}(1-ACC)^{(\beta+n-y)-1}$
 
-我们知道Beta(α,β)的概率密度函数可以写成：
+我们知道Beta(\alpha,\beta)的概率密度函数可以写成：
 
-$ Beta(α,β)=\frac{Γ(α+β)}{Γ(α)Γ(β)}ACC^{α-1}(1-ACC)^{β-1}~for~ACC\in[0,1] $
+$Beta(\alpha,\beta)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}ACC^{\alpha-1}(1-ACC)^{\beta-1}~for~ACC\in[0,1]$
 
 因此，
 
-$ f(ACC|y)=Beta(α+y,β+n-y) $
+$f(ACC|y)=Beta(\alpha+y,\beta+n-y)$

@@ -101,9 +101,9 @@ df[['subject', 'numberofDots', 'percentCoherence', 'correct', 'RT']].head()
 
 ***接下来，我们将通过该数据学习以下知识点：***
 
-1、如何为结果为“正确与否”的数据建立概率模型
-2、如何为该类数据设置一个先验模型
-3、如何通过数据来更新先验模型
+  1、如何为结果为“正确与否”的数据建立概率模型
+  2、如何为该类数据设置一个先验模型
+  3、如何通过数据来更新先验模型
 
 ## 连续变量的先验模型
 
@@ -156,19 +156,19 @@ plt.show()
 
 ⏰回顾一下离散型随机变量及其概率质量函数(probability mass function, pmf)
 
-> 在随机点运动任务的例子中，假如正确率(ACC)只有几个可能的聚会，则其是离散型随机变量$ Y $，可以通过概率质量函数来描述离散型随机变量在各特定取值上的概率，对所有正确率的取值来说，$ 0≤ACC≤1 $，并且$ ∑_{ally}f(ACC)=1 $，ACC取值的所有概率之和为1。
+> 在随机点运动任务的例子中，假如正确率(ACC)只有几个可能的聚会，则其是离散型随机变量$Y$，可以通过概率质量函数来描述离散型随机变量在各特定取值上的概率，对所有正确率的取值来说，$0≤ACC≤1 $，并且$ ∑_{ally}f(ACC)=1$，ACC取值的所有概率之和为1。
 
 <br>
 
 **Continuous probability models**
 
-&emsp;&emsp;当正确率是一个**连续的随机变量**时，它服从于一个分布$ f(ACC) $, 又被称概率密度函数(probability density function, pdf)
+&emsp;&emsp;当正确率是一个**连续的随机变量**时，它服从于一个分布$f(ACC)$, 又被称概率密度函数(probability density function, pdf)
 
 ***概率密度函数（pdf）与概率质量函数（pmf）有类似的性质：***
 
-- $ f(ACC)≥0 $
-- $ \int_{ACC}f(ACC)dACC=1 $，即$ f(ACC) $曲线下的面积之和为1
-- 当$ a≤b $时，$ P(a<ACC<b)=\int^b_af(ACC)dACC $
+- $f(ACC)≥0$
+- $\int_{ACC}f(ACC)dACC=1$，即$f(ACC)$曲线下的面积之和为1
+- 当$a ≤ b$时，$P(a<ACC<b)=\int^b_af(ACC)dACC$
 
 <center><img width = '450' height ='320' src="image-3.png">
 </center>
@@ -182,16 +182,16 @@ plt.show()
 在这里，我们假设随机点运动任务中的正确率服从Beta分布。
 
 - 选择Beta分布的关键在于，其取值范围满足[0,1]
-- 此外，Beta分布通过两个超参数（hyperparameters），$ α(α>0)和β(β>0) $调节分布的形态。
+- 此外，Beta分布通过两个超参数（hyperparameters），$\alpha(\alpha>0)和 \beta(\beta>0)$调节分布的形态。
 
 <center> 
 
-$ ACC \sim Beta(α,β) $
+$ACC \sim Beta(\alpha, \beta)$
 </center>
 
-**Beta分布的参数：控制分布性质——$ α和β $**
+**Beta分布的参数：控制分布性质——$\alpha$和$\beta$**
 
-下面我们将展示调整$ α和β $的值，pdf形态将如何变化：
+下面我们将展示调整$\alpha$和$\beta$的值，pdf形态将如何变化：
 
 ```python
 # 创建一个3x3的网格子图，每个子图的尺寸为10x10
@@ -235,26 +235,26 @@ plt.show()
 
 <center>
 
-$ f(ACC)=\frac{Γ(α+β)}{Γ(α)Γ(β)}ACC^{α-1}(1-ACC)^{β-1} for ~ ACC \in[0,1] $
+$f(ACC)=\frac{Γ(α+β)}{Γ(α)Γ(β)}ACC^{α-1}(1-ACC)^{β-1} for ~ ACC \in[0,1]$
 </center>
 
 简单了解：
-- $ Γ $与阶乘有关
-- $ Γ(z)=\int^∞_0x^{z-1}e^{-y}dx 且Γ(z+1)=zΓ(z) $
-- 当$ z $是正整数时，$ Γ(z) $可以被简化为$ Γ(z)=(z-1)! $
+- $\Gamma$与阶乘有关
+- $\Gamma(z)=\int^∞_0x^{z-1}e^{-y}dx 且Γ(z+1)=z \Gamma(z)$
+- 当$z$是正整数时，$\Gamma(z)$可以被简化为$\Gamma(z)=(z-1)!$
 
 **调整Beta先验**
 
 在这里我们选择ACC~Beta(70,30)作为合理的先验模型
-- 关于为何$ α=70，β=30 $，感兴趣的同学可自行查看课后bonus
+- 关于为何$\alpha=70$，$\beta=30$，感兴趣的同学可自行查看课后bonus
 
-带入公式，可以计算出先验$ f(ACC) $的pdf：
+带入公式，可以计算出先验$f(ACC)$的pdf：
 
 - pdf：
 
 <center>
 
-$ f(ACC)=\frac{Γ(100)}{Γ(70)Γ(30)}ACC^{69}(1-ACC)^{29} for ~ ACC \in[0,1] $
+$f(ACC)=\frac{Γ(100)}{Γ(70)Γ(30)}ACC^{69}(1-ACC)^{29} for ~ ACC \in[0,1]$
 </center>
 
 下面是我们这个先验似然的可视化：
