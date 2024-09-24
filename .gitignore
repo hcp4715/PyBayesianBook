@@ -9,4 +9,3 @@
 
 # ignore jupyter book build files
 */_build/.doctrees/
-*/_build/html/

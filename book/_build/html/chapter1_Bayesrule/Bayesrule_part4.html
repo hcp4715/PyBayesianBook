@@ -1,0 +1,629 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Part 4: 频率学派与贝叶斯学派的对比 &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter1_Bayesrule/Bayesrule_part4';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">Why Bayesian Inference ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">Three examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">About this course</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Bayes'Rule</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part1.html">Part1_【和鲸平台】整合教学+练习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part2.html">Part2_单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part3.html">Part3_随机变量的贝叶斯模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The Beta-Binomial Bayesian Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">Part1_Beta先验</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">Part2_Binomial与似然</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">Part3_后验模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">Part4_Beta-Binomial model and simulation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapter1_Bayesrule/Bayesrule_part4.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter1_Bayesrule/Bayesrule_part4.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Part 4: 频率学派与贝叶斯学派的对比</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">频率学派如何看待这个世界？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">贝叶斯学派如何看待这个世界？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">两个学派的差异对比：频率学派 vs 贝叶斯学派</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="part-4">
+<h1>Part 4: 频率学派与贝叶斯学派的对比<a class="headerlink" href="#part-4" title="Permalink to this heading">#</a></h1>
+<p>  最近的一篇综述讨论了贝叶斯方法在临床研究设计和分析中的应用，同时比较了贝叶斯与频率主义方法之间的哲学和方法论差异。</p>
+<center>
+<img width = '420' height ='300' src="image-35.png">
+</center>
+<blockquote>
+<div><p><a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0140673624012959">Goligher, E. C., Heath, A., &amp; Harhay, M. O. (2024). Bayesian statistics for clinical research. The Lancet, 404(10457), 1067-1076.</a></p>
+</div></blockquote>
+<p>  论文中展示的一个例子是一项用于治疗严重急性呼吸窘迫综合征（ARDS）的体外膜肺氧合法（ECMO）试验，研究体外膜肺氧合法（ECMO）对严重急性呼吸窘迫综合征（ARDS）的效果。该试验的结果引发了频率学派和贝叶斯学派在同一数据下得出不同结论的讨论。</p>
+<ul class="simple">
+<li><p><font size=5><strong>频率学派</strong> </font>
+  试验原本计划招募331名患者，但因中期分析未能证明ECMO治疗具有显著益处，最终只招募了249名患者。结果显示，干预组的死亡率为35%，对照组为46%，表面上看治疗效果显著。然而，基于频率学派的统计分析，<span class="math notranslate nohighlight">\( P \)</span>值为0.09，并未达到通常的显著性水平（<span class="math notranslate nohighlight">\( p&lt;0.05 \)</span>）。</p></li>
+</ul>
+<p>  因此研究者得出结论：试验<strong>未能提供充分证据</strong>证明早期ECMO可以显著降低死亡率。</p>
+<ul class="simple">
+<li><p><font size=5><strong>贝叶斯学派</strong> </font></p></li>
+</ul>
+<p>  通过使用不同的先验分布时，<span class="math notranslate nohighlight">\( H_1 \)</span>（ECMO可以有效降低干预组死亡率）成立的后验概率在88%至99%之间。
+  这意味着，贝叶斯方法提供了<strong>强有力的证据支持ECMO的效果</strong>，甚至有学者建议，ECMO方法应被认为是一种有效的治疗手段。</p>
+<section id="id1">
+<h2>频率学派如何看待这个世界？<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>在对比频率学派与贝叶斯学派的差异之前，让我们首先回顾一下频率学派是如何看待这个世界的。</p>
+<ul class="simple">
+<li><p>值得注意的是：</p></li>
+</ul>
+<p>1、<strong>固定的假设</strong>：频率学派认为假设（通常是零假设）是一个固定的命题。例如，在试验中，频率学派的零假设是“ECMO对死亡率没有显著影响”。</p>
+<p>2、<strong>数据的随机性</strong>：在频率学派的框架下，数据被视为随机变量。通过对这些数据进行分析，频率学派关注在假设为真的前提下，观测到当前数据或更极端数据的概率，即<span class="math notranslate nohighlight">\( p \)</span>值。</p>
+<p>3、<strong>无限重复实验的假设</strong>：频率学派的推断依赖于假设实验可以无限重复进行，进而通过计算在这些重复实验中得到观测数据的频率来推断真相。因此，置信区间也是基于多次实验的频率分布。</p>
+<p>4、<strong>拒绝或接受零假设</strong>：通过计算<span class="math notranslate nohighlight">\( p \)</span>值，频率学派根据预设的显著性水平（通常为0.05）决定是否拒绝零假设。</p>
+<ul class="simple">
+<li><p>最后，频率学派如何推断出两个总体之间的差异？</p></li>
+</ul>
+<p>1、频率学派通过零假设的显著性检验(Null hypothesis significant test, NHST)来判断显著性。通过计算置信区间(confidence interval)和<span class="math notranslate nohighlight">\( p \)</span>值来帮助推断过程。</p>
+<p>2、在该临床试验中，通过<span class="math notranslate nohighlight">\( p \)</span>值（如，0.09）和置信区间来推断两个总体之间的差异。</p>
+</section>
+<section id="id2">
+<h2>贝叶斯学派如何看待这个世界？<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>与频率学派不同，贝叶斯学派认为：<strong>概率是对不确定性的主观度量</strong>。</p>
+<ul class="simple">
+<li><p>贝叶斯学派的核心思想包括：</p></li>
+</ul>
+<p>1、<strong>先验概率</strong>：贝叶斯学派从研究者对某个假设的初始信念（即先验概率）出发。这一信念可以基于以往研究、专家意见或临床经验。</p>
+<p>2、<strong>更新信念</strong>：当新数据（如试验结果）出现时，贝叶斯定理提供了一个框架，将先验概率与新证据（通过似然函数表示）结合，生成后验概率。后验概率代表更新后的信念，即在观察到新数据后，某假设为真的概率。</p>
+<p>3、<strong>后验分布与可信区间(credible intervals)</strong>：通过后验概率，贝叶斯方法能够直接评估一个假设为真的可能性。例如，贝叶斯分析可以直接得出H1成立的后验概率（如88%）。可信区间的概念也更具直观性，它表示在现有数据和先验信息下，某参数位于该区间内的概率。</p>
+</section>
+<section id="vs">
+<h2>两个学派的差异对比：频率学派 vs 贝叶斯学派<a class="headerlink" href="#vs" title="Permalink to this heading">#</a></h2>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>频率学派</p></th>
+<th class="head text-center"><p>贝叶斯学派</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong>概率定义</strong>：概率是事件在无限重复试验中的频率</p></td>
+<td class="text-center"><p><strong>概率定义</strong>：概率是对假设的信念度量</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>假设</strong>：假设是固定的，数据是随机的</p></td>
+<td class="text-center"><p><strong>假设</strong>：假设是随机的，数据是固定的</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong>推断方式</strong>：基于假设检验，通过<span class="math notranslate nohighlight">\( p \)</span>值判断是否拒绝零假设</p></td>
+<td class="text-center"><p><strong>推断方式</strong>：通过更新先验与新数据计算后验概率</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>置信区间</strong>：在重复试验中，95%的区间包含真实参数</p></td>
+<td class="text-center"><p><strong>可信区间</strong>：给出某参数位于区间内的概率（如95%可信度）</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\( p \)</span>值</strong>：衡量在零假设下，观测数据或更极端数据的概率</p></td>
+<td class="text-center"><p><strong>后验概率</strong>：给出假设为真的更新概率</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>数据独立性</strong>：推断只基于当前试验数据，不考虑先验信息</p></td>
+<td class="text-center"><p><strong>先验信息</strong>：结合历史数据或专家意见，用于更新推断</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong>实验重复性假设</strong>：推断基于实验的假想重复性</p></td>
+<td class="text-center"><p><strong>逐步积累信息</strong>：通过结合新数据不断更新和完善假设</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>适应性</strong>：实验设计固定，不能在中途更新或调整</p></td>
+<td class="text-center"><p><strong>适应性</strong>：可以灵活调整试验设计和决策，如自适应试验</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>来源：</p>
+<blockquote>
+<div><p>Goligher, E. C., Heath, A., &amp; Harhay, M. O. (2024). Bayesian statistics for clinical research. The Lancet, 404(10457), 1067-1076.</p>
+</div></blockquote>
+<p><font size=5><strong>贝叶斯的主观性</strong></font></p>
+<ul class="simple">
+<li><p>任何统计分析方法都不可能完全客观，因此主观性是一个相对概念:</p></li>
+</ul>
+<p>1、贝叶斯学派的主观性通过先验的设定来体现，透明，不易让人产生误解</p>
+<p>2、频率学派的主观性暗含在各种<strong>前提预设</strong>中，比如方差分析中的方差齐性和正态性，这种看似‘客观的’预设，一方面难以满足，一方面也是一种主观的设定。</p>
+<p>3、更为宏观的来说，样本的抽取，数据清理方式的选择，分析方法的选择，<span class="math notranslate nohighlight">\( p \)</span>值的设定，这些都存在主观性。（例如，用作统计推断的临界P值0.05的设定是早年统计学家们的一个比较随意的论断，但后来就成为各个领域的普遍标准）因此，频率学派并没有想象的那么‘客观’。</p>
+<p>4、主观不一定是坏事：通过量化方法将个体的经验和专家知识整合到数据分析之中。</p>
+<p><font size=5><strong>重复抽样的不同作用</strong></font></p>
+<p><em><strong>频率学派</strong></em></p>
+<p>1、统计推断依赖于参数的<strong>抽样分布</strong>，即只要无限(long-run)的进行抽样，样本分布的参数就会有某种分布形式。</p>
+<p>2、零假设检验（Null Hypothesis Significance Testing，NHST）中的<span class="math notranslate nohighlight">\( p \)</span>值和置信区间的解读均依赖于“无限次抽样”的预设。（但实际上来看，无限次抽样是无法实现的，例如很多历史事件可能只会发生一次）</p>
+<p>3、实际操作中，我们往往只会收集一次数据，并不会反复的进行抽样；有些情境中，预设“无限次重复抽样并不合理</p>
+<p><em><strong>贝叶斯学派</strong></em></p>
+<p>1、假定参数本身是分布，不确定性一起存在于推断之中</p>
+<p>2、直接根据数据对先验信念进行更新</p>
+<p><strong>置信区间(confidence intervals) vs 可信区间(credible intervals)</strong></p>
+<p>——No free lunch: 各有优势和缺陷</p>
+<p>感兴趣的可以在R psychologist网站进行深入了解：<a class="reference external" href="https://rpsychologist.com/">https://rpsychologist.com/</a></p>
+<ul class="simple">
+<li><p><strong>不同的先验和似然会产生不同的后验分布</strong></p></li>
+</ul>
+<center>
+<img width = '420' height ='400' src="image-36.png">
+</center>
+<p>  从上面的图我们可以看出，中间这一列都是相同的likelihood，但由于先验（左列）不同，后验（右列）也会发生变化。因此，<strong>如何选择一个合理的先验</strong>是非常重要的，后面课程我们将详细介绍先验如何选择。</p>
+<p><strong>NHST的”弱项”</strong></p>
+<p>1、无法直接对零假设(null hypothesis)进行支持，即如果两个总体没有显著差异，他们的相似程度有多少？ (许岳培等, 2023, 应用心理学(04), 369-384)</p>
+<p>2、一次性只能对比两个总体的假设进行比较</p>
+<p>3、控制假阳性是一个棘手的问题</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter1_Bayesrule"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">频率学派如何看待这个世界？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">贝叶斯学派如何看待这个世界？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">两个学派的差异对比：频率学派 vs 贝叶斯学派</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

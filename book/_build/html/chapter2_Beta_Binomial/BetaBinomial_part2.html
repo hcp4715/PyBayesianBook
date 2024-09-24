@@ -1,0 +1,690 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Part 2: Binomial与似然 &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter2_Beta_Binomial/BetaBinomial_part2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Part 3: 后验模型" href="BetaBinomial_part3.html" />
+    <link rel="prev" title="Part 1: Beta先验" href="BetaBinomial_part1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">Why Bayesian Inference ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">Three examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">About this course</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Bayes'Rule</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">Part1_【和鲸平台】整合教学+练习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">Part2_单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">Part3_随机变量的贝叶斯模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The Beta-Binomial Bayesian Model</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part1.html">Part1_Beta先验</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Part2_Binomial与似然</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part3.html">Part3_后验模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part4.html">Part4_Beta-Binomial model and simulation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapter2_Beta_Binomial/BetaBinomial_part2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter2_Beta_Binomial/BetaBinomial_part2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Part 2: Binomial与似然</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">二项数据模型 &amp; 似然函数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">随机点运动任务中的正确率分布</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">似然函数</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="part-2-binomial">
+<h1>Part 2: Binomial与似然<a class="headerlink" href="#part-2-binomial" title="Permalink to this heading">#</a></h1>
+<section id="id1">
+<h2>二项数据模型 &amp; 似然函数<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>确定先验之后，第二步，我们需要根据收集的数据构建似然函数</p>
+<ul class="simple">
+<li><p>我们选取了 Evans 等(2020)的研究数据作为我们的案例展示，为计算方便，我们仅选取一名被试的数据，并对该被试数据进行选择以方便展示。</p></li>
+<li><p>假设该被试的数据包含 50 次试验的随机点运动任务，我们希望通过 50 次的实验来估计被试在5%一致性条件下的判断正确的能力。</p></li>
+<li><p>我们假设参与者的每一次判断是否正确是相互独立的。</p></li>
+<li><p>假设参与者的正确判断次数为 Y，我们可以做出以下假设：
+1、每次试验的正确与否是相互独立的（试验A的结果不会影响试验B，但实际实验当中会出现系列依赖效应，即前一个试次的正确性会影响后一个试次的判断，因此这个假定实际上是比较违背现实的）。
+2、每次试验参与者正确判断的概率为ACC。</p></li>
+</ul>
+<p>在这两个假设下，正确判断次数Y和正确率ACC之间的关系符合二项分布：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( Y|ACC \sim Bin(50,ACC) \)</span></p>
+</center>
+<p>在不同正确率下，出现特定正确判断次数Y的概率
+<span class="math notranslate nohighlight">\( f(y|ACC)~~y \in \)</span> { 0,1,2,…,50 }可以表示为：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( f(y|ACC)=P(Y=y|ACC)=(^{50}_y) ACC^y(1-ACC)^{50-y} \)</span></p>
+</center>
+<p>我们来进行一些具体的计算：</p>
+<ul class="simple">
+<li><p>假设ACC=0.1，那么在50次试验中，每个可能的正确判断次数<span class="math notranslate nohighlight">\( Y\in (1,2,...,50) \)</span>，而出现特定结果的概率可以表示为：</p></li>
+</ul>
+<center>
+<p><span class="math notranslate nohighlight">\( f(Y=1|π=0.1)=(^{50}_1)0.1^1(1-0.1)^{49} \)</span>
+<span class="math notranslate nohighlight">\( f(Y=2|π=0.1)=(^{50}_2)0.1^2(1-0.1)^{48} \)</span></p>
+<p>…</p>
+<p><span class="math notranslate nohighlight">\( f(Y=49|π=0.1)=(^{50}_{49})0.1^{49}(1-0.1)^1 \)</span>
+<span class="math notranslate nohighlight">\( f(Y=50|π=0.1)=(^{50}_{50})0.1^{50}(1-0.1)^0 \)</span></p>
+</center>
+<p>我们可以把这50个概率值画出来:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建一个 Binomial 分布，参数为 n=50（试验次数），p=0.1（正确率概率）</span>
+<span class="n">binom</span> <span class="o">=</span> <span class="n">pz</span><span class="o">.</span><span class="n">Binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># 绘制该分布的概率密度函数 (PDF)</span>
+<span class="n">binom</span><span class="o">.</span><span class="n">plot_pdf</span><span class="p">()</span>
+
+<span class="c1"># 移除图的上边框和右边框</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="c1"># 显示图表</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-6.png" /></p>
+</section>
+<section id="id2">
+<h2>随机点运动任务中的正确率分布<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>在随机点运动任务中，正确率描述了参与者正确判断点运动方向的概率。<strong>在不同的正确率下，参与者在50次实验中正确判断的次数Y会有不同的分布情况。</strong></p></li>
+</ul>
+<p>我们可以模拟不同的ACC，并展示每个ACC下，正确判断次数Y的分布图。</p>
+<p><em>（注：这里只展示了当正确率ACC=0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 九种情况下的分布图，但是记住ACC的取值其实是[0,1]之间的任意数，有无穷多个的）</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入必要的库</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># 设置二项分布的参数</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># 总试验次数</span>
+<span class="n">p_values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>  <span class="c1"># 不同的 p 值列表</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">51</span><span class="p">)</span>                                      <span class="c1"># 创建一个包含从0到50的整数的数组</span>
+
+<span class="c1"># 创建一个包含 &#39;Y&#39; 列的 DataFrame</span>
+<span class="n">dist_all_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="n">k</span><span class="p">})</span>
+
+<span class="c1"># 计算每个 &#39;Y&#39; 对应的概率，并将结果存储在相应列中</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">p_values</span><span class="p">:</span>
+    <span class="n">column_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">dist_all_pi</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist_all_pi</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+
+<span class="c1"># 使用 stack() 和 reset_index() 转换数据为长格式</span>
+<span class="n">melted_data</span> <span class="o">=</span> <span class="n">dist_all_pi</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">melted_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;prob&#39;</span><span class="p">]</span>
+
+<span class="c1"># 创建一个 FacetGrid 对象，用于绘制子图</span>
+<span class="n">plot_all_pi</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">melted_data</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># 使用柱状图绘制概率分布</span>
+<span class="n">plot_all_pi</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;prob&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># 设置 x 和 y 轴的刻度和范围</span>
+<span class="n">plot_all_pi</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+                <span class="n">yticks</span><span class="o">=</span><span class="p">[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span>
+                <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">))</span>
+
+<span class="c1"># 设置 y 轴标签</span>
+<span class="n">plot_all_pi</span><span class="o">.</span><span class="n">set_ylabels</span><span class="p">(</span><span class="s2">&quot;$f(y|ACC)$&quot;</span><span class="p">)</span>
+
+<span class="c1"># 设置子图的标题模板</span>
+<span class="n">plot_all_pi</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="n">col_template</span><span class="o">=</span><span class="s2">&quot;Bin(50,</span><span class="si">{col_name}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+<span class="c1"># 显示x=30的点</span>
+<span class="c1"># for ax in g.axes.flat:</span>
+<span class="c1">#     ax.scatter(x=30, y=0, color=&#39;red&#39;, marker=&#39;o&#39;, s=60)</span>
+<span class="c1"># g.show()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-7.png" /></p>
+<p>  上图可以看出，随着ACC的增大，ACC越高，正确判断次数高的情况越可能出现；相反，ACC越低，正确判断次数低的情况则更可能出现，这很符合我们的直觉。</p>
+<p>  在随机点运动任务中，假设参与者在50次试验中有30次正确（即Y=30），我们可以写出在不同正确率ACC下发生这一结果的可能性，具体公式如下：</p>
+<center>
+<p><span class="math notranslate nohighlight">\(f(Y=30|ACC=0.1)=(^{50}_{30})0.1^{30}(1-0.1)^{20}\)</span></p>
+<p><span class="math notranslate nohighlight">\(f(Y=30|ACC=0.2)=(^{50}_{30})0.2^{30}(1-0.2)^{20}\)</span></p>
+<p>……</p>
+<p><span class="math notranslate nohighlight">\(f(Y=30|ACC=0.8)=(^{50}_{30})0.8^{30}(1-0.8)^{20}\)</span></p>
+<p><span class="math notranslate nohighlight">\(f(Y=30|ACC=0.9)=(^{50}_{30})0.9^{30}(1-0.9)^{20}\)</span></p>
+</center>
+<p>我们可以<strong>仅仅关注各个正确率下，正确判断次数Y=30发生的概率（下图黑点）</strong></p>
+<p><img alt="alt text" src="../_images/image-8.png" /></p>
+<ul class="simple">
+<li><p>思考：上面的分布图中Y=30对应的可能性应当叫做概率还是似然？</p></li>
+</ul>
+<p>  大家可以发现，我们现在已经得到了一个真实的数据，即Y=30。那么对于这个Y值而言，我们计算了不同ACC条件下Y=30发生的可能性，因此我们应当称其为似然。</p>
+</section>
+<section id="id3">
+<h2>似然函数<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<p>  将这些不同正确率下Y=30发生的相对可能性组合在一起，就构成了一个关于正确率的似然函数（<span class="math notranslate nohighlight">\( L(ACC|Y=30) \)</span>）：</p>
+<center>
+<p><span class="math notranslate nohighlight">\( L(ACC|Y=30)=(^{50}_{30})ACC^{30}(1-ACC)^{20}~for~ACC\in[0,1] \)</span></p>
+</center>
+<ul class="simple">
+<li><p>随机点运动任务中的正确率：</p></li>
+</ul>
+<p>  通过绘制Y=30时，不同ACC下的相对可能性（即似然函数），我们可以观察到某个特定的ACC值最大化了这个似然函数。例如，可能在ACC=0.6时，似然函数达到了最大值，说明Y=30这一结果最有可能出现在ACC=0.6的情况下。</p>
+<p>  因此，我们可以对[0,1]之间所有ACC进行取值，并将每个ACC条件下对应的Y=30出现的概率可视化出来，最后将其绘制成一条曲线：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
+
+<span class="c1"># 定义似然函数</span>
+<span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="n">ACC</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">comb</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ACC</span><span class="o">**</span><span class="n">Y</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">ACC</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">Y</span><span class="p">))</span>
+
+<span class="c1"># 定义ACC范围在[0, 1]之间</span>
+<span class="n">ACC_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># 计算每个ACC对应的似然值</span>
+<span class="n">likelihood_values</span> <span class="o">=</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">ACC_values</span><span class="p">)</span>
+
+<span class="c1"># 设置Seaborn的绘图样式</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span> <span class="c1"># 移除图的上边框和右边框</span>
+
+<span class="c1"># 绘制似然函数，使用Seaborn的绘图功能</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">ACC_values</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">likelihood_values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Likelihood L(ACC | Y=30)&quot;</span><span class="p">)</span>
+
+<span class="c1"># 设置图表标题和标签</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;ACC&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Likelihood&quot;</span><span class="p">)</span>
+
+<span class="c1"># 在ACC=0.6处画出一条虚线</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ACC=0.6 (Max)&quot;</span><span class="p">)</span>
+
+<span class="c1"># 显示图例</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="c1"># 展示图表</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-9.png" /></p>
+<ul class="simple">
+<li><p>可以清晰地看出，当ACC=0.6时Y=30出现的可能性最大，并且Likelihood相加不太可能等于1，很容易就超过1了。</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter2_Beta_Binomial"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="BetaBinomial_part1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Part 1: Beta先验</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="BetaBinomial_part3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Part 3: 后验模型</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">二项数据模型 &amp; 似然函数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">随机点运动任务中的正确率分布</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">似然函数</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
