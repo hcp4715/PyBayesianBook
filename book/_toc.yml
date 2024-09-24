@@ -22,6 +22,17 @@ parts:
       title: Part2_单一事件的贝叶斯模型
     - file: chapter1_Bayesrule/Bayesrule_part3.md
       title: Part3_随机变量的贝叶斯模型
+  - caption: The Beta-Binomial Bayesian Model
+    numberd: True
+    chapters:
+    - file: chapter2_Beta_Binomial/BetaBinomial_part1.md
+      title: Part1_Beta先验
+    - file: chapter2_Beta_Binomial/BetaBinomial_part2.md
+      title: Part2_Binomial与似然
+    - file: chapter2_Beta_Binomial/BetaBinomial_part3.md
+      title: Part3_后验模型
+    - file: chapter2_Beta_Binomial/BetaBinomial_part4.md
+      title: Part4_Beta-Binomial model and simulation
       
 
 
