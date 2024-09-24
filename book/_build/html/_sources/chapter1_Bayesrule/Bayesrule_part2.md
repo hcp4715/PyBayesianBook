@@ -1,4 +1,4 @@
-# **<font size=23>Part 2: 单一事件的贝叶斯模型</font>**
+# Part 2: 单一事件的贝叶斯模型
 <font size=6>思考：</font>
 
 <font size=5>当你读文献时，是否有一个疑问：

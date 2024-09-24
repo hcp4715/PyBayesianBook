@@ -1,4 +1,4 @@
-# **<font size=23>Part 2: Three examples</font>**
+# Part 2: Three examples
 
 ## 1、例1 —— 社会关系地位与幸福感的关系
 <font size=3>
