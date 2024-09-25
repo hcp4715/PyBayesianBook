@@ -67,6 +67,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter1_Bayesrule/Bayesrule_part4';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Part 1: Beta先验" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html" />
+    <link rel="prev" title="Part 3: 随机变量的贝叶斯模型" href="Bayesrule_part3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -170,22 +172,23 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Intro</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">Why Bayesian Inference ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">Three examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">About this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">三个使用贝叶斯的例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Bayes'Rule</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part1.html">Part1_【和鲸平台】整合教学+练习</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part2.html">Part2_单一事件的贝叶斯模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part3.html">Part3_随机变量的贝叶斯模型</a></li>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part1.html">1.0 本课程演示平台 —— 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1.3 贝叶斯与频率主义的简单对比</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">The Beta-Binomial Bayesian Model</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">Part1_Beta先验</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">Part2_Binomial与似然</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">Part3_后验模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">Part4_Beta-Binomial model and simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布 —— Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数 —— Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
 </ul>
 
     </div>
@@ -240,7 +243,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -257,7 +260,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapter1_Bayesrule/Bayesrule_part4.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter1_Bayesrule/Bayesrule_part4.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -407,13 +410,13 @@ document.write(`
 <p>  论文中展示的一个例子是一项用于治疗严重急性呼吸窘迫综合征（ARDS）的体外膜肺氧合法（ECMO）试验，研究体外膜肺氧合法（ECMO）对严重急性呼吸窘迫综合征（ARDS）的效果。该试验的结果引发了频率学派和贝叶斯学派在同一数据下得出不同结论的讨论。</p>
 <ul class="simple">
 <li><p><font size=5><strong>频率学派</strong> </font>
-  试验原本计划招募331名患者，但因中期分析未能证明ECMO治疗具有显著益处，最终只招募了249名患者。结果显示，干预组的死亡率为35%，对照组为46%，表面上看治疗效果显著。然而，基于频率学派的统计分析，<span class="math notranslate nohighlight">\(P\)</span>值为0.09，并未达到通常的显著性水平（<span class="math notranslate nohighlight">\(p&lt;0.05\)</span>）。</p></li>
+  试验原本计划招募331名患者，但因中期分析未能证明ECMO治疗具有显著益处，最终只招募了249名患者。结果显示，干预组的死亡率为35%，对照组为46%，表面上看治疗效果显著。然而，基于频率学派的统计分析，<span class="math notranslate nohighlight">\( P \)</span>值为0.09，并未达到通常的显著性水平（<span class="math notranslate nohighlight">\( p&lt;0.05 \)</span>）。</p></li>
 </ul>
 <p>  因此研究者得出结论：试验<strong>未能提供充分证据</strong>证明早期ECMO可以显著降低死亡率。</p>
 <ul class="simple">
 <li><p><font size=5><strong>贝叶斯学派</strong> </font></p></li>
 </ul>
-<p>  通过使用不同的先验分布时，<span class="math notranslate nohighlight">\(H_1\)</span>（ECMO可以有效降低干预组死亡率）成立的后验概率在88%至99%之间。
+<p>  通过使用不同的先验分布时，<span class="math notranslate nohighlight">\( H_1 \)</span>（ECMO可以有效降低干预组死亡率）成立的后验概率在88%至99%之间。
   这意味着，贝叶斯方法提供了<strong>强有力的证据支持ECMO的效果</strong>，甚至有学者建议，ECMO方法应被认为是一种有效的治疗手段。</p>
 <section id="id1">
 <h2>频率学派如何看待这个世界？<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
@@ -422,14 +425,14 @@ document.write(`
 <li><p>值得注意的是：</p></li>
 </ul>
 <p>1、<strong>固定的假设</strong>：频率学派认为假设（通常是零假设）是一个固定的命题。例如，在试验中，频率学派的零假设是“ECMO对死亡率没有显著影响”。</p>
-<p>2、<strong>数据的随机性</strong>：在频率学派的框架下，数据被视为随机变量。通过对这些数据进行分析，频率学派关注在假设为真的前提下，观测到当前数据或更极端数据的概率，即<span class="math notranslate nohighlight">\(p\)</span>值。</p>
+<p>2、<strong>数据的随机性</strong>：在频率学派的框架下，数据被视为随机变量。通过对这些数据进行分析，频率学派关注在假设为真的前提下，观测到当前数据或更极端数据的概率，即<span class="math notranslate nohighlight">\( p \)</span>值。</p>
 <p>3、<strong>无限重复实验的假设</strong>：频率学派的推断依赖于假设实验可以无限重复进行，进而通过计算在这些重复实验中得到观测数据的频率来推断真相。因此，置信区间也是基于多次实验的频率分布。</p>
-<p>4、<strong>拒绝或接受零假设</strong>：通过计算<span class="math notranslate nohighlight">\(p\)</span>值，频率学派根据预设的显著性水平（通常为0.05）决定是否拒绝零假设。</p>
+<p>4、<strong>拒绝或接受零假设</strong>：通过计算<span class="math notranslate nohighlight">\( p \)</span>值，频率学派根据预设的显著性水平（通常为0.05）决定是否拒绝零假设。</p>
 <ul class="simple">
 <li><p>最后，频率学派如何推断出两个总体之间的差异？</p></li>
 </ul>
-<p>1、频率学派通过零假设的显著性检验(Null hypothesis significant test, NHST)来判断显著性。通过计算置信区间(confidence interval)和<span class="math notranslate nohighlight">\(p\)</span>值来帮助推断过程。</p>
-<p>2、在该临床试验中，通过<span class="math notranslate nohighlight">\(p\)</span>值（如，0.09）和置信区间来推断两个总体之间的差异。</p>
+<p>1、频率学派通过零假设的显著性检验(Null hypothesis significant test, NHST)来判断显著性。通过计算置信区间(confidence interval)和<span class="math notranslate nohighlight">\( p \)</span>值来帮助推断过程。</p>
+<p>2、在该临床试验中，通过<span class="math notranslate nohighlight">\( p \)</span>值（如，0.09）和置信区间来推断两个总体之间的差异。</p>
 </section>
 <section id="id2">
 <h2>贝叶斯学派如何看待这个世界？<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
@@ -466,13 +469,13 @@ document.write(`
 <tr class="row-odd"><td class="text-center"><p><strong>假设</strong>：假设是固定的，数据是随机的</p></td>
 <td class="text-center"><p><strong>假设</strong>：假设是随机的，数据是固定的</p></td>
 </tr>
-<tr class="row-even"><td class="text-center"><p><strong>推断方式</strong>：基于假设检验，通过<span class="math notranslate nohighlight">\(p\)</span>值判断是否拒绝零假设</p></td>
+<tr class="row-even"><td class="text-center"><p><strong>推断方式</strong>：基于假设检验，通过<span class="math notranslate nohighlight">\( p \)</span>值判断是否拒绝零假设</p></td>
 <td class="text-center"><p><strong>推断方式</strong>：通过更新先验与新数据计算后验概率</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong>置信区间</strong>：在重复试验中，95%的区间包含真实参数</p></td>
 <td class="text-center"><p><strong>可信区间</strong>：给出某参数位于区间内的概率（如95%可信度）</p></td>
 </tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(p\)</span>值</strong>：衡量在零假设下，观测数据或更极端数据的概率</p></td>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\( p \)</span>值</strong>：衡量在零假设下，观测数据或更极端数据的概率</p></td>
 <td class="text-center"><p><strong>后验概率</strong>：给出假设为真的更新概率</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong>数据独立性</strong>：推断只基于当前试验数据，不考虑先验信息</p></td>
@@ -497,12 +500,12 @@ document.write(`
 </ul>
 <p>1、贝叶斯学派的主观性通过先验的设定来体现，透明，不易让人产生误解</p>
 <p>2、频率学派的主观性暗含在各种<strong>前提预设</strong>中，比如方差分析中的方差齐性和正态性，这种看似‘客观的’预设，一方面难以满足，一方面也是一种主观的设定。</p>
-<p>3、更为宏观的来说，样本的抽取，数据清理方式的选择，分析方法的选择，<span class="math notranslate nohighlight">\(p\)</span>值的设定，这些都存在主观性。（例如，用作统计推断的临界P值0.05的设定是早年统计学家们的一个比较随意的论断，但后来就成为各个领域的普遍标准）因此，频率学派并没有想象的那么‘客观’。</p>
+<p>3、更为宏观的来说，样本的抽取，数据清理方式的选择，分析方法的选择，<span class="math notranslate nohighlight">\( p \)</span>值的设定，这些都存在主观性。（例如，用作统计推断的临界P值0.05的设定是早年统计学家们的一个比较随意的论断，但后来就成为各个领域的普遍标准）因此，频率学派并没有想象的那么‘客观’。</p>
 <p>4、主观不一定是坏事：通过量化方法将个体的经验和专家知识整合到数据分析之中。</p>
 <p><font size=5><strong>重复抽样的不同作用</strong></font></p>
 <p><em><strong>频率学派</strong></em></p>
 <p>1、统计推断依赖于参数的<strong>抽样分布</strong>，即只要无限(long-run)的进行抽样，样本分布的参数就会有某种分布形式。</p>
-<p>2、零假设检验（Null Hypothesis Significance Testing，NHST）中的<span class="math notranslate nohighlight">\(p\)</span>值和置信区间的解读均依赖于“无限次抽样”的预设。（但实际上来看，无限次抽样是无法实现的，例如很多历史事件可能只会发生一次）</p>
+<p>2、零假设检验（Null Hypothesis Significance Testing，NHST）中的<span class="math notranslate nohighlight">\( p \)</span>值和置信区间的解读均依赖于“无限次抽样”的预设。（但实际上来看，无限次抽样是无法实现的，例如很多历史事件可能只会发生一次）</p>
 <p>3、实际操作中，我们往往只会收集一次数据，并不会反复的进行抽样；有些情境中，预设“无限次重复抽样并不合理</p>
 <p><em><strong>贝叶斯学派</strong></em></p>
 <p>1、假定参数本身是分布，不确定性一起存在于推断之中</p>
@@ -554,6 +557,24 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="Bayesrule_part3.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Part 3: 随机变量的贝叶斯模型</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter2_Beta_Binomial/BetaBinomial_part1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Part 1: Beta先验</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

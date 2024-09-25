@@ -172,22 +172,23 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Intro</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">Why Bayesian Inference ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">Three examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">About this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">三个使用贝叶斯的例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Bayes'Rule</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part1.html">Part1_【和鲸平台】整合教学+练习</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Part2_单一事件的贝叶斯模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part3.html">Part3_随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part1.html">1.0 本课程演示平台 —— 和鲸平台</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">The Beta-Binomial Bayesian Model</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">Part1_Beta先验</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">Part2_Binomial与似然</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">Part3_后验模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">Part4_Beta-Binomial model and simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布 —— Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数 —— Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
 </ul>
 
     </div>
@@ -242,7 +243,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -259,7 +260,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapter1_Bayesrule/Bayesrule_part2.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter1_Bayesrule/Bayesrule_part2.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -439,10 +440,10 @@ document.write(`
 </center>
 <p>因此，根据上述所有信息，我们可以进行以下运算并对其可视化：</p>
 <ul class="simple">
-<li><p>研究<font color=#EEB4B4>可重复</font>且<font color=#87CEEB>使用确切语言</font>的概率 <span class="math notranslate nohighlight">\(P = 0.40 × 0.56 = 0.224\)</span></p></li>
-<li><p>研究<font color=#EEB4B4>可重复</font>但<font color=#FFD700>不使用确切语言</font>的概率 <span class="math notranslate nohighlight">\(P = 0.40×（1-0.56）=0.176\)</span></p></li>
-<li><p>研究<font color=#CD950C>不可重复</font>但<font color=#87CEEB>使用确切语言</font>的概率 <span class="math notranslate nohighlight">\(P = 0.60 × 0.45 = 0.27\)</span></p></li>
-<li><p>研究<font color=#CD950C>不可重复</font>且<font color=#FFD700>不使用确切语言</font>的概率 <span class="math notranslate nohighlight">\(P = 0.60 × （1-0.45）=0.33\)</span>
+<li><p>研究<font color=#EEB4B4>可重复</font>且<font color=#87CEEB>使用确切语言</font>的概率 <span class="math notranslate nohighlight">\( P = 0.40 × 0.56 = 0.224 \)</span></p></li>
+<li><p>研究<font color=#EEB4B4>可重复</font>但<font color=#FFD700>不使用确切语言</font>的概率 <span class="math notranslate nohighlight">\( P = 0.40×（1-0.56）=0.176 \)</span></p></li>
+<li><p>研究<font color=#CD950C>不可重复</font>但<font color=#87CEEB>使用确切语言</font>的概率 <span class="math notranslate nohighlight">\( P = 0.60 × 0.45 = 0.27 \)</span></p></li>
+<li><p>研究<font color=#CD950C>不可重复</font>且<font color=#FFD700>不使用确切语言</font>的概率 <span class="math notranslate nohighlight">\( P = 0.60 × （1-0.45）=0.33 \)</span>
 <img alt="alt text" src="../_images/image-4.png" /></p></li>
 </ul>
 <p><strong>因此，假如我们抽取一个文章<font color=#87CEEB>使用了确切的语言风格</font>，我们认为它<font color=#EEB4B4>可重复</font>的可能性是：
@@ -577,7 +578,7 @@ document.write(`
 <li><p><strong>基于数据对先验进行更新。</strong></p></li>
 </ul>
 <center>
-<p><span class="math notranslate nohighlight">\(Posterior=\frac {data*prior} {Average \ probability \ of \ data}\)</span></p>
+<p><span class="math notranslate nohighlight">\( Posterior=\frac {data*prior} {Average \ probability \ of \ data} \)</span></p>
 <img width = '600' height ='280' src="image-6.png">
 </center>
 <p><strong><font size=5> 2.2  先验概率（Prior probability）</strong></font></p>
@@ -589,7 +590,7 @@ document.write(`
 <ul class="simple">
 <li><p>假如一项心理学研究不能被其他研究者独立地重复出来，我们认为一个特定的事件<strong>没有发生</strong></p></li>
 </ul>
-<p>                ————我们使用符号<span class="math notranslate nohighlight">\(B^c\)</span>(B的补集complement)来表示</p>
+<p>                ————我们使用符号<span class="math notranslate nohighlight">\( B^c \)</span>(B的补集complement)来表示</p>
 <p>根据Science于2015年的文章，我们可以得以下公式：</p>
 <style>
 .center 
@@ -604,9 +605,9 @@ document.write(`
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>事件</p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(B\)</span></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(B^c\)</span></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(Total\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( B \)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( B^c \)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( Total \)</span></p></th>
 </tr>
 </thead>
 <tbody>
@@ -637,36 +638,36 @@ document.write(`
 </ul>
 <p>将数据形式化，通过条件概率来量化文章展现出语言确切的可能性。具体如下：</p>
 <ul class="simple">
-<li><p>当研究是可重复的，使用确切语言的概率大约为56%。 <span class="math notranslate nohighlight">\(P（A|B）\)</span>≈ 56%</p></li>
-<li><p>当研究不可重复的情况下，使用确切语言的概率大约为45%。 <span class="math notranslate nohighlight">\(P（A|B^c）\)</span>≈ 45%</p></li>
+<li><p>当研究是可重复的，使用确切语言的概率大约为56%。 <span class="math notranslate nohighlight">\( P（A|B） \)</span>≈ 56%</p></li>
+<li><p>当研究不可重复的情况下，使用确切语言的概率大约为45%。 <span class="math notranslate nohighlight">\( P（A|B^c） \)</span>≈ 45%</p></li>
 </ul>
 <center><img width = '700' height ='340' src="image-7.png">
 </center>
 <br>
 <p><strong><font size=4> 2.3.1  条件概率</strong></font></p>
 <p><strong>条件概率：给定某个条件下发生另一件事情的概率。</strong></p>
-<p><em>注意：条件概率的定义是有顺序的，<span class="math notranslate nohighlight">\(P(A|B)\)</span>与<span class="math notranslate nohighlight">\(P(B|A)\)</span>并不相等。</em></p>
+<p><em>注意：条件概率的定义是有顺序的，<span class="math notranslate nohighlight">\( P(A|B) \)</span>与<span class="math notranslate nohighlight">\( P(B|A) \)</span>并不相等。</em></p>
 <p>例如：</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(P(A|B)\)</span>表示在研究可重复的情况下，使用确切语言的概率（B是前提，A是结果）</p></li>
-<li><p><span class="math notranslate nohighlight">\(P(B|A)\)</span>表示的是在研究使用确切语言的情况下，该研究是可重复的概率（A是前提，B是结果）</p></li>
+<li><p><span class="math notranslate nohighlight">\( P(A|B) \)</span>表示在研究可重复的情况下，使用确切语言的概率（B是前提，A是结果）</p></li>
+<li><p><span class="math notranslate nohighlight">\( P(B|A) \)</span>表示的是在研究使用确切语言的情况下，该研究是可重复的概率（A是前提，B是结果）</p></li>
 </ul>
 <p>很多时候，人们容易混淆这两者，尤其在贝叶斯推理中。因此，<strong>清楚条件的前提和结果</strong>是很重要的。</p>
 <p><strong><font size=4> 2.3.2  似然（likelihood）</strong></font></p>
-<p>从条件概率中，我们知道 <span class="math notranslate nohighlight">\(P（A|B）= 0.56\)</span>, <span class="math notranslate nohighlight">\(P（A|B^c）\)</span>= 0.45，即使用确切语言的研究更可能是可重复的。</p>
+<p>从条件概率中，我们知道 <span class="math notranslate nohighlight">\( P（A|B）= 0.56 \)</span>, <span class="math notranslate nohighlight">\( P（A|B^c） \)</span>= 0.45，即使用确切语言的研究更可能是可重复的。</p>
 <ul class="simple">
 <li><p><strong>似然（likelihood）：描述的是在不同假设下，某个数据模式出现的可能性。</strong></p></li>
 </ul>
 <p>在这个例子中，我们比较两种假设：</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(P（A|B）\)</span>= 0.56：在可重复研究的假设下，使用确切语言的概率较高。</p></li>
-<li><p><span class="math notranslate nohighlight">\(P（A|B^c）\)</span>= 0.45：在不可重复研究的假设下，使用确切语言的概率较低。</p></li>
+<li><p><span class="math notranslate nohighlight">\( P（A|B） \)</span>= 0.56：在可重复研究的假设下，使用确切语言的概率较高。</p></li>
+<li><p><span class="math notranslate nohighlight">\( P（A|B^c） \)</span>= 0.45：在不可重复研究的假设下，使用确切语言的概率较低。</p></li>
 </ul>
 <p>因此，似然函数表明：当前数据模式（使用确切语言）在可重复的假设下更可能出现：
-<span class="math notranslate nohighlight">\(P（A|B）\)</span>= 0.56 &gt; <span class="math notranslate nohighlight">\(P（A|B^c）\)</span>= 0.45</p>
+<span class="math notranslate nohighlight">\( P（A|B） \)</span>= 0.56 &gt; <span class="math notranslate nohighlight">\( P（A|B^c） \)</span>= 0.45</p>
 <p><strong><font color=#EE3B3B>这就是似然函数(likelihood function)的核心：反映了在不同的假设（可重复或不可重复）下，某个数据 A 出现的可能性。</strong></font></p>
-<p>例如，针对“数据A：研究使用确切语言”的似然可以写成：<span class="math notranslate nohighlight">\(L(*|A)\)</span></p>
-<p>    <span class="math notranslate nohighlight">\(L(B|A) =P(A|B)\)</span>     <span class="math notranslate nohighlight">\(L(B^c|A) = P(A|B^c)\)</span></p>
+<p>例如，针对“数据A：研究使用确切语言”的似然可以写成：<span class="math notranslate nohighlight">\( L(*|A) \)</span></p>
+<p>    <span class="math notranslate nohighlight">\( L(B|A) = P(A|B) \)</span>     <span class="math notranslate nohighlight">\( L(B^c|A) = P(A|B^c) \)</span></p>
 <p>上述两个式子分别表示在“研究可重复”和“研究不可重复”两种可能的情况下，使用确切语言的概率。</p>
 <p><em>注意，在似然函数中，数据是已知发生的，而假设是可能发生的。</em>
 <br></p>
@@ -730,9 +731,9 @@ document.write(`
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>event</p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(B\)</span></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(B^c\)</span></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(total\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( B \)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( B^c \)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( total \)</span></p></th>
 </tr>
 </thead>
 <tbody>
@@ -753,18 +754,18 @@ document.write(`
 <p><strong><font size=5> 2.4  分母（normalizing constant）– 边际概率 (marginal probability)</strong></font></p>
 <p>  似然函数描述了在可重复性研究和不可重复研究中使用确切语言的情况。</p>
 <ul class="simple">
-<li><p>我们想知道的是：所有研究中使用自信语言的总体可能性是多少，这被称为<strong>边际概率 <span class="math notranslate nohighlight">\(P(A)\)</span></strong></p></li>
+<li><p>我们想知道的是：所有研究中使用自信语言的总体可能性是多少，这被称为<strong>边际概率 <span class="math notranslate nohighlight">\( P(A) \)</span></strong></p></li>
 </ul>
 <p>  我们要做的，就是把每个假设下出现事件 A 的似然与每个假设本身的概率相乘（即把每个假设自身的概念纳入考虑），这两者之和即为边际概率。</p>
 <center>
-<p><span class="math notranslate nohighlight">\(P(A)=P(A \bigcap B)+P(A \bigcap B^c)=L(B|A)*P(B)+L(B^c|A)*P(B^c)\)</span></p>
-<p><span class="math notranslate nohighlight">\(P(A)=0.56*0.4+0.45*0.6=0.494\)</span></p>
+<p><span class="math notranslate nohighlight">\( P(A)=P(A \bigcap B)+P(A \bigcap B^c)=L(B|A)*P(B)+L(B^c|A)*P(B^c) \)</span></p>
+<p><span class="math notranslate nohighlight">\( P(A)=0.56*0.4+0.45*0.6=0.494 \)</span></p>
 </center>
 <br>
 <p><strong><font size=5> 2.5  后验概率模型 (Posterior probability model via Bayes’ Rule)</strong></font></p>
 <p><strong>直觉理解</strong></p>
 <p>最后，我们来计算后事件 B 的后验概率，即，当我们知道某个研究使用了确切的语言风格之后，它能被重复的可能性是多少？</p>
-<p>我们同样通过条件概率来描述它： <span class="math notranslate nohighlight">\(P(B|A)\)</span>。</p>
+<p>我们同样通过条件概率来描述它： <span class="math notranslate nohighlight">\( P(B|A) \)</span>。</p>
 <p>在正式计算之前，我们可以回顾一下这个表格来建立一些直觉。</p>
 <style>
 .center 
@@ -779,23 +780,23 @@ document.write(`
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(B\)</span></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(B^c\)</span></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(Total\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( B \)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( B^c \)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( Total \)</span></p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(A\)</span></p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( A \)</span></p></td>
 <td class="text-center"><p>0.56 * 0.4 = 0.224</p></td>
 <td class="text-center"><p>0.45* 0.6 = 0.27</p></td>
 <td class="text-center"><p>0.494</p></td>
 </tr>
-<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(A^c\)</span></p></td>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\( A^c \)</span></p></td>
 <td class="text-center"><p>0.176</p></td>
 <td class="text-center"><p>0.33</p></td>
 <td class="text-center"><p>0.506</p></td>
 </tr>
-<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(Total\)</span></p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\( Total \)</span></p></td>
 <td class="text-center"><p>0.4</p></td>
 <td class="text-center"><p>0.6</p></td>
 <td class="text-center"><p>1.0</p></td>
@@ -804,10 +805,10 @@ document.write(`
 </table>
 </div>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(A\)</span>：表示使用确切语言的研究</p></li>
-<li><p><span class="math notranslate nohighlight">\(A^c\)</span>：表示不使用确切语言的研究</p></li>
-<li><p><span class="math notranslate nohighlight">\(B\)</span>：表示研究是可重复的</p></li>
-<li><p><span class="math notranslate nohighlight">\(B^c\)</span>：表示研究是不可重复的</p></li>
+<li><p><span class="math notranslate nohighlight">\( A \)</span>：表示使用确切语言的研究</p></li>
+<li><p><span class="math notranslate nohighlight">\( A^c \)</span>：表示不使用确切语言的研究</p></li>
+<li><p><span class="math notranslate nohighlight">\( B \)</span>：表示研究是可重复的</p></li>
+<li><p><span class="math notranslate nohighlight">\( B^c \)</span>：表示研究是不可重复的</p></li>
 </ul>
 <p>因为我们知道这项研究使用确切语言风格，所以我们直接锁定第一行，</p>
 <ul class="simple">
@@ -818,10 +819,10 @@ document.write(`
 <p><strong>正式计算</strong></p>
 <p>如何凭借贝叶斯公式的数学形式推导得到该结果？
 <font size=3>
-<span class="math notranslate nohighlight">\(Posterior \thicksim P(B|A)=\frac {data*prior} {Average \ probability \ of \ data}=\frac {P(A\bigcap B)} {P(A)}=\frac {L(B|A)*P(B)} {L(B|A)*P(B)+L(B^c|A)*P(B^c)}\)</span>
+<span class="math notranslate nohighlight">\( Posterior \thicksim P(B|A)=\frac {data*prior} {Average \ probability \ of \ data}=\frac {P(A\bigcap B)} {P(A)}=\frac {L(B|A)*P(B)} {L(B|A)*P(B)+L(B^c|A)*P(B^c)} \)</span>
 </font></p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(P(B|A)=\frac {P(B)L(B|A)} {P(A)}=\frac {0.4*0.56} {0.494}=0.453\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( P(B|A)=\frac {P(B)L(B|A)} {P(A)}=\frac {0.4*0.56} {0.494}=0.453 \)</span></p></li>
 <li><p>当带入之前计算得到的数值到贝叶斯公式中，我们得到了确切语言为可重复研究的概率。</p></li>
 </ul>
 <p>使用同样的方法，我们可以计算出使用确切语言的研究为不可重复研究的概率，结果如下表</p>
@@ -841,9 +842,9 @@ document.write(`
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>event</p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(B\)</span></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(B^c\)</span></p></th>
-<th class="head text-center"><p><span class="math notranslate nohighlight">\(Total\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( B \)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( B^c \)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\( Total \)</span></p></th>
 </tr>
 </thead>
 <tbody>
@@ -952,21 +953,21 @@ document.write(`
 <p>4、计算后验值
 还记得我们的先验概率为：</p>
 <ul class="simple">
-<li><p>可重复研究 <span class="math notranslate nohighlight">\(P(B)\)</span>=0.4</p></li>
-<li><p>不可重复性研究 <span class="math notranslate nohighlight">\(P(B^c)\)</span>=0.6</p></li>
+<li><p>可重复研究 <span class="math notranslate nohighlight">\( P(B) \)</span>=0.4</p></li>
+<li><p>不可重复性研究 <span class="math notranslate nohighlight">\( P(B^c) \)</span>=0.6</p></li>
 </ul>
 <p>由以上结果可计算似然：</p>
 <ul class="simple">
-<li><p>大约58.1%(2340/(2340+1687))的可重复性研究使用了确切语言, <span class="math notranslate nohighlight">\(P(A|B)\)</span> = 0.581</p></li>
-<li><p>44.2%的不可重复性研究使用确切语言(2643/(3330+2643)), <span class="math notranslate nohighlight">\(P(A|B^c)\)</span> = 0.442</p></li>
+<li><p>大约58.1%(2340/(2340+1687))的可重复性研究使用了确切语言, <span class="math notranslate nohighlight">\( P(A|B) \)</span> = 0.581</p></li>
+<li><p>44.2%的不可重复性研究使用确切语言(2643/(3330+2643)), <span class="math notranslate nohighlight">\( P(A|B^c) \)</span> = 0.442</p></li>
 </ul>
 <p>结合先验和似然，我们可以进一步计算分母(边际概率)：</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(L(B|A)×P(B) + L(B^c|A)×P(B^c) = 0.581×0.4 + 0.442×0.6 = 0.2324 + 0.2652 ≈ 0.498\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( L(B|A)×P(B) + L(B^c|A)×P(B^c) = 0.581×0.4 + 0.442×0.6 = 0.2324 + 0.2652 ≈ 0.498 \)</span></p></li>
 </ul>
 <p>最后，我们可以计算得到的后验（使用确切语言研究中，可重复性研究的概率）：</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(P(B|A) = L(B|A)×P(B) / P(A) = (0.581×0.4) / 0.498 ≈ 0.467\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( P(B|A) = L(B|A)×P(B) / P(A) = (0.581×0.4) / 0.498 ≈ 0.467 \)</span></p></li>
 <li><p>在10000项研究中，使用确切语言的研究有4980篇(分母)</p></li>
 <li><p>而现在，我们可以知道，在使用确切语言的研究中，47%(2340/4980)的研究为可重复研究</p></li>
 </ul>
