@@ -172,23 +172,22 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Intro</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">三个使用贝叶斯的例子</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">Why Bayesian Inference ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">Three examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">About this course</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Bayes'Rule</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台 —— 和鲸平台</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">Part1_【和鲸平台】整合教学+练习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">Part2_单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">Part3_随机变量的贝叶斯模型</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The Beta-Binomial Bayesian Model</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part1.html">2.0 先验分布 —— Beta分布</a></li>
-<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part2.html">2.1 似然函数 —— Binomial分布</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">2.2 后验分布</a></li>
-<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part1.html">Part1_Beta先验</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part2.html">Part2_Binomial与似然</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Part3_后验模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BetaBinomial_part4.html">Part4_Beta-Binomial model and simulation</a></li>
 </ul>
 
     </div>
@@ -243,7 +242,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -260,7 +259,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter2_Beta_Binomial/BetaBinomial_part3.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapter2_Beta_Binomial/BetaBinomial_part3.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -451,22 +450,22 @@ document.write(`
 <center>
 <p><span class="math notranslate nohighlight">\(P(ACC|y=30)\propto ACC^{99}(1-ACC)^{49}\)</span></p>
 </center>
-<p>根据这个公式，我们发现<span class="math notranslate nohighlight">\(P(\pi|y=30)\)</span>和<span class="math notranslate nohighlight">\(Beta(100, 50)\)</span>有着相同的形状</p>
+<p>根据这个公式，我们发现<span class="math notranslate nohighlight">\( P(π|y=30)和Beta(100,50) \)</span>有着相同的形状</p>
 <center>
-<p><span class="math notranslate nohighlight">\(Beta(100,50)=\frac{\Gamma(150)}{\Gamma(100)\Gamma(50)}\pi^{99}(1-\pi)^{49}\)</span></p>
+<p><span class="math notranslate nohighlight">\(Beta(100,50)=\frac{Γ(150)}{Γ(100)Γ(50)}π^{99}(1-π)^{49}\)</span></p>
 </center>
 <p>实际上，在这里后验分布也确实是Beta分布：</p>
 <center>
-<p><span class="math notranslate nohighlight">\(\pi|(Y=30)\sim Beta(100,50)\)</span></p>
+<p><span class="math notranslate nohighlight">\(π|(Y=30)\sim Beta(100,50)\)</span></p>
 </center>
 <p><strong>对后验模型进行总结</strong></p>
 <p>在结合先验和似然之后，我们对正确率ACC的认识发生了更新。</p>
 <ul class="simple">
-<li><p><em><strong>需要注意的是：后验模型仍然是一个<span class="math notranslate nohighlight">\(Beta\)</span>分布，和先验模型是同一个分布族。</strong></em></p></li>
+<li><p><em><strong>需要注意的是：后验模型仍然是一个<span class="math notranslate nohighlight">\( Beta \)</span>分布，和先验模型是同一个分布族。</strong></em></p></li>
 </ul>
 <center>
 <p><span class="math notranslate nohighlight">\(ACC|(Y=30)\sim Beta(100,50)\)</span></p>
-<p><span class="math notranslate nohighlight">\(f(ACC|y=30)=\frac{\Gamma(200)}{\Gamma(100)\Gamma(100)}ACC^{99}(1-ACC)^{99}\)</span></p>
+<p><span class="math notranslate nohighlight">\(f(ACC|y=30)=\frac{Γ(200)}{Γ(100)Γ(100)}ACC^{99}(1-ACC)^{99}\)</span></p>
 </center>
 <p>所以我们可以对二者进行对比，下表进行了这一总结，可以发现，在新的数据产生之后：</p>
 <p>例如：</p>
@@ -492,11 +491,11 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\alpha\)</span></p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(α\)</span></p></td>
 <td class="text-center"><p>70</p></td>
 <td class="text-center"><p>100</p></td>
 </tr>
-<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(\beta\)</span></p></td>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(β\)</span></p></td>
 <td class="text-center"><p>30</p></td>
 <td class="text-center"><p>50</p></td>
 </tr>
@@ -519,7 +518,7 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>  上表可以看出，从先验到数据更新再到后验，无论是Beta分布的参数<span class="math notranslate nohighlight">\(\alpha\)</span>和<span class="math notranslate nohighlight">\(\beta\)</span>，还是均值、众数以及方差、标准差都得到了更新。最重要的是我们发现方差实际上在变小，也就是说，得到数据前的估计存在一定的不确定性，<strong>而得到数据后，这种估计的不确定性在缩小</strong>——因为我们得到了一部分关于这个人的真实的数据。</p>
+<p>  上表可以看出，从先验到数据更新再到后验，无论是Beta分布的参数<span class="math notranslate nohighlight">\(α和β\)</span>，还是均值、众数以及方差、标准差都得到了更新。最重要的是我们发现方差实际上在变小，也就是说，得到数据前的估计存在一定的不确定性，<strong>而得到数据后，这种估计的不确定性在缩小</strong>——因为我们得到了一部分关于这个人的真实的数据。</p>
 <p><em><strong>思考🧐</strong></em></p>
 <ul class="simple">
 <li><p>先验分布的形态是否决定了后验分布的形态？(还记得之前关于正态分布和Beta分布的例子吗)</p></li>
