@@ -35,6 +35,16 @@ parts:
       title: 2.2 后验分布
     - file: chapter2_Beta_Binomial/BetaBinomial_part4.md
       title: 2.3 通过模拟可视化来观察模型
-      
+  - caption: 3. Balance and Sequentiality in Bayesian Analyses
+    numberd: True
+    chapters:
+    - file: chapter3/Lecture4_part1.md
+      title: 3.0 回顾Bayes'Rule
+    - file: chapter3/Lecture4_part2.md
+      title: 3.1 不同数据对后验的影响
+    - file: chapter3/Lecture4_part3.md
+      title: 3.2 不同似然对后验的影响
+    - file: chapter3/Lecture4_part4.md
+      title: 3.3 不同先验对后验的影响
 
 
