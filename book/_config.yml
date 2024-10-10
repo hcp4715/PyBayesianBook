@@ -3,6 +3,7 @@
 
 title: Bayesian Inference with Python
 author: Dr. Hu Chuan-Peng
+copyright: "2024"  # Copyright year to be placed in the footer
 logo: logo.png
 
 # Force re-execution of notebooks on each build.
