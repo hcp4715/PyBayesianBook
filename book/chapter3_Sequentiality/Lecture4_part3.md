@@ -120,7 +120,7 @@ plt.show()
 ***视角1：实例可视化***
 
 &emsp;&emsp;通过以下代码能够创建交互界面模拟贝叶斯学习过程：
-``` {python}
+```python
 import preliz as pz
 import matplotlib.pyplot as plt
 import numpy as np
@@ -235,7 +235,7 @@ def plot_func(
     sns.despine()
 ```
 
-``` {python}
+```python
 
 # 使用 interactive 创建界面
 interactive_plot = widgets.interactive(

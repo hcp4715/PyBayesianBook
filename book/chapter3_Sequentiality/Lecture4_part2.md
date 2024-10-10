@@ -25,7 +25,8 @@ data_subj1 = data.query('subject == 82111 & percentCoherence == 5')
 # 打印前 10 条抽取的数据
 print("被试 82111 在 5% 一致性正确率数据：", data_subj1.correct.mean())
 data_subj1.head(5)
-我们可以看到编号为“82111”的被试在253个试次中有152个试次判断为正确，5% 一致性的条件下的正确率约等于60%。
+
+# 我们可以看到编号为“82111”的被试在253个试次中有152个试次判断为正确，5% 一致性的条件下的正确率约等于60%。
 #统计 'binary' 列中各个值的出现次数
 data_subj1['correct'].value_counts()
 ```
