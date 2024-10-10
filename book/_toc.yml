@@ -38,13 +38,13 @@ parts:
   - caption: 3. Balance and Sequentiality in Bayesian Analyses
     numberd: True
     chapters:
-    - file: chapter3_Sequentiality/Lecture4_part1.md
+    - file: chapter3/Lecture4_part1.md
       title: 3.0 回顾Bayes'Rule
-    - file: chapter3_Sequentiality/Lecture4_part2.md
+    - file: chapter3/Lecture4_part2.md
       title: 3.1 不同数据对后验的影响
-    - file: chapter3_Sequentiality/Lecture4_part3.md
+    - file: chapter3/Lecture4_part3.md
       title: 3.2 不同似然对后验的影响
-    - file: chapter3_Sequentiality/Lecture4_part4.md
+    - file: chapter3/Lecture4_part4.md
       title: 3.3 不同先验对后验的影响
 
 
