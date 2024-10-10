@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Part 1: 【和鲸平台】整合教学+练习 &#8212; Bayesian Inference with Python</title>
+    <title>Lecture 4: Balance and Sequentiality in Bayesian Analyses &#8212; Bayesian Inference with Python</title>
   
   
   
@@ -62,11 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter1_Bayesrule/Bayesrule_part1';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter3/Lecture4_part1';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Part 2: 单一事件的贝叶斯模型" href="Bayesrule_part2.html" />
-    <link rel="prev" title="Part 3: About this course" href="../chapter_overview/Part3.html" />
+    <link rel="next" title="Different data, different posteriors" href="Lecture4_part2.html" />
+    <link rel="prev" title="Part 4: Beta-Binomial model and simulation" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -175,11 +175,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">1.0 本课程演示平台: 和鲸平台</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
 <ul class="nav bd-sidenav">
@@ -189,11 +189,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
 </ul>
 
     </div>
@@ -265,7 +265,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter1_Bayesrule/Bayesrule_part1.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter3/Lecture4_part1.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -295,7 +295,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/chapter1_Bayesrule/Bayesrule_part1.md" target="_blank"
+      <li><a href="../_sources/chapter3/Lecture4_part1.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -366,7 +366,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -377,11 +379,19 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Part 1: 【和鲸平台】整合教学+练习</h1>
+    <h1>Lecture 4:  Balance and Sequentiality in Bayesian Analyses</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-rule">回顾 Bayes’ Rule</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -391,21 +401,103 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="part-1">
-<h1>Part 1: 【和鲸平台】整合教学+练习<a class="headerlink" href="#part-1" title="Permalink to this heading">#</a></h1>
-<font size=4>
-本学期的贝叶斯课程将通过和鲸平台进行授课与代码练习，请大家提前注册好和鲸平台的账号。
-<p>关于和鲸平台的运行环境设置说明如下：</p>
-<p><img alt="alt text" src="../_images/image-30.png" /></p>
-<p><img alt="alt text" src="../_images/image-31.png" /></p>
-<p>更重要的是：任何问题都可以微信群或者平台里发帖提问。</p>
-<p>助教和老师会尽快回复的。</p>
-<p><img alt="alt text" src="../_images/image-32.png" /></p>
-<p><img alt="alt text" src="../_images/image-33.png" /></p>
-<p>当然，你也可以选择在gitee上进行提问。</p>
-<p>点击链接访问gitee：
-<a class="reference external" href="https://gitee.com/hcp4715/bayesian-analysis-nnupsy">https://gitee.com/hcp4715/bayesian-analysis-nnupsy</a></p>
-<p><img alt="alt text" src="../_images/image-34.png" /></p>
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-4-balance-and-sequentiality-in-bayesian-analyses">
+<h1>Lecture 4:  Balance and Sequentiality in Bayesian Analyses<a class="headerlink" href="#lecture-4-balance-and-sequentiality-in-bayesian-analyses" title="Permalink to this heading">#</a></h1>
+<p>  首先来对目前所学进行简单的课程回顾，之前实际上有实质内容的课程大概是两节。在这两节课中，我们通过几个简单的例子，帮助大家建立了对贝叶斯方法的直觉。作为一门与统计学相关的课程，我们并没有一开始就让大家陷入复杂的公式计算，而是从一个非常简单的事例开始。</p>
+<p>  这个事例是心理学研究者们最近讨论的热门话题之一，即单个事件或单个研究，这种研究通常无法重复。接着我们引入先验概率和似然的概念。</p>
+<p><strong>先验概率：</strong> 是关于一个特定的心理学实验能否被重复的可能性。</p>
+<p><strong>似然：</strong> 新信息的引入，具体来说，就是关于文章语言的信息。</p>
+<section id="bayes-rule">
+<h2>回顾 Bayes’ Rule<a class="headerlink" href="#bayes-rule" title="Permalink to this heading">#</a></h2>
+<p>  在前面的课程中，我们讨论了贝叶斯模型在处理不同类型数据时的应用，包括单一事件、离散变量和连续变量。</p>
+<ul class="simple">
+<li><p>现在我们对这些概念再次进行简要的回顾和总结：</p></li>
+</ul>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>知识点</p></th>
+<th class="head"><p>内容描述</p></th>
+<th class="head"><p>先验</p></th>
+<th class="head"><p>似然</p></th>
+<th class="head"><p>贝叶斯更新</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>单个事件</strong></p></td>
+<td><p>一个使用特定语言风格的心理学实验被成功重复出来的可能性</p></td>
+<td><p>OSC2015的结果</p></td>
+<td><p>Psych sci 2024年的研究结果</p></td>
+<td><p>可视化的方式 + 简单计算</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>离散变量</strong></p></td>
+<td><p>多次试验(多次进行重复实验)的成功率</p></td>
+<td><p>人为分配的三种成功率(0.2, 0.5, 0.8)和它们出现的可能性</p></td>
+<td><p>进行重复后的结果在<strong>三种</strong>成功率下出现的可能性</p></td>
+<td><p>简单的手动计算</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>连续变量</strong></p></td>
+<td><p>多次试验(多次进行重复实验)的成功率/正确率</p></td>
+<td><p>符合成功率/正确率(0~1)特点和先验经验的概率分布</p></td>
+<td><p>进行重复后的结果在<strong>所有</strong>成功率/正确率下出现的可能性</p></td>
+<td><p>已被证明的统计学公式</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>在<strong>第一个示例</strong>中，我们人为地将成功率设定为一个离散情况，分配了三种不同的成功率：0.2、0.5、0.8。同时，我们对每一种成功率出现的可能性进行了主观概率的分配。似然则是基于观察数据重复实验后的结果，它结合了数据和相应的概率。通过简单的手动运算，我们可以得到各种成功率的后验概率。先验概率是我们人为分配的，而通过计算，我们得到了后验概率。</p></li>
+<li><p>在<strong>第二个示例</strong>中，我们处理的是一个人为设定为离散的变量。这是一个无法直接观测的概率，只能通过数据来推断。我们通过手动计算来确定这个概率。</p></li>
+</ul>
+<p>🤔<strong>以上两节课我们学习到了什么？</strong></p>
+<ol class="arabic simple">
+<li><p>贝叶斯更新本质上类似于数数，符合人类推理的直觉。</p></li>
+<li><p>贝叶斯统计的主要作用在于将上述的直觉进行数学化，从而帮助我们在更复杂的情境中解决问题。</p></li>
+</ol>
+<blockquote>
+<div><p>对于最简单的情况，我们可以通过数数来确定可能性。但对于更复杂的情况，手动计算变得困难。贝叶斯更新的思路是，看到数据后更新我们对事件的看法或信念，这符合人类的推理直觉。
+<strong>贝叶斯更新的核心思想在于</strong>：当我们观察到新数据后，我们会更新对某个事件的看法或信念，这与人类日常推理的直觉相符合。在日常生活中，我们可能无意识地进行这样的推理，但贝叶斯统计将这种直觉数学化，使用数学和统计工具，包括编程，来解决更复杂的问题。</p>
+</div></blockquote>
+<p>  在之前的简单例子中，我们通过单个被试的数据来判断其在特定条件下判断方向的能力。然而，在真实的实验中，我们通常会有多个被试，每个被试可能在不同的时间点收集不同的数据，使得情境变得更加复杂。</p>
+<p>🔍回顾：与心理学数据的结合——<strong>随机点运动任务(random dot task)</strong></p>
+<ul class="simple">
+<li><p>随机点运动任务要求被试判断运动点的移动方向（例如，向左还是向右）。</p></li>
+<li><p>根据正确率的数据，可以使用心理物理曲线描述运动强度（点的一致性百分比）与决策正确率之间的关系。</p></li>
+</ul>
+<center>  
+    <table>  
+            <tr>  
+                <td><img src="https://cdn.kesci.com/upload/sjwnyt1yq4.gif?imageView2/0/w/400/h/400" alt=""></td>  
+                <td><img src="https://cdn.kesci.com/upload/sjzjcgwjrm.png?imageView2/0/w/400/h/400" alt=""></td>  
+            </tr>  
+            <tr>  
+                <td>一致性60%</td>  
+                <td>正确率与任务难度</td>  
+            </tr>  
+    </table>  
+</center>  
+<blockquote>
+<div><p>Shooshtari, S. V., Sadrabadi, J. E., Azizi, Z., &amp; Ebrahimpour, R. (2018). Confidence representation of perceptual decision by EEG and eye data in a random dot motion task. <em>Neuroscience</em>, 406, 510–527. <a class="reference external" href="https://doi.org/10.1016/j.neuroscience.2019.03.031">https://doi.org/10.1016/j.neuroscience.2019.03.031</a></p>
+</div></blockquote>
+<p>上一节课中，我们仅考虑了通过一名被试的数据来推断其方向判断的能力。</p>
+<ul class="simple">
+<li><p>然而，在实际的实验中，我们通常会同时收集多个被试的数据，并希望通过这些数据来推断出被试的总体方向判断能力。</p></li>
+<li><p>另一方面，上一节课仅考虑了一项研究的结果作为先验，不同研究之间的先验可能存在差异。</p></li>
+</ul>
+<p><em><strong>如下展示了不同被试在随机点任务中的正确率：</strong></em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;/home/mw/input/bayes3797/evans2020JExpPsycholLearn_exp1_full_data.csv&quot;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/evans2020JExpPsycholLearn_exp1_full_data.csv&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;被试数量：&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+<span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;subject&quot;</span><span class="p">])[[</span><span class="s2">&quot;correct&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>本节课的主要目标是加深两个关键的贝叶斯直觉：</strong></p>
+<p><strong>数据对后验的影响</strong>：我们希望强调，不同的数据会导致不同的后验信念。后验信念是我们在收集数据后更新的信念，它反映了数据对我们原有信念的影响。</p>
+<p><strong>先验对后验的影响</strong>：我们同样希望强调，不同的先验信念会导致不同的后验信念。先验信念是我们在收集数据前对某一事件的信念。</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -421,7 +513,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./chapter1_Bayesrule"
+            path: "./chapter3"
         },
         predefinedOutput: true
     }
@@ -439,20 +531,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../chapter_overview/Part3.html"
+       href="../chapter2_Beta_Binomial/BetaBinomial_part4.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Part 3: About this course</p>
+        <p class="prev-next-title">Part 4: Beta-Binomial model and simulation</p>
       </div>
     </a>
     <a class="right-next"
-       href="Bayesrule_part2.html"
+       href="Lecture4_part2.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Part 2: 单一事件的贝叶斯模型</p>
+        <p class="prev-next-title">Different data, different posteriors</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -462,6 +554,20 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-rule">回顾 Bayes’ Rule</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
