@@ -739,3 +739,6 @@ sns.despine()
 &emsp;&emsp;**认知模型能有效的弥补这一问题，比如 drift-diffusion model, DDM ([Pan et al, 2022](https://osf.io/preprints/psyarxiv/6uzga))。**
 
 <center><img width = '600' height ='320' src="image-14.png"></center>
+
+
+相关的推荐书籍: [Bayesian Cognitive Modeling: A Practical Course](https://www.amazon.com/Bayesian-Cognitive-Modeling-Practical-Course/dp/1107018455)
