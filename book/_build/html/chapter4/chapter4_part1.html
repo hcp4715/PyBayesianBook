@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Lecture 5: Bayesian Inference: From Traditional Foundations to Current Practices &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter4/chapter4_part1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Grid approximation 网格近似" href="chapter4_part2.html" />
+    <link rel="prev" title="Different priors, different posteriors" href="../chapter3/Lecture4_part4.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4_part2.html">Grid approximation 网格近似</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter4/chapter4_part1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter4/chapter4_part1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 5: Bayesian Inference: From Traditional Foundations to Current Practices</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">单一事件、离散变量和连续变量中的贝叶斯公式</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">单一事件中体现出的贝叶斯公式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">随机变量随着信息的更新 –&gt; 贝叶斯法则</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conjugate-prior">共轭先验 (Conjugate Prior)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-the-posterior">对后验的近似(Approximating the Posterior)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-5-bayesian-inference-from-traditional-foundations-to-current-practices">
+<h1>Lecture 5: Bayesian Inference: From Traditional Foundations to Current Practices<a class="headerlink" href="#lecture-5-bayesian-inference-from-traditional-foundations-to-current-practices" title="Permalink to this heading">#</a></h1>
+<p><strong>👨‍💻内容回顾</strong></p>
+<section id="id1">
+<h2>单一事件、离散变量和连续变量中的贝叶斯公式<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>知识点</p></th>
+<th class="head"><p>内容描述</p></th>
+<th class="head"><p>先验</p></th>
+<th class="head"><p>似然</p></th>
+<th class="head"><p>贝叶斯更新</p></th>
+<th class="head"><p>感兴趣的目标</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>单个事件</strong></p></td>
+<td><p>一个使用特定语言风格的心理学实验被成功重复出来的可能性</p></td>
+<td><p><a class="reference external" href="https://www.science.org/doi/10.1126/science.aac4716">OSC2015</a>的结果</p></td>
+<td><p><a class="reference external" href="https://journals.sagepub.com/doi/10.1177/09567976241254037">Herzenstein et al 2024</a>年的研究结果</p></td>
+<td><p>可视化的方式 + 简单计算</p></td>
+<td><p>下次实验的可重复性</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>离散变量</strong></p></td>
+<td><p>多次试验(多次进行重复实验)的成功率</p></td>
+<td><p>人为分配的三种成功率(0.2, 0.5, 0.8)和它们出现的可能性</p></td>
+<td><p>进行重复后的结果在<strong>三种</strong>成功率下出现的可能性</p></td>
+<td><p>简单的手动计算</p></td>
+<td><p>多次实验的可重复性</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>连续变量</strong></p></td>
+<td><p>无数次试验的成功率/正确率</p></td>
+<td><p>进行重复后的结果在<strong>所有</strong>成功率/正确率下出现的可能性</p></td>
+<td><p>进行重复后的结果在<strong>所有</strong>成功率/正确率下出现的可能性</p></td>
+<td><p>已被证明的统计学公式</p></td>
+<td><p>实验本身的可重复性</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id2">
+<h3>单一事件中体现出的贝叶斯公式<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>某个研究的可重复性与语言风格。</p></li>
+</ul>
+<p><strong>一项研究使用了确切语言（事件 B 已经发生）的心理学研究</strong>，其<strong>可重复</strong>的概率是多少？</p>
+<ul class="simple">
+<li><p>A 事件代表的是一项心理学研究是<strong>可重复的</strong></p></li>
+<li><p>事件代表的是一项心理学研究<strong>使用了确切语言</strong></p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image1.png" /></p>
+<p><img alt="alt text" src="../_images/image-1.png" /></p>
+<p><em><strong>用条件概率公式表示：</strong></em></p>
+<div class="math notranslate nohighlight">
+\[
+P(A|B) = \frac{P(A\bigcap B)}{P(B)}
+\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(P(A\bigcap B)\)</span>表示事件A和事件B同时发生的概率，即研究既是可重复的，又使用了确切语言，根据上图，这个值为0.224.</p>
+<p><span class="math notranslate nohighlight">\(P(B)\)</span>表示研究使用确切语言的总概率，表示为：</p>
+<div class="math notranslate nohighlight">
+\[
+P(B) = \frac{P(A\bigcap B)}{P(notA\bigcap B)}
+\]</div>
+<p>即，可重复且使用确切语言的概率加上不可重复但使用确切语言的概率，具体为：</p>
+<div class="math notranslate nohighlight">
+\[
+P(B) = 0.224+0.27 = 0.494
+\]</div>
+<p>代入条件概率公式：</p>
+<div class="math notranslate nohighlight">
+\[
+P(A|B)=\frac{0.224}{0.494} ≈ 0.454
+\]</div>
+<p><strong>结论</strong></p>
+<ul class="simple">
+<li><p>条件概率告诉我们，随着我们获得新的信息（如事件 B 的发生）， 我们会调整关于在这种情况下事件 A 发生的概率<span class="math notranslate nohighlight">\(P(A|B)\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+P(A|B)=\frac{P(A\bigcap B)}{P(B)}
+\]</div>
+<ul class="simple">
+<li><p>这个公式就是鼎鼎大名的<strong>贝叶斯公式</strong></p></li>
+<li><p>这正是贝叶斯定理的基础思想：<strong>我们通过结合先验信息和新观测数据，不断更新对事件发生概率的认识</strong></p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>随机变量随着信息的更新 –&gt; 贝叶斯法则<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>贝叶斯公式描述的是，给定事件 B 已经发生的情况下，事件 A 的发生概率如何调整。</p></li>
+<li><p>假如这里的A是特定模型下的一个参数(随机变量)，关于A的概率分布来自于我们的先验知识<span class="math notranslate nohighlight">\(P(A)\)</span></p></li>
+<li><p>假如这里的B是我们为了理解A的数据，根据我们模型和A的分布，可以计算似然<span class="math notranslate nohighlight">\(P(B|A)\)</span></p></li>
+<li><p>经过贝叶斯更新，我们可以得到更新的关于A的概率分布：<span class="math notranslate nohighlight">\(P(A|B)\)</span></p></li>
+</ul>
+<p>上述过程中，我们从贝叶斯公式“升级”成了利用贝叶斯法则进行推断：</p>
+<ul class="simple">
+<li><p>贝叶斯推断的核心思想：<strong>在新数据的条件下，更新我们的信念。</strong></p></li>
+<li><p>贝叶斯推断的特点：（不同的）先验与（不同的）数据之间平衡、序列性等</p></li>
+</ul>
+<p>所以：</p>
+<p>1、贝叶斯推断的本质与数数相似，符合人类的推理直觉。</p>
+<p>2、贝叶斯统计的主要作用在于将这种直觉形式化，通过数学工具帮助我们在更复杂的情境中解决问题。</p>
+<p>🤔因此，也引出一个问题：既然贝叶斯推断这么符合人的直觉，为什么我们以前在心理统计课上不教它呢？</p>
+<ul class="simple">
+<li><p>贝叶斯推断的核心在于<strong>后验分布</strong>。通过结合先验和似然，我们能够得到对未知参数的最新估计。</p></li>
+<li><p>贝叶斯推断的难点在于：<strong>如何得到后验分布？</strong></p></li>
+</ul>
+<p><strong>Beta-Binomial是如何得到后验分布的？</strong></p>
+<p>先前例子：推断编号为 “82111” 被试的正确率，观测到的数据为253 次试验数据，其中有 152 次判断正确。</p>
+<p>先验（Informative Prior），<span class="math notranslate nohighlight">\(Beta(70,30)\)</span></p>
+<p>–&gt;后验分布可以通过简单的计算得到：</p>
+<div class="math notranslate nohighlight">
+\[
+\pi|(Y=152) \sim Beta(70+152,30+101)
+\]</div>
+<p>虽然这种计算非常简洁，但问题在于：是不是所有的贝叶斯分析都如此简洁？</p>
+<p>Beta-Binomial分布计算简便的原因为：它属于共轭分布簇</p>
+</section>
+<section id="conjugate-prior">
+<h3>共轭先验 (Conjugate Prior)<a class="headerlink" href="#conjugate-prior" title="Permalink to this heading">#</a></h3>
+<p><strong>共轭先验</strong>：在贝叶斯推断中，在给定数据（似然函数）后，先验分布可以产生一个<strong>属于同一分布簇</strong>的后验分布，称该先验为共轭先验。</p>
+<p>具体来说，给定一个概率分布簇和它的参数，如果这个参数的先验分布与后验分布属于同一个分布簇，那么这个先验分布被称为该似然函数的共轭分布。</p>
+<p><strong>共轭先验的优点是：</strong></p>
+<p>1、计算简便：共轭先验使得后验分布的数学形式保持简单，易于计算。</p>
+<p>2、解释性：共轭先验有时可以提供直观的参数解释。</p>
+<p>3、封闭形式的解决方案：使用共轭先验可以使得后验分布有封闭形式的解，这对于抽样和推断非常有用。</p>
+<p>以正确率<span class="math notranslate nohighlight">\(\pi\)</span>为例，我们考虑以下情况：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi\)</span>的先验分布的概率密度函数（PDF）为<span class="math notranslate nohighlight">\(f(\pi)\)</span></p></li>
+<li><p>给定<span class="math notranslate nohighlight">\(\pi\)</span>下观测数据<span class="math notranslate nohighlight">\(Y\)</span>的似然函数为<span class="math notranslate nohighlight">\(L(\pi|Y)\)</span>的共轭先验</p></li>
+</ul>
+<p>如果后验分布的PDF<span class="math notranslate nohighlight">\(f(\pi|Y)\)</span>与先验分布属于同一模型家族，并且可以表示为：</p>
+<div class="math notranslate nohighlight">
+\[
+f(\pi|Y) \propto f(\pi)·L(\pi|Y)
+\]</div>
+<p>那么，这个先验分布<span class="math notranslate nohighlight">\(f(\pi)\)</span>就是似然函数<span class="math notranslate nohighlight">\(L(\pi|Y)\)</span>的共轭先验。</p>
+<p><strong>Beta-Binomial conjugate family</strong></p>
+<p>在lec3 与 lec4 中，我们使用了<span class="math notranslate nohighlight">\(Beta\)</span>分布来反映我们对参数<span class="math notranslate nohighlight">\(\pi\)</span>的先验认识。</p>
+<p>我们知道若先验可以用<span class="math notranslate nohighlight">\(Beta(\alpha,\beta)\)</span>
+描述，收集到的数据可以用<span class="math notranslate nohighlight">\(Bin(n,\pi)\)</span>描述，后验分布就可以用<span class="math notranslate nohighlight">\(Beta(\alpha+y,\beta+n-y)\)</span>描述。</p>
+<p><strong>非共轭先验会带来什么</strong></p>
+<p>让我们再回到随机点运动任务正确率的例子，考虑一个非共轭先验的状况</p>
+<p>假如此时的先验分布<span class="math notranslate nohighlight">\(f(\pi)\)</span>不是<span class="math notranslate nohighlight">\(Beta\)</span>分布，而是以下形式：</p>
+<div class="math notranslate nohighlight">
+\[
+f(\pi)=e-e^{\pi} for~\pi \in [0,1]
+\]</div>
+<center><img width = '470' height ='300' src="image-2.png">
+</center>
+<blockquote>
+<div><p>假设，数据为 50 次反应中有 10 次正确，那么在共轭先验<span class="math notranslate nohighlight">\(Beta(45,55)\)</span>的情况下，后验分布可以简洁地写为<span class="math notranslate nohighlight">\(Beta(55=45+10,95=55+40)\)</span>。但在共轭先验的情况下，该后验分布的结果变得很繁琐。并且在非共轭先验的情况下，我们很难从这个后验表达式中获得类似的直觉。</p>
+</div></blockquote>
+<p>此时似然函数仍是一个二项分布</p>
+<div class="math notranslate nohighlight">
+\[
+L(\pi|y=10) = (^{50}_{10})\pi^{10}(1-\pi)^{40} for~\pi \in [0,1]
+\]</div>
+<p>后验可以写成：</p>
+<div class="math notranslate nohighlight">
+\[
+f(\pi|y=10)\propto f(\pi)L(\pi|y=10) = (e-e^{\pi})·(^{50}_{10})\pi^{10}(1-\pi)^{40}
+\]</div>
+<p>加入归一化常数后：</p>
+<div class="math notranslate nohighlight">
+\[
+f(\pi|y=10)=\frac{(e-e^{\pi})\pi^{10}(1-\pi)^{40}}{\int^1_0(e-e^{\pi})\pi^{10}(1-\pi)^{40}d\pi} for~\pi\in [0,1]
+\]</div>
+<p><strong>其他共轭先验</strong></p>
+<p>除了 Beta-Binomial 和 Normal-Normal，贝叶斯推断中还有其他重要的共轭先验组合：</p>
+<p><img alt="alt text" src="../_images/image-3.png" /></p>
+<blockquote>
+<div><p>source:<a class="reference external" href="https://blog.csdn.net/weixin_55252589/article/details/135380176">https://blog.csdn.net/weixin_55252589/article/details/135380176</a></p>
+</div></blockquote>
+<p>这些共轭家族的主要优势在于，极大简化了计算。</p>
+<p>然而，在实际应用中，许多复杂的统计模型并没有简单的共轭先验。对于这些模型，计算后验分布中的分母（归一化常数）变得非常困难，甚至无法通过解析方式计算出来，如之前提到的 Beta-Binomial 在非共轭先验下的后验公式推导。</p>
+<p>因此，贝叶斯推断在很长一段时期内，被困在共轭分布的范围内，导致其相对频率主义统计而言毫无优势可言。</p>
+<p>但是计算机的出现改变了这一状况，基于数值的方法和近似的方法也能够在非共轭情况下获得后验分布，完成贝叶斯推断，这是现代贝叶斯统计获得广泛应用的<strong>前提</strong>。</p>
+<blockquote>
+<div><p>Note:在本课中，我们不对共轭先验进行进一步介绍，如果想深入了解上述内容，可访问我们去年<a class="reference external" href="https://gitee.com/hcp4715/PyBayesian/blob/master/Archive/2023/Notebooks/Lecture5.ipynb">lecture 5 的 jupyter notebook</a>以及本课件最后的附录。</p>
+</div></blockquote>
+<p>在实际应用中，我们会遇到一些问题，比如：</p>
+<ul class="simple">
+<li><p>对于连续变量，在计算边缘似然<span class="math notranslate nohighlight">\(f(y)\)</span>时需要积分，然而某些情况下(例如，先验不是似然的共轭分布)，此时积分难以或无法计算。</p></li>
+<li><p>当参数或数据维度较高时，计算边缘似然<span class="math notranslate nohighlight">\(f(y)\)</span>的难度会变得非常困难。</p></li>
+</ul>
+<p><strong>条件概率的计算</strong></p>
+<p>最初，当我们只有一个或少数几个参数时，条件概率的计算相对简单。例如，给定数据<span class="math notranslate nohighlight">\(y\)</span>，参数<span class="math notranslate nohighlight">\(θ_k\)</span>的条件概率可以表示为：</p>
+<div class="math notranslate nohighlight">
+\[
+f(θ_k|y)=\frac{f(θ_k)L(θ_k|y)}{f(y)}
+\]</div>
+<ul class="simple">
+<li><p>这里，<span class="math notranslate nohighlight">\(f(θ_k)\)</span>是参数<span class="math notranslate nohighlight">\(θ_k\)</span>的先验概率分布</p></li>
+<li><p><span class="math notranslate nohighlight">\(L(θ_k|y)\)</span>是似然函数，而<span class="math notranslate nohighlight">\(f(y)\)</span>是数据的边缘似然</p></li>
+</ul>
+<p><strong>连续变量的挑战</strong></p>
+<p>当参数<span class="math notranslate nohighlight">\(θ_k\)</span>是连续变量时，计算开始变得复杂。我们需要对<span class="math notranslate nohighlight">\(θ_k\)</span>的所有可能值进行积分来计算边缘似然<span class="math notranslate nohighlight">\(f(y)\)</span>：</p>
+<div class="math notranslate nohighlight">
+\[
+f(y)=\int f(θ_k)L(θ_k|y)dθ_k 
+\]</div>
+<ul class="simple">
+<li><p>这个积分可能已经比较难以计算，特别是当似然函数<span class="math notranslate nohighlight">\(L(θ_k|y)\)</span>的形式复杂时。</p></li>
+</ul>
+<p><strong>多个连续变量的复杂性</strong></p>
+<p>当模型包含多个连续参数<span class="math notranslate nohighlight">\(θ_1,θ_2,....,θ_k\)</span>时，计算边缘似然<span class="math notranslate nohighlight">\(f(y)\)</span>的分母变得更加复杂：</p>
+<p>挑战在于：</p>
+<ul class="simple">
+<li><p><strong>计算量增加</strong>：随着参数数量的增加，多变量积分的计算量呈指数级增长。</p></li>
+<li><p><strong>解析解难以获得</strong>：对于某些复杂的似然函数，可能不存在封闭形式的解析解，使得传统的积分方法无法直接应用。</p></li>
+<li><p><strong>数值积分的限制</strong>：即使使用数值积分方法，也可能因为维度灾难（curse of dimensionality）而面临计算上的困难，导致精度下降或计算成本过高。</p></li>
+</ul>
+</section>
+</section>
+<section id="approximating-the-posterior">
+<h2>对后验的近似(Approximating the Posterior)<a class="headerlink" href="#approximating-the-posterior" title="Permalink to this heading">#</a></h2>
+<p>“计算机的出现改变了这一状况，基于数值的方法和近似的方法也能够在非共轭情况下获得后验分布，完成贝叶斯推断，这是现代贝叶斯统计获得广泛应用的<strong>前提</strong>。”</p>
+<p>在解决计算问题时，现代方法主要分为两大类：数值方法和近似方法。</p>
+<ul class="simple">
+<li><p>数值方法通过精确的算法直接求解问题，包括迭代法、分解法等。</p></li>
+<li><p>而近似方法则通过牺牲一定的精度来换取计算效率，包括蒙特卡洛模拟、变分法、插值与拟合技术等。</p></li>
+</ul>
+<p>接下来，我们将介绍两种<strong>近似方法</strong>：</p>
+<p>1、网络近似</p>
+<p>2、马尔可夫链蒙特卡洛（MCMC）</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter3/Lecture4_part4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Different priors, different posteriors</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter4_part2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Grid approximation 网格近似</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">单一事件、离散变量和连续变量中的贝叶斯公式</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">单一事件中体现出的贝叶斯公式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">随机变量随着信息的更新 –&gt; 贝叶斯法则</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conjugate-prior">共轭先验 (Conjugate Prior)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-the-posterior">对后验的近似(Approximating the Posterior)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
