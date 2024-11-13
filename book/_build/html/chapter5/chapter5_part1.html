@@ -1,0 +1,792 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Leture6: MCMC &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter5/chapter5_part1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Metropolis-Hastings(MH)算法" href="chapter5_part2.html" />
+    <link rel="prev" title="4.1 Grid approximation 网格近似" href="../chapter4/chapter4_part2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter5/chapter5_part1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter5/chapter5_part1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Leture6: MCMC</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo-markov-chain-markov-chain-monte-carlo">Monte Carlo, Markov Chain 和 Markov Chain Monte Carlo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo">什么是 Monte Carlo ?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">后验分布模型 vs. 从后验分布采样</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-chain-monte-carlo">Markov Chain Monte Carlo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo-markov-chain">为什么 Monte Carlo 需要加上 Markov Chain？</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="leture6-mcmc">
+<h1>Leture6: MCMC<a class="headerlink" href="#leture6-mcmc" title="Permalink to this heading">#</a></h1>
+<p>在上一节课中，通过简单的 Beta-Binomial 模型中，我们已经看到 PyMC 可以帮助我们得到后验分布。</p>
+<p>且这个过程中使用了<strong>MCMC算法</strong>从后验分布中进行抽样。</p>
+<p>🤔思考：为什么MCMC算法可以得到后验分布的样本？Markov Chain Monte Carlo看起来分为两个部分，这两个部分到底是什么含义?</p>
+<section id="monte-carlo-markov-chain-markov-chain-monte-carlo">
+<h2>Monte Carlo, Markov Chain 和 Markov Chain Monte Carlo<a class="headerlink" href="#monte-carlo-markov-chain-markov-chain-monte-carlo" title="Permalink to this heading">#</a></h2>
+<section id="monte-carlo">
+<h3>什么是 Monte Carlo ?<a class="headerlink" href="#monte-carlo" title="Permalink to this heading">#</a></h3>
+<p>🤔问题：假设我们知道这个正方形的面积，想估算图中圆形的面积（但不使用圆的面积的公式），通过何种近似的方法可以怎么解决这一问题呢？</p>
+<p><img alt="alt text" src="../_images/image2.png" /></p>
+<ul class="simple">
+<li><p>思路：假设我们向这个正方形内随机抛入一些点，并且这些点落在这个空间当中的概率是均等的，那么就意味着它落在这个圆里和落在圆外的数量应当是成比例的。既然这样的话，那么落在圆里的点的数量与总数量之比，大概就是这个圆和整个正方形的面积之比。</p></li>
+</ul>
+<p><em><strong>步骤</strong></em></p>
+<p>1.随机投点：我们在一个边长为 10 英寸 的正方形区域内随机放置 20 个点。</p>
+<p>2.计算圆内的点数比例：统计这些点中有多少落在圆内，并计算这一比例。</p>
+<p>3.面积估算：根据比例，乘以正方形的面积（100 平方英寸），即可得到近似的圆面积。</p>
+<p><strong>Monte Carlo 的核心思想：</strong></p>
+<ul class="simple">
+<li><p>随机抽样：通过从某个已知的概率分布中随机抽样，估计该分布的期望或其他统计量。</p></li>
+<li><p>近似逼近：随着样本数量增加，抽样结果会逐渐逼近真实分布的统计特性。</p></li>
+</ul>
+<p><strong>Normal-Normal 模型的后验分布</strong></p>
+<p>接下来，我们使用正态模型为例进行演示。（贝叶斯中，我们使用Normal-Normal表示先验与似然都是Normal Dist）</p>
+<ul class="simple">
+<li><p>假设我们知道一个正态分布的标准差为0.75，但是其平均值<span class="math notranslate nohighlight">\(μ\)</span>是未知的，我们想通过从这个正态分布中取一个数据来估计这个正态分布的平均值<span class="math notranslate nohighlight">\(μ\)</span>的范围。</p></li>
+</ul>
+<p>1.<strong>似然模型</strong>：假设我们从一个平均值为<span class="math notranslate nohighlight">\(μ\)</span>，标准差为0.75的正态分布中获取了一个<span class="math notranslate nohighlight">\(Y=6.25\)</span>
+的数据：</p>
+<div class="math notranslate nohighlight">
+\[
+Y|\mu \sim N(\mu,0.75^2)
+\]</div>
+<p>2.<strong>先验模型</strong>：假定这个正态分布的均值是可能是从如下正态分布中取值的：</p>
+<div class="math notranslate nohighlight">
+\[
+\mu \sim N(0,1^2)
+\]</div>
+<blockquote>
+<div><p>可以简单理解为我们一开始对<span class="math notranslate nohighlight">\(\mu\)</span>的信念，在均值为0，标准差为1的正态分布中波动。</p>
+</div></blockquote>
+<p>3.<strong>后验分布</strong>：那么在<span class="math notranslate nohighlight">\(Y=6.25\)</span>的结果下，结合先验，更新后的<span class="math notranslate nohighlight">\(\mu\)</span>是怎样的呢？</p>
+<div class="math notranslate nohighlight">
+\[
+\mu|(Y=6.25) \sim N(?,?)
+\]</div>
+<p><strong>后验分布解析解</strong>：</p>
+<p>由于Normal-Normal为共轭先验，我们可以用公式直接计算出它的后验分布：</p>
+<div class="math notranslate nohighlight">
+\[
+\mu|\overrightarrow{y} \sim N(\frac{\theta \sigma^2+\overline{y}nr^2}{nr^2+\sigma^2},\frac{r^2\sigma^2}{nr^2+\sigma^2})
+\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\overline{y}\)</span>是样本的均值，即观察到的平均正确率</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma^2\)</span>是已知的正确率方差</p></li>
+<li><p><span class="math notranslate nohighlight">\(r^2\)</span>是先验的方差</p></li>
+<li><p><strong>后验均值</strong>：后验均值是先验均值<span class="math notranslate nohighlight">\(\theta\)</span>和样本均值<span class="math notranslate nohighlight">\(\overline{y}\)</span>的加权平均：</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+posterior ~ mean = \frac{0×0.75^2+6.25×1^2}{1^2+0.75^2}=4
+\]</div>
+<ul class="simple">
+<li><p><strong>后验方差</strong>：后验方差受先验方差<span class="math notranslate nohighlight">\(r^2\)</span>和样本数据的方差<span class="math notranslate nohighlight">\(\sigma^2\)</span>的共同影响：</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+posterior ~ variance=\frac{1^2×0.75^2}{1^2+0.75^2}=0.6^2
+\]</div>
+<p>因此，我们通过解析解的方式得到了更新后的<span class="math notranslate nohighlight">\(\mu\)</span>的分布为：</p>
+<div class="math notranslate nohighlight">
+\[
+\mu|(Y=6.25) \sim N(4,0.6^2)
+\]</div>
+</section>
+<section id="vs">
+<h3>后验分布模型 vs. 从后验分布采样<a class="headerlink" href="#vs" title="Permalink to this heading">#</a></h3>
+<p>💥需要区分清楚两个概念：</p>
+<p><em><strong>通过解析计算得到的后验分布模型</strong></em> 与 <em><strong>从后验分布中得到的采样结果</strong></em> 并不完全相同</p>
+<p>例如，虽然我们通过解析计算得到了后验分布的具体形式，<strong>但这并不意味着我们获得了这个<span class="math notranslate nohighlight">\(\mu\)</span>的采样</strong>。</p>
+<p>为了获得这些样本（sample），我们需要通过Monte Carlo过程采样。</p>
+<ul class="simple">
+<li><p>简单地说：我们希望得到的样本的数量与每个样本在分布模型中的可能性之间是成比例的，<strong>某个值出现的概率越大，在采样中，它出现的次数应该越多。</strong></p></li>
+<li><p>反过来说，如果我们能从某个分布中<strong>采到足够多的样本</strong>，那么我们也可以通过对这些样本的统计量进行计算，来估计这个分布本身的模型参数。这就类似于我们一开始举的例子，我们从正方形内随机采样足够多的点，那么我们就可以根据点的数量比例来估计圆的面积。</p></li>
+</ul>
+<p><strong>Monte Carlo采样与可视化</strong></p>
+<p>在现代的概率编程语言中，我们很容易进行Monte Carlo采样。例如，对于上述的正态分布<span class="math notranslate nohighlight">\(N(4,0.6^2)\)</span>，我们可以通过以下代码对这一采样过程进行可视化。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+
+<span class="n">x_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>       <span class="c1"># 设置 x 的范围为 [2,10]，总共取1000个数 </span>
+<span class="n">y_reg</span> <span class="o">=</span> <span class="mf">6.25</span> <span class="o">*</span> <span class="n">x_range</span> <span class="o">+</span> <span class="mf">0.75</span>  <span class="c1">#斜率为6.25，截距为0.75的一元线性</span>
+<span class="c1">#y_norm为一个符合正态分布的概率密度函数，均值为6.25，标准差为0.75</span>
+<span class="n">y_norm</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="mf">6.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span> 
+
+<span class="c1"># 对y_norm进行采样，得到1000个样本值</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">6.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># 显示前 10 个样本值</span>
+<span class="n">first_10_samples</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;前 10 个样本值：&quot;</span><span class="p">,</span> <span class="n">first_10_samples</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>这里显示出：前10个样本值： [7.82106053 5.84653561 5.51158156 6.38897953 7.6325137  5.08262722 6.76971937 7.50396243 7.28796121 5.31063869]</p>
+</div></blockquote>
+<p>我们观察前10个样本值，大概也是围绕6.25这个均值分布的。现在我们将它用直方图可视化出来，观察采样形成的分布和使用解析解计算得到的分布是否相似。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#  绘制图像</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="c1">#plt.plot(x,y)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="mf">6.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Normal Distribution PDF&#39;</span><span class="p">)</span>
+<span class="n">count</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">ignored</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sampled Histogram&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-18.png" /></p>
+<p>我们观察发现，二者形状大致相同，并且6.25这个位置采样的次数确实是最多的。</p>
+<p>🤔现在我们思考一个问题：是不是通过Monte Carlo采样就可以直接得到后验呢？</p>
+<p><strong>未归一化的后验分布(unnormalized posterior pdf)</strong></p>
+<p>我们在上节课讲到，在现实的数据分布中，往往模型比较复杂，导致我们进行的计算变得复杂，尤其是分母部分的归一化因子。我们需要将所有可能的参数取值情况下的likelihood的值全部求出来，这个时候就会变得很复杂。</p>
+<p>❓为什么归一化因子比较难以计算？</p>
+<p>假如归一化因子（分母）比较难以计算，是不是可以不计算？</p>
+<p><img alt="alt text" src="../_images/image2.png" /></p>
+<p>Q: 假如我们只知道上面随机点的信息，但不知道正方形的面积，我们如何估算圆的面积？</p>
+<p>A: 使用足够多的点，计算圆内点的比例</p>
+<ul class="simple">
+<li><p>对于贝叶斯推断来说，我们可能可以不用计算归一化因子，直接通过对后验分布的采样来近似得到后验分布。</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+f(\mu|y=6.25) \sim f(\mu)L(\mu|y=6.25)
+\]</div>
+<ul class="simple">
+<li><p>尽管未归一化的分布并不是真正的后验分布，但这二者的形状、集中趋势、变异性是一样的</p></li>
+<li><p>可以看到，真实的后验分布和未归一化后验分布，除了在 y 轴上的单位不一样，但他们的形状、集中趋势、变异性是一样的</p></li>
+<li><p>重要的是，两个分布中，<span class="math notranslate nohighlight">\(μ\)</span>的结果主要集中在 2-6 之间</p></li>
+</ul>
+<p>因此，当进行采样时，我们可以使用<strong>未归一化的后验分布</strong>的结果来替代计算真实的后验分布<span class="math notranslate nohighlight">\(f(\mu)\)</span></p>
+<p><img alt="alt text" src="../_images/image-2.png" /></p>
+<p>🤔思考：如何在不计算复杂归一化常数的情况下，有效地生成样本？</p>
+</section>
+</section>
+<section id="markov-chain-monte-carlo">
+<h2>Markov Chain Monte Carlo<a class="headerlink" href="#markov-chain-monte-carlo" title="Permalink to this heading">#</a></h2>
+<p>Markov Chain（马尔可夫链）即可自然地解决了未归一化的后验分布的问题。</p>
+<p>原因：</p>
+<ul class="simple">
+<li><p>每次只关注当前的状态。</p></li>
+<li><p>利用当前状态生成建议分布（proposed distribution）。</p></li>
+<li><p>判断是否接受新的状态，构建一个链条来近似后验分布。</p></li>
+</ul>
+<p>我们以一个心情变化的例子来深入理解 Markov Chain：</p>
+<ul class="simple">
+<li><p>假如不同的情绪对应一种状态，也就是参数可能的取值。</p></li>
+<li><p>那么，我们可以将不同的心情（如“冷静”、“悲伤”、“开心”）定义为 状态。这些状态中的每一个代表参数<span class="math notranslate nohighlight">\(\theta_k\)</span>的不同取值：</p></li>
+<li><p>例如，冷静是<span class="math notranslate nohighlight">\(\theta_1=0.5\)</span>; 悲伤是<span class="math notranslate nohighlight">\(\theta_2=0.3\)</span>；开心是<span class="math notranslate nohighlight">\(\theta_3=0.7\)</span>； 以此类推…..。</p></li>
+<li><p>这样，我们可以确定参数选择的范围<span class="math notranslate nohighlight">\(\theta_k \sim [0,1]\)</span>，参数是离散变量，每一个值对应一种心情。</p></li>
+<li><p>注意，我们用下标 k 来表示不同的心情以及对应的参数值。</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-35.png" /></p>
+<ul class="simple">
+<li><p><strong>状态转移</strong>：每一天我们的心情都会发生变化或者不变，代表一次采样，即一次状态的转移。</p></li>
+<li><p>长时间的跟踪这些状态，我们会得到一个马尔科夫链：{<span class="math notranslate nohighlight">\(\theta^{(1)},\theta^{(2)},.....\theta^{(n)}\)</span>}，这里n表示天数，<span class="math notranslate nohighlight">\(\theta^{(n)}\)</span>是第n天的具体心情。</p></li>
+<li><p><strong>无记忆性</strong>：无记忆性是马尔可夫链的关键特点,今天的心情（当前状态）只依赖于昨天的心情（前一状态）。</p></li>
+</ul>
+<p>例如，如果前一天是开心，那么今天继续保持开心的概率是0.5，而变为冷静或悲伤的概率均是0.25。</p>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>心情</p></th>
+<th class="head text-center"><p>开心<span class="math notranslate nohighlight">\(\theta_1^{(n-1)}\)</span></p></th>
+<th class="head text-center"><p>冷静<span class="math notranslate nohighlight">\(\theta_2^{(n-1)}\)</span></p></th>
+<th class="head text-center"><p>悲伤<span class="math notranslate nohighlight">\(\theta_3^{(n-1)}\)</span></p></th>
+<th class="head text-center"><p>…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>开心<span class="math notranslate nohighlight">\(\theta_1^{(n)}\)</span></p></td>
+<td class="text-center"><p>0.5</p></td>
+<td class="text-center"><p>0.25</p></td>
+<td class="text-center"><p>0.25</p></td>
+<td class="text-center"><p>…</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>冷静<span class="math notranslate nohighlight">\(\theta_2^{(n)}\)</span></p></td>
+<td class="text-center"><p>0.5</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p>0.5</p></td>
+<td class="text-center"><p>…</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>悲伤<span class="math notranslate nohighlight">\(\theta_3^{(n)}\)</span></p></td>
+<td class="text-center"><p>0.25</p></td>
+<td class="text-center"><p>0.25</p></td>
+<td class="text-center"><p>0.5</p></td>
+<td class="text-center"><p>…</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>解释：</p>
+<ul class="simple">
+<li><p>每一行代表当前状态影响下一状态的概率，也就是 当日心情(n)受到上一天心情(n-1)的影响。</p></li>
+<li><p>可以写成服从概率分布的形式：<span class="math notranslate nohighlight">\(choice(n) \sim Distribution(n-1)\)</span></p></li>
+</ul>
+<blockquote>
+<div><p>这里的Distribution 就是<strong>建议分布</strong>，它为第二天的心情变化提供了建议，所以被称为建议分布<span class="math notranslate nohighlight">\(q(x)\)</span>，并且根据这个分布来选择是否接受新的状态。</p>
+</div></blockquote>
+<p><em><strong>马尔可夫链的的好处：当我们运行一段时间后，会发现慢慢会稳定在某个状态，高概率的更多出现，低概率的情况更少出现。随着马尔可夫链迭代一段时间后，模型会慢慢稳定，并逐渐收敛到后验概率的真实情况</strong></em></p>
+</section>
+<section id="monte-carlo-markov-chain">
+<h2>为什么 Monte Carlo 需要加上 Markov Chain？<a class="headerlink" href="#monte-carlo-markov-chain" title="Permalink to this heading">#</a></h2>
+<p>原因：</p>
+<p>1.Monte Carlo 方法通过从目标分布中直接采样，使用大量随机样本来逼近期望值或目标概率。这种方法在低维分布中工作良好，但在高维复杂分布中直接采样变得非常困难和不现实。</p>
+<p>2.为了<strong>解决高维空间中的采样困难</strong>，MCMC 使用马尔可夫链生成样本。每次样本的生成只依赖于前一次的状态，因此构建了一个可以逐渐收敛于目标分布的链条。</p>
+<p><strong>所以，MCMC 的核心思想即</strong>：</p>
+<ul class="simple">
+<li><p>构建一个符合目标分布的马尔可夫链：</p></li>
+</ul>
+<p>每次新样本的生成依赖于前一个状态，逐步逼近目标分布。</p>
+<ul class="simple">
+<li><p>长时间采样达到平稳分布：</p></li>
+</ul>
+<p>当马尔可夫链达到稳态分布时，采样结果便可以作为目标分布的近似。</p>
+<p>尽管 MCMC 的实现方式多种多样，但所有方法的目标都是构建一个符合目标后验分布的马尔可夫链。许多 MCMC 算法，如吉布斯采样、差分进化算法 以及 PyMC 默认使用的 NUTS（No-U-Turn Sampler），都是 <strong>Metropolis-Hastings 算法</strong>的变种。</p>
+<p>我们将在本节课重点讨论 Metropolis-Hastings (MH) 算法，通过对MH算法内部原理的学习，我们能够更容易理解MCMC的工作原理，有助于在后续实践过程中发现问题和解决问题。</p>
+<ul class="simple">
+<li><p>虽然实现该算法需要计算机编程技能，而这些技能并不在本课程的范围之内（例如编写函数和 for 循环），</p></li>
+<li><p>😜ps. 即使没有学会 MH 算法的实现，也不妨碍我们通过 pymc 来实现各种 MCMC 算法</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter4/chapter4_part2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4.1 Grid approximation 网格近似</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter5_part2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Metropolis-Hastings(MH)算法</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo-markov-chain-markov-chain-monte-carlo">Monte Carlo, Markov Chain 和 Markov Chain Monte Carlo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo">什么是 Monte Carlo ?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">后验分布模型 vs. 从后验分布采样</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-chain-monte-carlo">Markov Chain Monte Carlo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monte-carlo-markov-chain">为什么 Monte Carlo 需要加上 Markov Chain？</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
