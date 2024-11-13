@@ -52,7 +52,14 @@ parts:
     - file: chapter4/chapter4_part1.md
       title: 4.0 内容回顾
     - file: chapter4/chapter4_part2.md
-      title: 4.1 网格近似法
+      title: 4.1 Grid approximation 网格近似
+  - caption: 5. Markov Chain Monte Carlo(MCMC)
+    numberd: True
+    chapters:
+    - file: chapter5/chapter5_part1.md
+      title: 5.0 Monte Carlo & Markov Chain
+    - file: chapter5/chapter5_part2.md
+      title: 5.1 Metropolis-Hastings(MH)算法
       
 
 
