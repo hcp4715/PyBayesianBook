@@ -1,0 +1,939 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Lecture8 : A Simple Linear Regression Model with PyMC &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter7/chapter7_part1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="定义先验" href="chapter7_part2.html" />
+    <link rel="prev" title="MCMC诊断" href="../chapter6/chapter6_part2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter7/chapter7_part1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter7/chapter7_part1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><center> Lecture8 : A Simple Linear Regression Model with PyMC </center></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">序言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-prioritization-effect-spe">研究示例： 自我加工优势 (Self-prioritization Effect, SPE)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">简单线性回归：使用线性模型表示两种条件下反应的差异</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">频率学派视角下的回归模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">贝叶斯视角下的回归模型</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="center-lecture8-a-simple-linear-regression-model-with-pymc-center">
+<h1><center> Lecture8 : A Simple Linear Regression Model with PyMC </center><a class="headerlink" href="#center-lecture8-a-simple-linear-regression-model-with-pymc-center" title="Permalink to this heading">#</a></h1>
+<section id="id1">
+<h2>序言<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>⭐ 在之前的课程中，我们学习了贝叶斯统计方法和使用代码实现统计模型。</p>
+<p>然而，我们并没有使用贝叶斯模型深入到真正的心理学研究当中。</p>
+<p>从本节课开始，我们将通过一个个真实的案例，带领大家进入心理学贝叶斯统计分析的世界。</p>
+</div></blockquote>
+<p>本节课我们将使用一个<strong>简单的线性回归模型</strong>，通过PyMC来建立这个模型，并走完贝叶斯分析的大部分流程。后续，我们将把这个贝叶斯模型的分解式和框架应用到<strong>更复杂的线性模型</strong>上，直至<strong>层级模型</strong>。</p>
+<p>💡希望大家开始投入更多时间进行<strong>练习</strong>，尽量搞懂课堂相关的练习部分。大作业也可以开始提前准备。因为这节课并没有涉及太多新的统计知识，包括模型，我默认大家已经有一定的了解。我们主要是在贝叶斯框架下，换一个视角来做这些熟悉的统计方法。今天，我们就从一个非常简单的线性回归模型开始。</p>
+</section>
+<section id="self-prioritization-effect-spe">
+<h2>研究示例： 自我加工优势 (Self-prioritization Effect, SPE)<a class="headerlink" href="#self-prioritization-effect-spe" title="Permalink to this heading">#</a></h2>
+<p>🤔在本节课，我们关注的研究问题是 “自我作为人类独特的心理概念，是否在也会促进认知加工的表现？”。</p>
+<p>特别地，我们关注的是自我在<strong>知觉匹配任务</strong>中的作用，<strong>探究自我和他人条件下，人们的认知加工差异，尤其是在反应时间上的表现。</strong></p>
+<ul class="simple">
+<li><p>2012年，Jie Sui开发了一个新的范式，即在实验室中让被试将原本中性的刺激与自我或他人关联，然后进行认知任务。例如，我们让被试学习三角形代表他自己，圆形代表另一个人，然后进行匹配任务。任务是判断呈现的图形和标签是否匹配，即是否符合他们刚刚学到的关系。当然，这个关系在被试之间是平衡的。</p></li>
+<li><p>通过这个实验，我们可以在一定程度上<strong>消除自我熟悉性</strong>的影响。因为在日常生活中，我们对自己相关信息肯定更加熟悉。所以当我们在实验室中及时习得这种自我相关性时，相对来说是更好的数据控制。</p></li>
+<li><p>通过这个实验，我们基本上能够发现，当一个原本中性的刺激与自我关联后，被试在进行匹配任务时会有更快更准的反应。</p></li>
+</ul>
+<blockquote>
+<div><p>探究自我加工的优势通畅使用匹配范式任务中“自我（self）”和“他人（other）”的认知匹配之间的关系 (Sui et al., 2012)。</p>
+<ul class="simple">
+<li><p>在自我匹配任务中，被试首先学习几何图形和身份标签的关系。例如，三角形代表自我；圆形代表他人。在随后的知觉匹配判断任务中，需要判断所呈现的几何图形和文字标签是否与之前学习的关系相匹配。</p></li>
+<li><p>想象一下你在完成自我匹配任务时，面对不同的刺激：有时你可能会觉得某个“自我”相关的图像比“他人”相关的更具吸引力，或许这反映了你对自己本身具有更多的关注。</p></li>
+</ul>
+</div></blockquote>
+<p><img alt="alt text" src="../_images/img1.png" /></p>
+<blockquote>
+<div><p>Sui, J., He, X., &amp; Humphreys, G. W. (2012). Perceptual effects of social salience: Evidence from self-prioritization effects on perceptual matching. Journal of Experimental Psychology: Human Perception and Performance, 38(5), 1105–1117. <a class="reference external" href="https://doi.org/10.1037/a0029792">https://doi.org/10.1037/a0029792</a></p>
+</div></blockquote>
+<p>根据Sui等（2012）的文章，我们假设，<strong>在“自我”条件下，个体的反应时间会快于在“他人”条件下的反应时间。</strong> 那么在贝叶斯的框架下，我们应该如何解决我们的研究问题以及验证我们的研究假设是否正确呢？</p>
+<p><img alt="alt text" src="../_images/img2.png" /></p>
+<p>在本节课中，我们将学习如何使用大家所熟悉的简单线性模型 (linear regression model) 来检验心理学效应。</p>
+<p>包括以下内容：</p>
+<ol class="arabic simple">
+<li><p><strong>简单线性模型</strong></p></li>
+<li><p><strong>先验预测检验</strong></p></li>
+<li><p>模型拟合和诊断</p></li>
+<li><p>后验推理</p></li>
+<li><p><strong>模型检验 (后验预测检验)</strong></p></li>
+</ol>
+<p>在<strong>传统统计学</strong>中，研究问题通常转化为<strong>假设检验</strong>问题。配对样本t检验是解决此类问题的一个常用方法，但它实际上是回归分析的一个特例。本节内容将阐述<strong>从研究问题的明确到数据收集后，如何选择合适的统计模型，以及如何构建似然函数</strong>。在<strong>贝叶斯分析</strong>中，除了似然函数，还需考虑先验分布。</p>
+<p><strong>实验预测检验</strong>是实验设计后验证模型适宜性的关键步骤。</p>
+<ul class="simple">
+<li><p>若模型适宜，将采用MCMC方法进行推断，以获得后验分布。随后，评估MCMC结果的合理性，并进一步评估模型的预测效果，以确保模型的可用性。本节将通过一个简单的线性回归模型，演示<strong>从模型构建到基于后验分布的统计推断的完整流程</strong>，并展示代码实现方法。这包括线性模型的构建、先验预测检验、模型拟合与诊断、后验检验等步骤，旨在确保推断的严谨性。</p></li>
+</ul>
+<div style="padding-bottom: 20px;"></div>
+<p>我们使用的数据来自于Kolvoort等人（2020），该数据集包含了多个被试在自我匹配范式下的行为数据。数据集涉及了不同年龄、性别、文化背景的健康成年被试。</p>
+<p>数据可在和鲸平台及Gitee平台上获取。在Python环境中，利用pandas库读取数据。本研究关注的自变量是标签（label），用以区分实验条件是自我相关还是他人相关。因变量为反应时间（RT），单位为秒。每条数据记录代表一个试验（trial）。在认知实验中，每位受试者在每个条件下需完成多次试验，可能是50次、60次甚至超过100次。每行数据代表单个试验中的一个观测值。</p>
+<ul class="simple">
+<li><p>我们使用 <code class="docutils literal notranslate"><span class="pre">pandas</span></code> 的 <code class="docutils literal notranslate"><span class="pre">read_csv</span></code> 方法来读取数据 <code class="docutils literal notranslate"><span class="pre">Kolvoort_2020_HBM_Exp1_Clean.csv</span></code> (数据已经预先存放在和鲸平台中)。</p></li>
+<li><p>数据包含多个变量，选择我们需要的<code class="docutils literal notranslate"><span class="pre">Label</span></code> 表示标签（self / other），<code class="docutils literal notranslate"><span class="pre">RT_sec</span></code> 表示被试的反应时间。</p></li>
+<li><p>每一行(index)表示一个trial数。</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>数据来源: Kolvoort, I. R., Wainio‐Theberge, S., Wolff, A., &amp; Northoff, G. (2020). Temporal integration as “common currency” of brain and self‐scale‐free activity in resting‐state EEG correlates with temporal delay effects on self‐relatedness. Human brain mapping, 41(15), 4355-4374.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入 pymc 模型包，和 arviz 等分析工具 </span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># 忽略不必要的警告</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="c1"># 通过 pd.read_csv 加载数据 Kolvoort_2020_HBM_Exp1_Clean.csv</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/mw/input/bayes3797/Kolvoort_2020_HBM_Exp1_Clean.csv&#39;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;2024/data/Kolvoort_2020_HBM_Exp1_Clean.csv&#39;</span><span class="p">)</span>
+
+<span class="n">df_raw</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</pre></div>
+</div>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Subject</th>
+      <th>Age</th>
+      <th>Handedness</th>
+      <th>First_Language</th>
+      <th>Education</th>
+      <th>Countryself</th>
+      <th>Countryparents</th>
+      <th>Shape</th>
+      <th>Label</th>
+      <th>Matching</th>
+      <th>Response</th>
+      <th>RT_ms</th>
+      <th>RT_sec</th>
+      <th>ACC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>201</td>
+      <td>18</td>
+      <td>r</td>
+      <td>English/Farsi</td>
+      <td>High School</td>
+      <td>Iran/Canada</td>
+      <td>Iran</td>
+      <td>3</td>
+      <td>2</td>
+      <td>Matching</td>
+      <td>1</td>
+      <td>753</td>
+      <td>0.753</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>201</td>
+      <td>18</td>
+      <td>r</td>
+      <td>English/Farsi</td>
+      <td>High School</td>
+      <td>Iran/Canada</td>
+      <td>Iran</td>
+      <td>3</td>
+      <td>2</td>
+      <td>Matching</td>
+      <td>1</td>
+      <td>818</td>
+      <td>0.818</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>201</td>
+      <td>18</td>
+      <td>r</td>
+      <td>English/Farsi</td>
+      <td>High School</td>
+      <td>Iran/Canada</td>
+      <td>Iran</td>
+      <td>1</td>
+      <td>3</td>
+      <td>Matching</td>
+      <td>1</td>
+      <td>917</td>
+      <td>0.917</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>201</td>
+      <td>18</td>
+      <td>r</td>
+      <td>English/Farsi</td>
+      <td>High School</td>
+      <td>Iran/Canada</td>
+      <td>Iran</td>
+      <td>3</td>
+      <td>2</td>
+      <td>Matching</td>
+      <td>1</td>
+      <td>717</td>
+      <td>0.717</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>201</td>
+      <td>18</td>
+      <td>r</td>
+      <td>English/Farsi</td>
+      <td>High School</td>
+      <td>Iran/Canada</td>
+      <td>Iran</td>
+      <td>3</td>
+      <td>2</td>
+      <td>Matching</td>
+      <td>1</td>
+      <td>988</td>
+      <td>0.988</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p>在Jupyter Notebook中进行数据分析的初步步骤包括挂载所需数据并读取。通过查看数据的前五行，我们可以初步了解数据结构，包括被试的标签和年龄等信息，尽管这些信息在当前分析中并非关注重点。我们的核心关注点是反应时间（RT）及其毫秒值，以及准确率，尽管现阶段我们主要关注RT和与之相关的标签（label）。</p></li>
+<li><p>为了简化演示过程，我们将选取单个被试在特定条件下（例如匹配条件）的数据。这样做的目的是为了使模型尽可能简化，便于理解和演示。接下来，我们将对label的含义进行详细说明，并展示如何从简化的数据集中提取和分析关键信息：</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 筛选出被试&quot;201&quot;，匹配类型为&quot;Matching&quot;的数据</span>
+<span class="n">df_raw</span><span class="p">[</span><span class="s2">&quot;Subject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s2">&quot;Subject&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[(</span><span class="n">df_raw</span><span class="p">[</span><span class="s2">&quot;Subject&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;201&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s2">&quot;Matching&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Matching&quot;</span><span class="p">)]</span>
+
+<span class="c1"># 选择需要的两列</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Label&quot;</span><span class="p">,</span> <span class="s2">&quot;RT_sec&quot;</span><span class="p">]]</span>
+
+<span class="c1"># 重新编码标签（Label）</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="c1"># #设置索引</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+
+<span class="c1"># 显示部分数据</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image3.png" /></p>
+<ul class="simple">
+<li><p>在最终的模型构建中，我们将关注两个核心变量：<strong>标签（label）<strong>和</strong>反应时间（second）</strong>，即以秒为单位的RT。基于这两个变量，我们将建立一个简洁的回归模型。</p></li>
+<li><p>在正式进行模型构建之前，我们建议先进行<strong>数据的可视化</strong>———这有助于直观理解数据分布和潜在的模式，为后续的模型分析提供直观的依据。</p></li>
+</ul>
+<p>进一步可视化数据情况：</p>
+<ul class="simple">
+<li><p>我们使用 <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> 的 <code class="docutils literal notranslate"><span class="pre">boxplot</span></code> 方法来进行可视化。</p></li>
+<li><p>其中横轴为Label <code class="docutils literal notranslate"><span class="pre">x=&quot;Label&quot;</span></code>，纵轴为反应时间 <code class="docutils literal notranslate"><span class="pre">y=&quot;RT_sec&quot;</span></code>。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># 计算每个Label条件下的均值</span>
+<span class="n">mean_values</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Label&#39;</span><span class="p">)[</span><span class="s1">&#39;RT_sec&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># 使用 seaborn 绘制箱线图，展示 Matching 条件下反应时间的分布情况</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Label&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;RT_sec&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mean_values</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">mean_values</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 移除上面和右边的边框</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="c1"># 添加标签</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Label Condition (0=self, 1=other)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Reaction Time (sec)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/img3.png" /></p>
+<blockquote>
+<div><p>💡<strong>强烈推荐大家进行数据可视化：</strong></p>
+<ul class="simple">
+<li><p><strong>可视化允许我们直接观察原始数据，而不是立即进行统计分析</strong>。直接跳过数据探索阶段而进入分析是不恰当的，因为即使统计结果相似，数据的实际模式也可能截然不同。例如，即使相关系数保持不变，数据的图形表示可能会有显著差异，这强调了可视化的重要性，以确保所选统计模型的合理性。</p></li>
+<li><p><strong>对于特定的数据集，可视化揭示了常见的反应时间特征</strong>。在实验室条件下，被试的反应时间通常在一秒以内，大约在0.6到0.7秒之间，并且存在超过一秒的分布。此外，数据还显示出自我优势效应的趋势，即在自我条件下的反应时间相对较短。这种可视化使我们能够识别数据中潜在的趋势。
+然而，仅仅识别趋势是不够的。当我们绘制所有单个试验的数据时，会发现数据之间存在重叠，这使得我们无法立即确定一个条件是否总是优于另一个条件。<strong>这种数据重叠强调了进行严格统计检验的必要性</strong>，以确定不同条件之间是否存在显著差异。统计检验在这里至关重要，因为它帮助我们超越直观观察，量化参数之间的差异，从而做出更准确的推断。</p></li>
+<li><p>在数据分析的过程中，我们经常会遇到一个误区，即认为只有通过统计分析才能做出推断。然而，实际情况并非总是如此。在某些情况下，纯描述性的数据已经足够明显，以至于我们可以直接从中得出结论，无需进行复杂的统计分析。<strong>当数据差异显著到肉眼即可辨识时，统计分析可能变得多余</strong>。</p></li>
+<li><p>统计分析的真正价值在于，当我们的直观观察无法达成共识，或者需要更深入地了解数据背后的参数差异时，它提供了一种量化的方法。在这种情况下，统计分析成为揭示数据背后差异的重要工具。此外，<strong>统计结果的应用通常有两个目的：支持理论发展或辅助决策制定。</strong></p></li>
+<li><p>在实际应用场景中，例如心理健康领域，有时简单的观察就足以判断干预措施的效果，无需进行AB test或统计分析。当决策目标明确，且数据变化明显时，原始数据本身就可能提供足够的信息，使得统计判断变得不必要。</p></li>
+</ul>
+<p>💡因此，这里有两个重要的注意事项需要强调：</p>
+<ul class="simple">
+<li><p>在进行数据分析之前，一定要看<strong>原始数据</strong>。不应盲目地应用标准流程，而忽视了对数据本身的理解，这种做法是机械且缺乏洞察力的。</p></li>
+<li><p>认识到统计分析<strong>并非在所有情况下都是必需的</strong>。在许多情况下，我们可以直接从数据中推断出结论，而无需依赖统计方法。</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id2">
+<h2>简单线性回归：使用线性模型表示两种条件下反应的差异<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<section id="id3">
+<h3>频率学派视角下的回归模型<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<p>让我们先回顾在传统频率学派的视角下，回归模型的建立和检验一般基于参数估计和假设检验：</p>
+<ol class="arabic simple">
+<li><p><strong>构建模型</strong>：我们可以使用一个简单线性回归模型，其中反应时间（RT_sec）作为因变量，自变量为二分离散变量（Label）。我们可以将 <code class="docutils literal notranslate"><span class="pre">self</span></code> 编码为 0，<code class="docutils literal notranslate"><span class="pre">other</span></code> 编码为 1，这样模型将估计出“自我”条件相较于“他人”条件在反应时间上的效应。</p></li>
+</ol>
+<p>模型形式为：</p>
+<div class="math notranslate nohighlight">
+\[  
+   RT_{sec} = \beta_0 + \beta_1 \cdot Label + \epsilon  
+\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(\beta_0\)</span> 表示“self”条件下的平均反应时间，<span class="math notranslate nohighlight">\(\beta_1\)</span> 表示other条件下相较于self条件的反应时间差异。</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>假设检验</strong>：在该模型中，<span class="math notranslate nohighlight">\(\beta_1\)</span> 的显著性可以用 t 检验来判断。如果 <span class="math notranslate nohighlight">\(\beta_1\)</span> 显著不为 0（例如 <span class="math notranslate nohighlight">\(p &lt; 0.05\)</span>），则说明自我条件下的反应时间显著不同于他人条件，即存在自我加工的优势。</p></li>
+<li><p><strong>模型解释</strong>：若 <span class="math notranslate nohighlight">\(\beta_1\)</span> 为负值，则表明自我条件的反应时间较短，暗示自我加工速度较快。</p></li>
+</ol>
+</section>
+<section id="id4">
+<h3>贝叶斯视角下的回归模型<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<p>在贝叶斯视角下，回归模型的建立和检验不同于传统的假设检验，而是通过对参数的后验分布进行推断：</p>
+<ol class="arabic simple">
+<li><p><strong>构建贝叶斯模型</strong>：贝叶斯模型和频率学派的回归模型形式相同，但其参数估计基于贝叶斯推断。我们会为 <span class="math notranslate nohighlight">\(\beta_0\)</span> 和 <span class="math notranslate nohighlight">\(\beta_1\)</span> 指定先验分布（例如，正态分布），并结合观测数据计算其后验分布：</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[  
+RT_{sec} \sim \mathcal{N}(\beta_0 + \beta_1 \cdot Label, \sigma^2)  
+\]</div>
+<ol class="arabic simple">
+<li><p><strong>计算后验分布</strong>：使用贝叶斯推断方法（如 MCMC 采样）得到 <span class="math notranslate nohighlight">\(\beta_1\)</span> 的后验分布。</p></li>
+<li><p><strong>显著性检验</strong>：通过后验分布检验 <span class="math notranslate nohighlight">\(\beta_1\)</span> 是否显著，例如计算 <span class="math notranslate nohighlight">\(\beta_1 &gt; 0\)</span> 或 <span class="math notranslate nohighlight">\(\beta_1 &lt; 0\)</span> 的概率，或计算最高密度区间（HDI）。如果 95% HDI 不包含 0，可以认为自我条件和他人条件在反应时间上的差异是显著的。</p></li>
+<li><p><strong>模型解释</strong>：在贝叶斯框架下，我们不仅可以观察参数的点估计（如 <span class="math notranslate nohighlight">\(\beta_1\)</span> 的均值），还可以通过后验分布和 HDI 提供更加直观的置信水平解释。</p></li>
+</ol>
+<p><em><strong>频率主义和贝叶斯主义中回归模型的差异</strong></em></p>
+<ul class="simple">
+<li><p>在前面，我们讨论了频率主义（经典统计）视角下的回归模型。在贝叶斯回归中，基本思路一致，但表达形式有所不同。在频率主义框架下，模型包含一个误差项，用于解释数据的变异性。</p></li>
+<li><p>回归模型的核心任务是对数据的均值进行预测。当<span class="math notranslate nohighlight">\(X\)</span>取某一具体值时，我们假定目标变量<span class="math notranslate nohighlight">\(Y\)</span>来源于某个正态分布。该分布的均值由线性模型确定，即通过自变量的线性组合计算得到；而贝叶斯框架仅是换一种方式描述相同的问题。需要注意的是，传统线性回归假设残差（误差项）服从正态分布，这是理论成立的重要前提条件。这一假设确保通过线性组合预测的均值具有合理性。</p></li>
+</ul>
+<p><strong>⭐贝叶斯回归模型的可视化表达</strong></p>
+<ul class="simple">
+<li><p><span style = "color: orange;">预测值</span> <span class="math notranslate nohighlight">\(\mu_i\)</span>(即直线上橙色的点)可以写为：<span class="math notranslate nohighlight">\(\mu_i = \beta_0 + \beta_1 X_i(1)\)</span></p></li>
+<li><p>从图上可以看到<span style = "color: orange;">预测值</span>和<span style = "color: gray;">实际值</span> (即灰色的散点)之间存在出入，实际值会在预测值附近波动</p></li>
+<li><p>那么实际值可以看作服从以<span class="math notranslate nohighlight">\(\mu_i\)</span>为均值，标准差为<span class="math notranslate nohighlight">\(\sigma\)</span>的正态分布，即：<span class="math notranslate nohighlight">\(Y_i \sim N(\mu_i, \sigma ^ 2)\)</span></p></li>
+</ul>
+<p><img alt="alt text" src="../_images/img5.png" /></p>
+<p><em>(改编自：<a class="reference external" href="https://saylordotorg.github.io/text_introductory-statistics/s14-03-modelling-linear-relationships.html">https://saylordotorg.github.io/text_introductory-statistics/s14-03-modelling-linear-relationships.html</a>)</em></p>
+<br>
+<p>对于<span class="math notranslate nohighlight">\(X_0\)</span>和<span class="math notranslate nohighlight">\(X_1\)</span>，我们预测的是什么？实际上是预测在某个特定条件下<span class="math notranslate nohighlight">\(Y\)</span>的均值。当<span class="math notranslate nohighlight">\(X=1\)</span>时，我们预测的是<span class="math notranslate nohighlight">\(Y\)</span>的均值。以这个均值为中心，数据呈正态分布，并在均值上下波动。</p>
+<p>在这种情况下，我们可以预测不同条件下的均值。例如，假设有两个条件<span class="math notranslate nohighlight">\(i=1\)</span>和<span class="math notranslate nohighlight">\(i=2\)</span>，分别对应两个均值<span class="math notranslate nohighlight">\(μ_1\)</span>和<span class="math notranslate nohighlight">\(μ_2\)</span>。每个均值都对应一个正态分布，数据围绕其均值波动。</p>
+<p><strong>回到<span class="xref myst">贝叶斯视角下的回归模型</span>，我们实际上是将传统建模方式应用到贝叶斯框架中，构建一个简单的回归模型，即基于正态分布的回归模型</strong>。这被称为简单回归模型，因为它仅涉及一个正态分布，用以描述因变量的分布特性。</p>
+<p>在贝叶斯框架下构建回归模型的流程如下：</p>
+<blockquote>
+<div><p>1.根据数据特点（包括因变量和自变量），结合经验判断，选择适合的模型。
+2.对模型参数设置先验分布和似然函数。
+3.利用概率编程语言计算后验分布。</p>
+</div></blockquote>
+<p>通过后验分布，我们可以进行统计推断。虽然贝叶斯方法中没有传统的“显著性检验”，但我们可以使用<strong>后验分布的最高密度区间（HDI）和区域等同于零（ROPE）来推断参数是否显著</strong>：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>如果后验分布与 ROPE 完全不重叠，则可认为参数显著（不等于 0）。</p></li>
+<li><p>类似于传统统计中对显著性的解释。</p></li>
+</ul>
+</div></blockquote>
+<p>此外，还可以根据后验分布计算效应量，或利用贝叶斯因子进行统计推断。关于贝叶斯因子的计算，我们将在下一节详细讲解，补充 HDI 之外的推断方法。</p>
+<div style="padding-bottom: 20px;"></div>
+<p><strong>贝叶斯回归模型的数学表达式</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}  
+\begin{align*}  
+\beta_0   &amp;\sim N\left(m_0, s_0^2 \right)  \\  
+\beta_1   &amp;\sim N\left(m_1, s_1^2 \right)  \\  
+\sigma    &amp;\sim \text{Exp}(\lambda)        \\  
+&amp;\Downarrow \\  
+\mu_i &amp;= \beta_0 + \beta_1 X_i      \\  
+&amp;\Downarrow \\  
+Y_i | \beta_0, \beta_1, \sigma &amp;\stackrel{ind}{\sim} N\left(\mu_i, \sigma^2\right). \\  
+\end{align*}  
+\end{split}\]</div>
+<ul class="simple">
+<li><p>回归模型需满足如下假设：</p>
+<ol class="arabic simple">
+<li><p><strong>独立观测假设</strong>:每个观测值<span class="math notranslate nohighlight">\(Y_i\)</span>是相互独立的，即一个被试的反应时间不受其他被试的影响。</p></li>
+<li><p><strong>线性关系假设</strong>: 预测值<span class="math notranslate nohighlight">\(\mu_i\)</span>和自变量<span class="math notranslate nohighlight">\(X_i\)</span>之间可以用线性关系来描述，即：<span class="math notranslate nohighlight">\(\mu_i = \beta_0 + \beta_1 X_i\)</span></p></li>
+<li><p><strong>方差同质性假设</strong>： 在任意自变量的取值下，观测值<span class="math notranslate nohighlight">\(Y_i\)</span>都会以<span class="math notranslate nohighlight">\(\mu_i\)</span>为中心，同样的标准差<span class="math notranslate nohighlight">\(\sigma\)</span>呈正态分布变化（<span class="math notranslate nohighlight">\(\sigma\)</span> is consistent）</p></li>
+</ol>
+</li>
+</ul>
+<p><strong>表达式讲解：</strong>
+在这个回归模型中，正态分布有三个参数：<span class="math notranslate nohighlight">\(β_0\)</span>、<span class="math notranslate nohighlight">\(β_1\)</span>和<span class="math notranslate nohighlight">\(σ\)</span>。每一个观测值<span class="math notranslate nohighlight">\(Y_i\)</span>都是从其对应的正态分布中采样而来，这里的<span class="math notranslate nohighlight">\(i\)</span>对应不同的<span class="math notranslate nohighlight">\(X\)</span>取值。在我们的模型中，只有两个条件<span class="math notranslate nohighlight">\(X_0\)</span>和<span class="math notranslate nohighlight">\(X_1\)</span>，每个条件对应一个正态分布。由于有三个参数，因此在进行贝叶斯分析时，需要为这些参数指定先验分布。一旦确定了先验分布和似然函数（模型的定义），我们就可以进行后续的贝叶斯推断。</p>
+<p>回归模型的假设与传统模型类似。首先，假设观测值<span class="math notranslate nohighlight">\(Y_i\)</span>是独立的，即每个观测值都不受其他观测值的影响。其次，模型假定误差项服从正态分布，并且遵循方差同质性假设，即所有条件下的<span class="math notranslate nohighlight">\(σ\)</span>相同（没有下角标标记）。</p>
+<p>然而，贝叶斯模型的<strong>灵活性</strong>使得我们可以进一步扩展这个假设。例如，我们可以为每个条件的方差<span class="math notranslate nohighlight">\(σ\)</span>添加下角标，以允许其在不同条件下变化。这种灵活性正是贝叶斯模型的一个显著特点，允许我们在建模过程中根据数据的特点进行更为精细的调整。</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter7"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter6/chapter6_part2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">MCMC诊断</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter7_part2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">定义先验</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">序言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-prioritization-effect-spe">研究示例： 自我加工优势 (Self-prioritization Effect, SPE)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">简单线性回归：使用线性模型表示两种条件下反应的差异</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">频率学派视角下的回归模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">贝叶斯视角下的回归模型</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

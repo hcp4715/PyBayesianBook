@@ -60,7 +60,22 @@ parts:
       title: 5.0 Monte Carlo & Markov Chain
     - file: chapter5/chapter5_part2.md
       title: 5.1 Metropolis-Hastings(MH)算法
-      
+  - caption: 6. Posterior Inference & Estimation
+    numberd: True
+    chapters:
+    - file: chapter6/chapter6_part1.md
+      title: 6.0 A Beta-Binomial example in pymc
+    - file: chapter6/chapter6_part2.md
+      title: 6.1 MCMC诊断
+  - caption: 7. A Simple Linear Regression Model with PyMC
+    numberd: True
+    chapters:
+    - file: chapter7/chapter7_part1.md
+      title: 7.0 贝叶斯一般线性回归模型
+    - file: chapter7/chapter7_part2.md
+      title: 7.1 先验预测
+    - file: chapter7/chapter7_part3.md
+      title: 7.2 后验预测
 
 
 

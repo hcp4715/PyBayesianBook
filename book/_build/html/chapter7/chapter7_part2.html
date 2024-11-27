@@ -1,0 +1,1019 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>定义先验 &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter7/chapter7_part2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="模型拟合" href="chapter7_part3.html" />
+    <link rel="prev" title="Lecture8 : A Simple Linear Regression Model with PyMC" href="chapter7_part1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter7/chapter7_part2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter7/chapter7_part2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>定义先验</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-predictive-check">先验预测检验(prior predictive check)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">🎯练习1：先验预测</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">我们的先验设置的合理吗？</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">🎯练习2：先验预测</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>定义先验<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
+<p>在贝叶斯的分析框架中，我们需要为模型中的每个参数设置先验分布。</p>
+<p>而根据之前的模型公式(数据模型)可发现，我们的<span class="math notranslate nohighlight">\(Y\)</span>为被试反应时间(RT_sec)，<span class="math notranslate nohighlight">\(X\)</span>为标签（Label），并且存在三个未知的参数<span class="math notranslate nohighlight">\(\beta_0，\beta_1，\sigma\)</span> 。</p>
+<p>因此，我们需要对每个未知的参数定义先验分布。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}  
+\beta_0    \sim N\left(m_0, s_0^2 \right)  \\  
+\beta_1   \sim N\left(m_1, s_1^2 \right) \\  
+\sigma \sim \text{Exp}(\lambda)  
+\end{split}\]</div>
+<p>接下来，我们逐步完成模型的各个部分。</p>
+<ul class="simple">
+<li><p>首先，我们要为每个参数指定先验分布。因变量是反应时，自变量仅包含两个条件<span class="math notranslate nohighlight">\(X_0\)</span>和<span class="math notranslate nohighlight">\(X_1\)</span>，因此我们可以从一个基本的模型形式开始。例如，我们可以假定<span class="math notranslate nohighlight">\(β_0\)</span>和<span class="math notranslate nohighlight">\(β_1\)</span>都服从正态分布，这是一个合理的假设，可以作为模型的起点。在这个假设下，<span class="math notranslate nohighlight">\(β_0\)</span>和<span class="math notranslate nohighlight">\(β_1\)</span>各自有均值和标准差，表示它们的分布特性。</p></li>
+<li><p>对于方差<span class="math notranslate nohighlight">\(σ\)</span>，由于方差不可能为负值，因此我们需要确保先验分布的选择使得<span class="math notranslate nohighlight">\(σ\)</span>始终为正值。在实践中，方差的先验分布可以有多种选择，具体取决于建模者的偏好和经验。常见的选择之一是使用<strong>指数分布</strong>，因为它能确保值为正。此外，也可以选择<strong>半正态分布（half Normal）</strong>，即正态分布的正半部分，这也是一种可行的选择。其他的分布类型，只要满足方差为正的条件，也都可以使用。虽然不同领域和研究者的选择可能有所不同，<strong>但在心理学研究中，指数分布（Exponential Distribution）通常被认为是一个较为理想的选择</strong>。尽管如此，选择哪种分布以及如何确定其参数仍需根据实际数据和研究背景来进一步调整。</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>参数的前提假设(assumptions):</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\beta_0，\beta_1，\sigma\)</span> 之间相互独立</p></li>
+</ul>
+</li>
+<li><p>此外，规定 <span class="math notranslate nohighlight">\(\sigma\)</span> 服从指数分布，以限定其值恒为正数</p></li>
+<li><p>其中，<span class="math notranslate nohighlight">\(m_0，s_0，m_1，s_1\)</span>为超参数</p>
+<ul>
+<li><p>我们需要根据我们对<span class="math notranslate nohighlight">\(\beta_0\)</span>和<span class="math notranslate nohighlight">\(\beta_1\)</span>的先验理解来选择超参数的范围</p></li>
+<li><p>比如，<span class="math notranslate nohighlight">\(\beta_1\)</span>反映了标签从 self 切换到 other 时，反应时间的平均变化值；<span class="math notranslate nohighlight">\(\beta_0\)</span>反映了在 other 条件下的基础反应时间</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>在贝叶斯建模中，确定先验分布常常是最具挑战性的部分</strong>。我们已经有了模型和数据，但要进行贝叶斯分析，必须首先确定先验分布的具体形式和取值，才能执行后续的MCMC（马尔可夫链蒙特卡洛）计算。因此，首要任务是能够让模型成功运行。</p>
+<p>为确定先验分布，我们可以根据数据的特征和每个参数的实际意义来大致推测其取值。比如，<span class="math notranslate nohighlight">\(\beta_0\)</span>代表自变量<span class="math notranslate nohighlight">\(X=0\)</span>时某一条件下的反应时间（RT）。我们可以将其看作反映人类在实验中的反应时间范围。如果以秒为单位，显然反应时间不可能是千秒、万秒或十万秒这样的量级。基于此，我们可以推测出<span class="math notranslate nohighlight">\(\beta_0\)</span>的一个合理范围。</p>
+<p>类似地，<span class="math notranslate nohighlight">\(\beta_1\)</span>反映的是两种条件下反应时间的差异。通常来说，<span class="math notranslate nohighlight">\(\beta_1\)</span>的量级应该比<span class="math notranslate nohighlight">\(\beta_0\)</span>小，因为它表示的是两条件间的差异。若差异过大，则可能说明实验设计或数据本身存在问题。因此，根据这些基本原则，我们可以确定一个大致的先验范围，从而为后续的贝叶斯分析提供合理的起点。</p>
+<p><strong>指定超参数</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}  
+\begin{equation}  
+\begin{array}{lcrl}  
+\text{data:} &amp; \hspace{.05in} &amp;   Y_i | \beta_0, \beta_1, \sigma &amp; \stackrel{ind}{\sim} N\left(\mu_i, \sigma^2\right) \;\; \text{ with } \;\; \mu_i = \beta_0 + \beta_1X_i \\  
+\text{priors:} &amp; &amp; \beta_{0}  &amp; \sim N\left(5, 2^2 \right)  \\  
+                    &amp; &amp; \beta_1  &amp; \sim N\left(0, 1^2 \right) \\  
+                    &amp; &amp; \sigma   &amp; \sim \text{Exp}(0.3)  \\  
+\end{array}  
+\end{equation}  
+\end{split}\]</div>
+<p>这里，我们根据生活经验或直觉对超参数进行了定义：</p>
+<ul class="simple">
+<li><p>其次，我们假设 <span class="math notranslate nohighlight">\(\beta_0\)</span> 服从均值为 5，标准差为 2 的正态分布,代表：</p>
+<ul>
+<li><p>当实验条件为 self（编码为 0）时，反应时间的平均值大约为 5 秒。</p></li>
+<li><p>截距值可能在 3 ± 7 秒 的范围内波动，反映了在 self 条件下的反应时间预估</p></li>
+</ul>
+</li>
+<li><p>我们假设 <span class="math notranslate nohighlight">\(\beta_1\)</span> 服从均值为 0，标准差为 1 的正态分布，代表：</p>
+<ul>
+<li><p>(斜率)将其均值指定为 1，表示我们预期在 self 和 other 条件下的反应时间差异较小。</p>
+<ul>
+<li><p>这个影响的量是变化的，范围大概在 -1  ± 1。</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>最后，我们假设 <span class="math notranslate nohighlight">\(\sigma\)</span> 服从指数分布，其参数为0.3。</p>
+<ul>
+<li><p>参数0.3 意味着标准差通常集中在较小的正数范围内，使反应时间在预测值<span class="math notranslate nohighlight">\(\mu_i\)</span>附近波动。</p></li>
+<li><p>这一设置允许较小到中等的波动，但大部分数据应集中在 0 到 10 秒的合理反应时间范围内。</p></li>
+</ul>
+</li>
+</ul>
+<div style="padding-bottom: 20px;"></div>
+<p>我们在确定贝叶斯回归模型中的先验分布时，首先依据对人类反应时间的基本认识。<strong>具体来说，<span class="math notranslate nohighlight">\(\beta_0\)</span>代表某一条件下的基础反应时间</strong>，可以理解为所有人在认知实验中的反应时间范围。因此，我们可以将其先验分布设置为一个正态分布，例如均值为5秒，标准差为2秒。</p>
+<p><strong>对于<span class="math notranslate nohighlight">\(\beta_1\)</span>，它表示两个条件之间的反应时间差异</strong>。基于常识，我们可以将其先验分布设置为均值为0，标准差为1的正态分布，假设差异值可能是正的或负的，通常不会超过一秒。</p>
+<p><strong>对于方差<span class="math notranslate nohighlight">\(σ\)</span>，我们假定其反映了反应时间的离散程度</strong>。通常情况下，人的反应时间标准差较小，因此可以选择一个集中于较小值的先验分布，例如指数分布，允许方差在一定范围内波动，但仍保持合理性。</p>
+<p>在本节课练习和实际应用中，大家可以根据自己的需求调整贝叶斯模型中的先验分布。先验的设置通常基于对数据的直觉和常识，但如何判断先验是否合理呢？关键是要确保它不违背常识。例如，我们可以通过数据的范围来构建先验，确保先验与数据一致。然而，一般来说，不推荐设定一个过于严格或狭窄的先验范围。</p>
+<p>当先验过于强时，意味着它与数据不符，这时需要大量的数据才能更新先验至后验。相反，如果先验适度且较为宽松（weakly informed prior），即使数据量不大，也能有效更新至后验，这样可以避免先验对推断过程的过度影响。</p>
+<ul class="simple">
+<li><p>举个例子，假设我们预期反应时间大约在1至2秒之间，设定先验为均值1秒，标准差2秒。这虽然可以，但标准差为2意味着反应时间可能会出现负值，这是不合常理的。因此，<strong>我们需要根据常识来调整先验的范围</strong>，避免不合理的结果。</p></li>
+</ul>
+<p>此外，在某些情况下，我们也可以考虑不使用正态分布，而是根据数据的实际形态选择合适的分布类型。这些方法会在后续的课程中进一步讲解，尤其是当我们需要使用广义线性模型时。</p>
+<p>可视化指定超参下的先验：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入库</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="c1"># 定义新的先验分布的参数</span>
+
+<span class="n">mu_beta0</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">sigma_beta0</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">mu_beta1</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">sigma_beta1</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">lambda_sigma</span> <span class="o">=</span> <span class="mf">0.3</span>
+
+<span class="c1"># 生成 beta_0 的先验分布值</span>
+
+<span class="n">x_beta0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>  
+<span class="n">y_beta0</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_beta0</span><span class="p">,</span> <span class="n">mu_beta0</span><span class="p">,</span> <span class="n">sigma_beta0</span><span class="p">)</span>
+
+<span class="c1"># 生成 beta_1 的先验分布值</span>
+
+<span class="n">x_beta1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">y_beta1</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_beta1</span><span class="p">,</span> <span class="n">mu_beta1</span><span class="p">,</span> <span class="n">sigma_beta1</span><span class="p">)</span>
+
+<span class="c1"># 生成 sigma 的先验分布值</span>
+
+<span class="n">x_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>  
+<span class="n">y_sigma</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">expon</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_sigma</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">lambda_sigma</span><span class="p">)</span>
+
+<span class="c1"># 绘制先验分布图</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># 绘制 beta_0 的先验分布</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_beta0</span><span class="p">,</span> <span class="n">y_beta0</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$N(5, 2^2)$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\beta_0$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;pdf&quot;</span><span class="p">)</span>
+
+<span class="c1"># 绘制 beta_1 的先验分布</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_beta1</span><span class="p">,</span> <span class="n">y_beta1</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$N(0, 1^2)$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\beta_1$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;pdf&quot;</span><span class="p">)</span>
+
+<span class="c1"># 绘制 sigma 的先验分布</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_sigma</span><span class="p">,</span> <span class="n">y_sigma</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Exp(0.3)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\sigma$&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;pdf&quot;</span><span class="p">)</span>
+
+<span class="c1"># 调整布局并显示图表</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/img4.png" /></p>
+<p>我们从先验的可视化开始，帮助大家更直观地理解各个参数的分布。我们当前的模型包括三个参数：<span class="math notranslate nohighlight">\(\beta_0\)</span>、<span class="math notranslate nohighlight">\(\beta_1\)</span>和 <span class="math notranslate nohighlight">\(\sigma\)</span>。通过可视化这些参数的分布，我们可以更好地建立直觉理解，尤其对于统计学背景的人来说，这种直观的感受非常重要。通过可视化，我们能够直观地看到这些参数的可能取值范围，从而增强我们对先验分布的认识。</p>
+<p>例如，当我们使用<span class="math notranslate nohighlight">\(\beta_0= 5\)</span> 和<span class="math notranslate nohighlight">\(\beta_1= 2\)</span> 这两个参数时，虽然理论上β1的值可以是正负的，但可视化显示在正态分布下，我们可能会看到少量负值。这是因为<span class="math notranslate nohighlight">\(\beta_1\)</span>代表的是条件间的差异，因此其正负取值是合理的。至于<span class="math notranslate nohighlight">\(\sigma\)</span>，它是标准差，理论上应为正值，而通过可视化，我们可以发现其大部分取值集中在较小的范围内，如8或10以内，这是一个合理且可接受的范围。</p>
+<section id="prior-predictive-check">
+<h2>先验预测检验(prior predictive check)<a class="headerlink" href="#prior-predictive-check" title="Permalink to this heading">#</a></h2>
+<p>🤔有些同学可能认为这个先验的定义过于随意，甚至有些不靠谱。 那我们是否可以检验先验的合理性，以及适当的调整这个先验呐？</p>
+<p><strong>我们通过代码来说明，如何进行先验预测检验</strong></p>
+<p>首先根据公式，先验模型为：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}  
+\begin{align*}  
+\text{priors:} &amp; &amp; \beta_{0}  &amp; \sim N\left(5, 2^2 \right)  \\  
+                    &amp; &amp; \beta_1  &amp; \sim N\left(0, 1^2 \right) \\  
+                    &amp; &amp; \sigma   &amp; \sim \text{Exp}(0.3)  \\  
+\end{align*}  
+\end{split}\]</div>
+<p>为了检验先验分布的合理性，我们可以使用一种方法叫做<strong>先验预测检验</strong>。这一方法的核心思想是，从先验分布中随机抽取一组参数，并将这些参数带入我们的数据模型中，生成预测值。通过这种方式，我们能够判断这些预测值是否符合我们基于经验的常识。</p>
+<p>具体来说，先验分布本质上是从一个概率分布中抽取的，因此我们可以在这个分布下随机抽取多个样本。每个样本代表了我们在没有看到数据之前对模型的信念。然后，使用这些抽取的样本参数，我们将其带入模型，生成一组预测数据，进而检查这些预测值是否符合实际的常识性预期。这个过程实际上是一种蒙特卡洛采样方法，通过随机抽取大量的样本来估算数据的分布，帮助我们验证先验设定的合理性。</p>
+<p><strong>先验预测检验的大致思路</strong></p>
+<ol class="arabic simple">
+<li><p>在先验中随机抽取200组<span class="math notranslate nohighlight">\(\beta_0, \beta_1\)</span>值</p></li>
+<li><p>生成假数据自变量X</p></li>
+<li><p>生成200条 <span class="math notranslate nohighlight">\(\beta_0 + \beta_1 X\)</span> 生成预测的反应时间数据</p></li>
+<li><p>观察生成的反应时间数据是否在合理范围内，评估先验假设的合适性</p></li>
+<li><p>在先验中随机抽取200组<span class="math notranslate nohighlight">\(\beta_0, \beta_1\)</span>值</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 设置随机种子确保结果可以重复</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">84735</span><span class="p">)</span>
+
+<span class="c1"># 根据设定的先验分布，在其中各抽取200个beta_0,200个beta_1, 200个sigma</span>
+
+<span class="n">beta0_200</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">beta1_200</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">sigma_200</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="c1"># 将结果存在一个数据框内</span>
+<span class="n">prior_pred_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;beta0&quot;</span><span class="p">:</span><span class="n">beta0_200</span><span class="p">,</span>
+                                  <span class="s2">&quot;beta1&quot;</span><span class="p">:</span><span class="n">beta1_200</span><span class="p">,</span>
+                                  <span class="s2">&quot;sigma&quot;</span><span class="p">:</span><span class="n">sigma_200</span><span class="p">})</span>
+<span class="c1"># 查看抽样结果</span>
+<span class="n">prior_pred_sample</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-110.png" /></p>
+<p>在实际操作中，整个取样过程主要依赖于Python中的库和函数。首先，通过<code class="docutils literal notranslate"><span class="pre">numpy</span></code>库中的函数，我们从特定的分布中进行随机抽样。例如，使用<code class="docutils literal notranslate"><span class="pre">numpy.random.normal</span></code>从正态分布中获取样本。然后，抽取到的参数（如<span class="math notranslate nohighlight">\(\beta_0\)</span>、<span class="math notranslate nohighlight">\(\beta_1\)</span>）与自变量数据（如<span class="math notranslate nohighlight">\(X\)</span>）组合成一个数据框（DataFrame）</p>
+<ol class="arabic simple">
+<li><p>生成假数据自变量<span class="math notranslate nohighlight">\(X\)</span></p></li>
+</ol>
+<ul class="simple">
+<li><p>这里我们根据现实情况来定义X的取值范围</p></li>
+<li><p>我们使用 <code class="docutils literal notranslate"><span class="pre">np.arange</span></code>设置自变量 Label 的可能取值</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 通过np.arange设置Label，0 代表 Self， 1 代表other</span>
+
+<span class="n">x_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># 查看自变量值</span>
+
+<span class="n">x_sim</span>
+</pre></div>
+</div>
+<p>得到数据后，我们可以通过线性组合的方式计算出<span class="math notranslate nohighlight">\(μ和σ\)</span>，从而得到正态分布的两个参数。利用这两个参数，我们就能够从正态分布中进行随机取样，生成符合模型假设的预测数据。在此过程中，我们还可以先观察生成的回归线，检查<span class="math notranslate nohighlight">\(μ\)</span>的取值范围，确保生成的数据合理并符合我们的预期。</p>
+<ol class="arabic simple">
+<li><p>根据公式 <span class="math notranslate nohighlight">\(\mu = \beta_0 + \beta_1 X\)</span> 生成200条回归线, 观察其中的<span class="math notranslate nohighlight">\(\mu\)</span>是否处在合理的范围内</p></li>
+</ol>
+<ul class="simple">
+<li><p>我们有200次采样，每次采样都有三个参数 beta_0, beta_1, sigma。</p></li>
+<li><p>结合每次采样的结果，和自变量X，我们可以生成一条直线</p></li>
+<li><p>重复这个过程200次，我们就能生成200条直线</p></li>
+</ul>
+<p>在一次随机采样的过程中，我们从β0和β1的分布中随机取值，并生成200次预测数据。通过将每次的β0和β1带入模型，我们可以得到相应的回归线。左图展示了200次采样的结果，显示出预测值在一定范围内变化，并符合我们对β0和β1的设定。右图则展示了特定参数组合下生成的回归线。</p>
+<blockquote>
+<div><p><strong>我们通过一次采样来理解这个过程</strong></p>
+</div></blockquote>
+<p><img alt="alt text" src="../_images/img6.png" /></p>
+<ul class="simple">
+<li><p><strong>左侧图表</strong>显示了 200 组随机抽取的参数  beta_0, beta_1, sigma 的值。</p>
+<ul>
+<li><p>这帮助我们直观地看到参数在各自先验分布下的取值范围。</p></li>
+</ul>
+</li>
+<li><p><strong>右侧图表</strong>展示了基于抽取的一个特定参数组合绘制的回归线 <span class="math notranslate nohighlight">\(Y = \beta_0 + \beta_1 X\)</span></p>
+<ul>
+<li><p>红色的点表示预测的反应时间在两个条件下的值，蓝色线是连接这两个预测值的回归线。</p></li>
+</ul>
+</li>
+</ul>
+<section id="id2">
+<h3>🎯练习1：先验预测<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<p>根据获取的第一条MCMC链的第一组采样参数，结合自变量X的范围，预测 <span class="math notranslate nohighlight">\(\mu\)</span> 的值。</p>
+<ol class="arabic simple">
+<li><p>根据回归公式 <span class="math notranslate nohighlight">\(\mu = \beta_0 + \beta_1 X\)</span> 预测<span class="math notranslate nohighlight">\(\mu\)</span> 的值。</p></li>
+<li><p>绘制回归线条。</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 设置随机种子确保结果可以重复</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">84735</span><span class="p">)</span>
+
+<span class="c1"># 根据设定的先验分布，在其中各抽取200个beta_0,200个beta_1, 200个sigma</span>
+
+<span class="n">beta0_200</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">beta1_200</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">sigma_200</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="c1"># 将结果存在一个数据框内</span>
+<span class="n">prior_pred_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;beta0&quot;</span><span class="p">:</span><span class="n">beta0_200</span><span class="p">,</span>
+                                  <span class="s2">&quot;beta1&quot;</span><span class="p">:</span><span class="n">beta1_200</span><span class="p">,</span>
+                                  <span class="s2">&quot;sigma&quot;</span><span class="p">:</span><span class="n">sigma_200</span><span class="p">})</span>
+<span class="c1"># 查看抽样结果</span>
+<span class="n">prior_pred_sample</span>
+
+<span class="c1"># 保存为数据框</span>
+
+<span class="n">prior_pred_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;beta0&quot;</span><span class="p">:</span> <span class="n">beta0_200</span><span class="p">,</span> <span class="s2">&quot;beta1&quot;</span><span class="p">:</span> <span class="n">beta1_200</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">sigma_200</span><span class="p">})</span>
+
+<span class="c1"># 获取第一组采样参数</span>
+
+<span class="n">beta_0</span> <span class="o">=</span> <span class="n">prior_pred_sample</span><span class="p">[</span><span class="s2">&quot;beta0&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">beta_1</span> <span class="o">=</span> <span class="n">prior_pred_sample</span><span class="p">[</span><span class="s2">&quot;beta1&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;获取的第一组采样参数值，beta_0:</span><span class="si">{</span><span class="n">beta_0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, beta_1:</span><span class="si">{</span><span class="n">beta_1</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># ===========================</span>
+</pre></div>
+</div>
+<p>获取的第一组采样参数值，beta_0:6.04, beta_1:-1.14</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 根据回归公式 $\mu = \beta_0 + \beta_1 X$ 预测$\mu$ 的值</span>
+
+<span class="c1"># 已知：自变量（标签），self = 1, other = 2</span>
+
+<span class="c1"># ===========================</span>
+<span class="n">x_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">beta_0</span> <span class="o">+</span> <span class="n">beta_1</span> <span class="o">*</span> <span class="n">x_sim</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;预测值 μ:&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>预测值 μ: [4.89895573 3.76035694]</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ===========================</span>
+
+<span class="c1"># 绘制回归线，请设置x轴和y轴的变量</span>
+
+<span class="c1"># ===========================</span>
+<span class="n">x_axis</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">y_axis</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span><span class="n">y_axis</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Label Condition&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;RT (sec)&quot;</span><span class="p">)</span>  
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>重复上述结果200遍，我们就能得到200次先验预测回归线了</p>
+</div></blockquote>
+<p><strong>可视化先验预测结果</strong></p>
+<ul class="simple">
+<li><p>每一条线代表一次抽样生成的预测，因此我们绘制了200条线。</p></li>
+<li><p>我们可以观察到 self 和 other 条件下的反应时间如何随着自变量（标签Label）变化。</p></li>
+<li><p>如果先验设置不合理（如过于宽泛的分布），可能导致预测结果在合理范围之外。</p>
+<ul>
+<li><p>例如，如果我们将 beta_1 设得过大，可能导致预测的 other 条件下的反应时间显著增加或减少，不符合实验数据的预期。</p></li>
+<li><p>因此，通过合理的先验设定，我们可以得到更加符合实验背景的预测结果，这有助于模型对真实数据的拟合。</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 通过 np.array 设置实验条件的取值范围，self=0，other=1</span>
+
+<span class="n">x_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># 设置一个空列表，用来储存每一个的预测结果</span>
+
+<span class="n">mu_outcome</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 循环生成 200 次先验预测回归线</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prior_pred_sample</span><span class="p">)):</span>
+    <span class="c1"># 根据回归公式计算预测值</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">prior_pred_sample</span><span class="p">[</span><span class="s2">&quot;beta0&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">prior_pred_sample</span><span class="p">[</span><span class="s2">&quot;beta1&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">x_sim</span>
+    <span class="n">mu_outcome</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 画出每一次的先验预测结果</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mu_outcome</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_sim</span><span class="p">,</span> <span class="n">mu_outcome</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;prior predictive check&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Label Condition&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;RT (sec)&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/img7.png" /></p>
+<ul class="simple">
+<li><p>课上针对练习的讲解：</p></li>
+</ul>
+<p>绘制200条回归线，我们可以观察到反应时间的预测值分布大致呈现一定的范围。我们特别关注自变量X的取值0和1，因其是我们模型的主要输入。通过汇总这200次预测结果，我们发现反应时间的均值在一个合理范围内，这符合我们的常识判断。首先，反应时间的值始终为正，符合实验条件下的预期；其次，反应时间大致落在0到10之间，未出现不合理的大幅波动，尽管实际实验可能表明反应时间更集中在0到2秒之间，但整体预测结果仍在可以接受的范围内。这样的验证显示，模型的先验分布符合基本常识，不存在明显的偏差。`</p>
+</section>
+<section id="id3">
+<h3>我们的先验设置的合理吗？<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<p>让我们重新聚焦于我们的研究问题：<strong>在知觉匹配任务中，自我相关信息是否会促进认知加工？</strong> 具体而言，我们探讨自我和他人条件下的认知加工差异，尤其是在反应时间上的表现。</p>
+<p>变量定义：</p>
+<ul class="simple">
+<li><p>𝑋：标签（Label）</p>
+<ul>
+<li><p>在自我匹配范式任务中，标签分为 self 和 other 两种，分别编码为 0 和 1。这些条件用于观察在自我相关和非自我相关条件下的反应时间差异。</p></li>
+</ul>
+</li>
+<li><p>𝑌：反应时间（RT）</p>
+<ul>
+<li><p>表示在 self 或 other 条件下参与者的平均反应时间，通常以秒为单位。我们的目标是通过模型预测 self 和 other 条件下反应时间的差异，并观察其随实验条件的变化。</p></li>
+</ul>
+</li>
+</ul>
+<p>在进行先验分布的选择时，虽然每个人的接受度和精细化的需求可能不同，但一般来说，只要先验分布是合理的，并且数据量足够大，贝叶斯更新机制会使得先验逐步接近共同的后验分布。因此，即使每个人选择的先验略有差异，随着数据的积累，这些差异的影响会被逐渐消除，最终后验分布会收敛到一个固定的范围。因此，尽管先验可能不完全一致，但在足够多的数据支持下，不同的先验选择不会对结果产生显著影响。</p>
+<ul class="simple">
+<li><p>正如刚才所提到的，通过观察我们得到的结果，可以认为这是合理的：反应时间的变化既有正向也有负向，且反应时间的整体范围符合预期。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="k">def</span> <span class="nf">prior_predictive_plot</span><span class="p">(</span><span class="n">beta0_mean</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">beta0_sd</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">beta1_mean</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">beta1_sd</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">sigma_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    生成先验预测图。</span>
+
+<span class="sd">    参数：</span>
+<span class="sd">    - beta0_mean: float，beta0的均值</span>
+<span class="sd">    - beta0_sd: float，beta0的标准差</span>
+<span class="sd">    - beta1_mean: float，beta1的均值</span>
+<span class="sd">    - beta1_sd: float，beta1的标准差</span>
+<span class="sd">    - sigma_rate: float，控制sigma的指数分布率参数（lambda = 1/scale）</span>
+<span class="sd">    - samples: int，生成的样本数量</span>
+<span class="sd">    - seed: int，随机种子，默认为84735，确保结果可重复</span>
+<span class="sd">    </span>
+<span class="sd">    输出：</span>
+<span class="sd">    - 一个先验预测图</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># 设置随机种子</span>
+    <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    
+    <span class="c1"># 根据设定的先验分布抽样</span>
+    <span class="n">beta0_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">beta0_mean</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">beta0_sd</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">samples</span><span class="p">)</span>
+    <span class="n">beta1_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">beta1_mean</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">beta1_sd</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">samples</span><span class="p">)</span>
+    <span class="n">sigma_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">exponential</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">sigma_rate</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">samples</span><span class="p">)</span>
+    
+    <span class="c1"># 创建数据框存储样本</span>
+    <span class="n">prior_pred_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s2">&quot;beta0&quot;</span><span class="p">:</span> <span class="n">beta0_samples</span><span class="p">,</span>
+        <span class="s2">&quot;beta1&quot;</span><span class="p">:</span> <span class="n">beta1_samples</span><span class="p">,</span>
+        <span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">sigma_samples</span>
+    <span class="p">})</span>
+
+    <span class="c1"># 定义实验条件（self=0，other=1）</span>
+    <span class="n">x_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    
+    <span class="c1"># 创建一个空列表存储每次模拟的结果</span>
+    <span class="n">mu_outcome</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># 生成先验预测回归线</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">prior_pred_sample</span><span class="p">[</span><span class="s2">&quot;beta0&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">prior_pred_sample</span><span class="p">[</span><span class="s2">&quot;beta1&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">x_sim</span>
+        <span class="n">mu_outcome</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+    
+    <span class="c1"># 绘图</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mu_outcome</span><span class="p">)):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_sim</span><span class="p">,</span> <span class="n">mu_outcome</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Prior Predictive Check&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Label Condition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;RT (sec)&quot;</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 使用示例</span>
+
+<span class="n">prior_predictive_plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>🎯练习2：先验预测<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<p>🤔请大家判断，下图的先验预测合理吗？</p>
+<p><img alt="alt text" src="../_images/img8.png" /></p>
+<p>在实际实验中，我们知道被试的反应时间（RT）不会小于0秒。然而，<strong>当前模型的先验预测图中可能会包含一些小于0的反应时间，这显然不符合逻辑</strong>。</p>
+<p>通过以下练习,你可以尝试对三个参数的先验分布进行设置，观察它们对反应时间预测的影响。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="c1"># =====================================================</span>
+
+<span class="c1"># 请完善代码中...的部分，设置3个参数的值，使先验分布更符合实际情况</span>
+
+<span class="c1"># =====================================================</span>
+
+<span class="n">prior_predictive_plot</span><span class="p">(</span><span class="n">beta0_mean</span><span class="o">=...</span><span class="p">,</span>  <span class="c1"># beta 0 的均值</span>
+                      <span class="n">beta0_sd</span><span class="o">=...</span><span class="p">,</span>    <span class="c1"># beta 0 的标准差</span>
+                      <span class="n">beta1_mean</span><span class="o">=...</span><span class="p">,</span>  <span class="c1"># beta 1 的标准差</span>
+                      <span class="n">beta1_sd</span><span class="o">=...</span><span class="p">,</span>    <span class="c1"># beta 1 的标准差</span>
+                      <span class="n">sigma_rate</span><span class="o">=...</span><span class="p">,</span>  <span class="c1"># 控制sigma的指数分布率参数（lambda = 1/scale）</span>
+                      <span class="n">samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                      <span class="n">seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>课上针对练习的讲解：</p></li>
+</ul>
+<p>如果我们遇到另一组数据，是否合理呢？从我的角度来看，这个先验依然是可以接受的。虽然它的分布在0以下出现了一些反应时间值，但这并不意味着先验必须完全符合所有理论预期。实际上，有时只要先验大致合理并且与理论相符，就已经足够。在使用先验预测图时，我们可以直观地看到某些不合理的预测值，意识到它们的存在，并且知道大多数情况下数据是符合预期的。只要有了这种认知，即使存在一些不合理的部分，继续运行模型也是可以接受的。</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter7"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter7_part1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><center> Lecture8 : A Simple Linear Regression Model with PyMC </center></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter7_part3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">模型拟合</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-predictive-check">先验预测检验(prior predictive check)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">🎯练习1：先验预测</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">我们的先验设置的合理吗？</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">🎯练习2：先验预测</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Lecture7 : Posterior Inference &amp; Estimation &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter6/chapter6_part1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MCMC诊断" href="chapter6_part2.html" />
+    <link rel="prev" title="Metropolis-Hastings(MH)算法" href="../chapter5/chapter5_part2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter6/chapter6_part1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter6/chapter6_part1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture7 : Posterior Inference & Estimation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pymc">为什么选择PyMC？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-beta-binomial-example-in-pymc">A Beta-Binomial example in pymc</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture7-posterior-inference-estimation">
+<h1>Lecture7 : Posterior Inference &amp; Estimation<a class="headerlink" href="#lecture7-posterior-inference-estimation" title="Permalink to this heading">#</a></h1>
+<section id="pymc">
+<h2>为什么选择PyMC？<a class="headerlink" href="#pymc" title="Permalink to this heading">#</a></h2>
+<p>在实际操作中，PyMC 封装了许多底层 MCMC 算法，如 Metropolis-Hastings 和 NUTS（No-U-Turn Sampler），使得用户可以将更多精力集中在模型构建和推断结果的分析上。</p>
+<p>在贝叶斯中，PyMC 提供了一套丰富的接口，覆盖了贝叶斯建模的各个环节，包括模型定义、设置先验和似然分布、采样、后验预测和诊断。</p>
+<p><em><strong>接下来我们介绍 PyMC 的基本使用流程和核心模块:</strong></em></p>
+<ul class="simple">
+<li><p><strong>模型定义</strong>：PyMC 中所有的模型都是在pm.Model()语句中定义的。用户可以在其中指定模型的参数（即先验分布）和观测数据的分布（即似然函数）。</p></li>
+<li><p><strong>概率分布（Distributions）</strong>：PyMC 支持多种常见的概率分布，例如 Normal, Beta, Bernoulli, Binomial, Poisson 等，用于定义先验和似然分布。用户还可以通过pm.&lt; Distribution &gt;的形式来定义参数的先验和似然（例如混合模型分布）。</p></li>
+<li><p><strong>采样（Sampling）</strong>：PyMC使用多种采样算法进行后验采样,如Metropolis-Hastings和NUTS（No-U-Turn Sampler）。</p></li>
+<li><p><strong>后验预测</strong>：PyMC 支持从后验分布生成新的观测值，根据pm.sample_posterior_predictive()它可以帮助我们验证模型的合理性，即模型生成的数据是否与真实数据一致。</p></li>
+<li><p><strong>诊断和可视化</strong>：PyMC 提供了与 Arviz 包的集成，用户可以使用 az.plot_trace()等函数可视化参数的后验分布和采样轨迹，并使用az.summary()查看后验统计量。这些工具有助于诊断采样的收敛性和质量。</p></li>
+</ul>
+</section>
+<section id="a-beta-binomial-example-in-pymc">
+<h2>A Beta-Binomial example in pymc<a class="headerlink" href="#a-beta-binomial-example-in-pymc" title="Permalink to this heading">#</a></h2>
+<p>假设我们进行了一项随机点运动任务的实验，每个试验中参与者判断正确的概率用<span class="math notranslate nohighlight">\(π\)</span>表示。</p>
+<p><strong>模型假设</strong></p>
+<p>首先，根据我们的研究问题，确定正确率服从什么样的分布</p>
+<ul class="simple">
+<li><p>我们假设参与者判断正确的概率<span class="math notranslate nohighlight">\(\pi\)</span>是从Beta分布中抽样的：</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\pi \sim Beta(\alpha,\beta)
+\]</div>
+<p>其次，确定我们关注的参数是什么</p>
+<ul class="simple">
+<li><p>在每次试验中，参与者的成功次数<span class="math notranslate nohighlight">\(Y\)</span>服从一个Binomial分布：</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+Y \sim Binomial(n,\pi)
+\]</div>
+<p>其中，n是试验的总次数，Y是成功次数</p>
+<p><strong>模型设定</strong></p>
+<p>在这个例子中，我们可以使用Beta-Binomial模型来表示：</p>
+<div class="math notranslate nohighlight">
+\[
+先验分布：\pi \sim Beta(2,2)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+似然函数：Y|\pi \sim Bin(10,\pi)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+总试验数为10，成功次数为Y=9
+\]</div>
+<p>接下来，我们将使用 Pymc 来表达和设定 Beta-Binomial 模型:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义观测值Y=9</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="mi">9</span>
+
+<span class="c1"># 创建一个 PyMC 模型名为 bb_model,此时仅创建了一个空模型</span>
+<span class="n">bb_model</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span>
+
+<span class="c1"># 在bb_model这个空模型基础上，使用with语句将模型与变量联系起来</span>
+<span class="k">with</span> <span class="n">bb_model</span><span class="p">:</span>
+    <span class="c1"># 定义一个符合beta先验分布的变量pi</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># 定义符合binomial分布的变量likelihood，其中总次数为10，成功概率为pi，观测值为Y</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Binomial</span><span class="p">(</span><span class="s1">&#39;likelihood&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">pi</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>代码解释</p></li>
+</ul>
+<p>在pymc中，一个模型的定义通常包含了先验和似然两部分(其复杂性视模型复杂程度而定)：</p>
+<p>1、设立容器</p>
+<p>在pymc中，你需要创建一个pm.Model()来容纳你模型中的变量</p>
+<p>接下来你需要定义模型里的各种参数，即with bb_model:，表明接下来你对模型中各参数的设定，都会被添加到该模型中</p>
+<p>或者也可以直接一步写成：with pm.Model() as bb_model:</p>
+<p>2、定义先验</p>
+<p>在这个例子中，我们需要对<span class="math notranslate nohighlight">\(π\)</span>进行定义</p>
+<p>3、定义似然</p>
+<p>我们通过observed = Y，将收集到的数据传入似然函数中</p>
+<p><strong>模型可视化</strong></p>
+<p>可以通过PyMC3自带的可视化工具将模型关系可视化</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">bb_model</span><span class="p">)</span>
+</pre></div>
+</div>
+</font>
+<center><img width = '130' height ='220' src="image.png"></center>
+<p><strong>使用mcmc进行采样</strong></p>
+<p>在以下例子中，将 MCMC 采样方法得到的参数样本赋值为 trace。</p>
+<ul class="simple">
+<li><p>使用 sample 方法进行 MCMC 采样模拟过程。</p></li>
+<li><p>设置参数 draws 来控制 MCMC 采样的次数。</p></li>
+<li><p>chains 表示同时运行几条MCMC链。</p></li>
+</ul>
+<blockquote>
+<div><p>这里其实还有很多参数可以设定，但绝大多数情况下，我们只需要对这几个参数值进行设定即可，其他参数值都是设定好的默认值。</p>
+</div></blockquote>
+<p>我们可以使用 arviz 的方法 plot_trace 来可视化该结果</p>
+<ul class="simple">
+<li><p>左图为参数分布图</p></li>
+<li><p>右图为 trace 图，代表随着采样的进行(即x轴1-5000次采样)，每个参数值的大小(即y轴为每个采样参数的大小)。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#采样过程仍在该容器中进行</span>
+<span class="k">with</span> <span class="n">bb_model</span><span class="p">:</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>                   <span class="c1"># 使用mcmc方法进行采样，draws为采样次数</span>
+                      <span class="n">chains</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                     <span class="c1"># 设置MCMC的链数为1条，但默认链数并不是1条</span>
+                      <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>            <span class="c1"># 设置随机状态，以获得与notebook相同的结果</span>
+
+<span class="c1"># 可视化采样结果</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-19.png" /></p>
+<p><strong>采样的时间进程</strong></p>
+<p>下图展示了第一条Makov链的前20个采样结果和前200个结果：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 选取第一条Makov链的前20个采样结果和前200个结果</span>
+<span class="c1"># 从trace中提取pi的值，使用sel(chain=0)表示为选择第一条markov链。使用.values[:20]表示选取前20个采样结果</span>
+<span class="n">samples_20</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;pi&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">chain</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span>
+<span class="n">samples_200</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;pi&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">chain</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="mi">200</span><span class="p">]</span>
+
+<span class="c1"># 绘图</span>
+<span class="c1"># az.plot_trace表示绘制前20个采样结果的轨迹图，其中pi为变量名，samples_20为采样结果</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">({</span><span class="s2">&quot;pi&quot;</span><span class="p">:</span> <span class="n">samples_20</span><span class="p">})</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">({</span><span class="s2">&quot;pi&quot;</span><span class="p">:</span> <span class="n">samples_200</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>前20个采样结果：</p>
+<p><img alt="alt text" src="../_images/image-21.png" /></p>
+<p>前200个采样结果：</p>
+<p><img alt="alt text" src="../_images/image-36.png" /></p>
+<p>同样，我们也可以显示出5000个sample，这5000个sample就组成了trace或者chain</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">post_pi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;pi&quot;</span><span class="p">:</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;pi&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)})</span>
+<span class="n">post_pi</span>
+</pre></div>
+</div>
+<p><strong>采样结果可视化</strong></p>
+<ul class="simple">
+<li><p>将采样结果(5000次采样)对比真实的后验分布(黑线)Beta(11, 3)</p></li>
+<li><p>可以看到这个采样结果很好地近似了后验分布</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span> 
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">axs1</span><span class="p">,</span> <span class="n">axs2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1">#绘制采样结果直方图</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">post_pi</span><span class="p">,</span> 
+             <span class="n">x</span><span class="o">=</span><span class="s2">&quot;pi&quot;</span><span class="p">,</span> 
+             <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+             <span class="n">ax</span><span class="o">=</span><span class="n">axs1</span><span class="p">,</span>
+             <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;#20699d&#39;</span><span class="p">,</span> 
+             <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#6497b1&quot;</span><span class="p">,</span>
+             <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#绘制采样结果密度分布图</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">post_pi</span><span class="p">,</span>
+             <span class="n">x</span><span class="o">=</span><span class="s2">&quot;pi&quot;</span><span class="p">,</span>
+             <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#6497b1&#39;</span><span class="p">,</span>
+             <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+             <span class="n">ax</span><span class="o">=</span><span class="n">axs2</span><span class="p">)</span>
+
+<span class="c1">#绘制真实后验分布图</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="c1"># 真实的后验分布 beta（alpha + y, beta + n - y）</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">axs2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-44.png" /></p>
+<p>可以看出，通过mcmc得到的密度分布图和真实的后验分布图基本上是非常相似的。</p>
+<ul class="simple">
+<li><p>需要注意：虽然通过设置相同的随机种子，但不能完全保证最后的结果是完全一致的，但跑出来的趋势基本是一致的，并且误差较小。</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter6"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter5/chapter5_part2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Metropolis-Hastings(MH)算法</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter6_part2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MCMC诊断</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pymc">为什么选择PyMC？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-beta-binomial-example-in-pymc">A Beta-Binomial example in pymc</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
