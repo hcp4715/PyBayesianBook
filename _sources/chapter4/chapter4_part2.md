@@ -1,4 +1,4 @@
-# Grid approximation 网格近似
+# 4.1 Grid approximation 网格近似
 
 ![alt text](image-4.png)
 

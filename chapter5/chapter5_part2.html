@@ -1,0 +1,1001 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Metropolis-Hastings(MH)算法 &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter5/chapter5_part2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture7 : Posterior Inference &amp; Estimation" href="../chapter6/chapter6_part1.html" />
+    <link rel="prev" title="Leture6: MCMC" href="chapter5_part1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter5/chapter5_part2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter5/chapter5_part2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Metropolis-Hastings(MH)算法</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proposed-distribution">建议分布(proposed distribution)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-probability">接受率(acceptance probability)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">不同接受策略的影响</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">代码演示</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuning-metropolis-hastings">调试(Tuning)Metropolis-Hastings 算法</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="metropolis-hastings-mh">
+<h1>Metropolis-Hastings(MH)算法<a class="headerlink" href="#metropolis-hastings-mh" title="Permalink to this heading">#</a></h1>
+<p>在刚才的例子中，我们已经涉及到 MH 算法最朴素的思想：</p>
+<p>后验分布模型可以通过公式进行推导得到，然而无法对它进行直接采样。</p>
+<p>我们可以根据后验模型 y 轴的大小来决定 x 轴参数的数量。</p>
+<ul class="simple">
+<li><p>例如，我们均匀的从参数的范围（x~[0,1]）中抽取10000个参数样本<span class="math notranslate nohighlight">\(\mu_i\)</span>，然后我们计算对于每个<span class="math notranslate nohighlight">\(\mu_i\)</span>的<span class="math notranslate nohighlight">\(f(\mu_i)\)</span>的大小，<span class="math notranslate nohighlight">\(f(\mu_i)\)</span>越大那么<span class="math notranslate nohighlight">\(\mu_i\)</span>被保留的可能性越高。</p></li>
+<li><p>正如之前提到，计算<span class="math notranslate nohighlight">\(f(\mu_i)\)</span>是比较困难的，我们可以计算非标准化的<span class="math notranslate nohighlight">\(f(\mu_i)\)</span>。</p></li>
+</ul>
+<p>此外，直接在[0,1]中均匀的采样效率太低，我们在接下来会利用 MCMC 状态转移的性质来提高采样效率。</p>
+<p>接下来，我们来体验一下这个奇妙的过程：</p>
+<section id="proposed-distribution">
+<h2>建议分布(proposed distribution)<a class="headerlink" href="#proposed-distribution" title="Permalink to this heading">#</a></h2>
+<p>为了提高采样效率，我们不会直接从一个分布中进行大量采样，再进行筛选(也被称为拒绝)，这种方式在复杂分布中效率非常低。</p>
+<ul class="simple">
+<li><p>也就是说，如何根据当前的采样值，去propose下一次采样的值？</p></li>
+</ul>
+<p>因此在 MCMC 中，我们会构造一个建议分布 (proposed distribution)<span class="math notranslate nohighlight">\(q(x)\)</span>，然后利用 MCMC 状态转移的性质来进行采样。</p>
+<p>通过建议分布，我们可以在 MCMC 的状态转移过程中构造出一条马尔可夫链。这条链最终会收敛于目标后验分布，使得生成的样本接近真实的目标分布。</p>
+<p>在刚才所讲的心情状态的变化过程实际上就是一个建议分布的例子。</p>
+<p><img alt="alt text" src="../_images/image-43.png" /></p>
+<ul class="simple">
+<li><p>举例：我们随机选取了一个起点3，然后以3为中心进行propose，比如对3-1或3+1进行下一次的选取，这个时候就涉及一个问题，我们对下一次采样的接受策略是如何的？</p></li>
+</ul>
+<section id="acceptance-probability">
+<h3>接受率(acceptance probability)<a class="headerlink" href="#acceptance-probability" title="Permalink to this heading">#</a></h3>
+<p>虽然我们了解了当前样本可以根据上一次的样本从建议分布中进行采样<span class="math notranslate nohighlight">\(\theta^n \sim Normal(\theta_k^{n-1},\sigma)\)</span>。</p>
+<p>然而，我们如何判断这个采样是否合理呢？换句话说，我们需要思考是否保留或拒绝这个采样。</p>
+<p>现在，我们来看一下不同的接受策略会导致什么样的情况</p>
+</section>
+<section id="id1">
+<h3>不同接受策略的影响<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>我们可以考虑三种接受建议的情况：</p></li>
+</ul>
+<p>1：始终不接受提议。————Tour2，采样值始终不变，一直停留在同一个值</p>
+<p>2：始终接受提议。————Tour3，完全是随机的，采样不会稳定在某一个范围</p>
+<p>3：只有当提议(n+1)的后验可能性大于当前(n)值的后验可能性时，才接受提议 。————Tour1，逐渐收敛到一个稳定的值，但采样只停留在<span class="math notranslate nohighlight">\(\mu=4\)</span>附近</p>
+<p>我们来看一下三种情况对应生成的trace plot：</p>
+<p><img alt="alt text" src="../_images/image-51.png" /></p>
+<p>虽然Tour3看起来比前两种更靠谱，但是会产生一个问题：采样只停留在一个固定的值上面，而不会取到其他的值。</p>
+<ul class="simple">
+<li><p>因此，这三种策略都不是很合适。</p></li>
+</ul>
+<p><strong>接受率(acceptance probability)</strong></p>
+<p>可见，选择一个合适的接受策略非常重要。而接受率 (<span class="math notranslate nohighlight">\(\alpha\)</span>, acceptance probability)就是为了解决这个问题。</p>
+<p>首先，我们将从建议模型中抽取一个新的参数<span class="math notranslate nohighlight">\(\theta^{n+1}\)</span>的概率为<span class="math notranslate nohighlight">\(q^{(\theta^{n+1}|\theta^n)}\)</span></p>
+<p>对于是否接受<span class="math notranslate nohighlight">\(\theta^{n+1}\)</span>，我们定义接受概率<span class="math notranslate nohighlight">\(\alpha\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\alpha = min \{ 1,\frac{f(\theta^{n+1})L(\theta^{n+1}|y)}{f(\theta^n)L(\theta^n|y)} × \frac{q(\theta^n|\theta^{n+1})}{q(\theta^{n+1}|\theta^n)} \}
+\]</div>
+<p>别看这公式很复杂，其实很简单:</p>
+<p>数的上下分别代表下一个参数<span class="math notranslate nohighlight">\(\theta^{n+1}\)</span>和当前参数<span class="math notranslate nohighlight">\(\theta^n\)</span>的非标准化后验。即我们之前提到，要通过非标准化后验来判断是否接受一个参数。</p>
+<ul class="simple">
+<li><p>其中，<span class="math notranslate nohighlight">\(f(\theta)L(\theta|y)\)</span>为非标准化后验</p></li>
+<li><p><span class="math notranslate nohighlight">\(q(\theta^n|\theta^{n+1})\)</span>部分代表了从建议分布中采样新参数的过程。</p></li>
+<li><p>可以想象，<span class="math notranslate nohighlight">\(\frac{f(\theta^{n+1})L(\theta^{n+1}|y)}{f(\theta^n)L(\theta^n|y)}\)</span><strong>大于1且其值越大，表明下一个参数<span class="math notranslate nohighlight">\(\theta^{n+1}\)</span>的后验概率越大，因此它越有可能被接受。</strong></p></li>
+<li><p>如果<span class="math notranslate nohighlight">\(\frac{f(\theta^{n+1})L(\theta^{n+1}|y)}{f(\theta^n)L(\theta^n|y)}\)</span><strong>小于1，则代表下一个参数<span class="math notranslate nohighlight">\(\theta^{n+1}\)</span>的后验概率过小，因此我们要舍弃它。</strong></p></li>
+</ul>
+<p>所以，对于是否接受或拒绝新的参数<span class="math notranslate nohighlight">\(\theta^{n+1}\)</span>,则有：</p>
+<div class="math notranslate nohighlight">
+\[
+\theta^{(n+1)}=\theta^{(n+1)} with~probability~\alpha
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\theta^{(n+1)}=\theta^{(n)} with~probability~1-\alpha
+\]</div>
+<ul class="simple">
+<li><p>也就是如果我们不接受新的参数，那我们用原来的参数替代现在的参数。</p></li>
+<li><p>这样避免了参数采样被浪费，并且使得概率更大的参数被更多的采样。</p></li>
+<li><p>总的来说，MH 算法包含两个关键思想和两个关键步骤：</p></li>
+</ul>
+<p><strong>两个关键思想</strong></p>
+<p>1.根据非标准化的后验进行参数的接受或拒绝</p>
+<p>2.根据 MCMC 的特性设置建议分布来完成状态转移</p>
+<p><strong>两个关键步骤</strong></p>
+<p>1.设定建议分布</p>
+<p>2.根据建议分布的参数、未标准化后验计算接受率</p>
+</section>
+</section>
+<section id="id2">
+<h2>代码演示<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</pre></div>
+</div>
+<p>首先，我们假设当前的参数值<span class="math notranslate nohighlight">\(\theta^n=3\)</span>，然后我们根据该参数设定建议分布，并进行一次新的采样。</p>
+<ul class="simple">
+<li><p>注意，为了方便演示，我们将建议分布(正态分布)的<span class="math notranslate nohighlight">\(\sigma\)</span>固定为1。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#设置随机种子，以便重复</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">2024</span><span class="p">)</span> 
+
+<span class="n">current</span> <span class="o">=</span> <span class="mi">3</span>                             <span class="c1"># 假设theta(n)为3</span>
+
+<span class="n">proposal</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rvs</span><span class="p">()</span>    <span class="c1"># 从当前正态分布（均值为current，标准差为1）中抽出一个样本，rvs（）默认只抽取1个样本值</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;从建议分布中新采样 θ(n+1)为：&quot;</span><span class="p">,</span><span class="n">proposal</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>输出：从建议分布中新采样 θ(n+1)为： 4.668047321311954</p>
+</div></blockquote>
+<p>接着，我们根据新采样得到的参数计算其相关的接受率。</p>
+<ul class="simple">
+<li><p>注意，我们假设先验正态分布的参数为：mean = 3, sigma = 1</p></li>
+<li><p>另外，我们假设似然模型仅包含一个数据：Y = 6</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 设置先验</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># 假设数据 Y 为 6</span>
+    <span class="k">return</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="n">theta</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">)</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>  <span class="c1"># 注意：这里为方便演示固定 scale = 0.75</span>
+    
+
+<span class="c1"># 计算建议位置(n+1)的未归一化的后验概率值（先验*似然）</span>
+<span class="n">proposal_posterior</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">proposal</span><span class="p">)</span> <span class="o">*</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">proposal</span><span class="p">)</span>
+
+<span class="c1"># 计算当前位置(n)的未归一化的后验概率值（先验*似然）</span>
+<span class="n">current_posterior</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">current</span><span class="p">)</span> <span class="o">*</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+
+<span class="c1"># 计算接受概率α，为两者概率值之比</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">proposal_posterior</span><span class="o">/</span><span class="n">current_posterior</span><span class="p">)</span>
+
+<span class="c1"># 打印出接受概率α</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;后验比为：&quot;</span><span class="p">,</span> <span class="n">proposal_posterior</span><span class="o">/</span><span class="n">current_posterior</span><span class="p">,</span> <span class="s2">&quot;, alpha为:&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>后验比为： 153.2136146465854 , alpha为: 1</p>
+</div></blockquote>
+<p>我们根据接受率<span class="math notranslate nohighlight">\(\alpha\)</span>来决定是否接受建议分布的参数作为新的采样值。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 根据接受概率α进行抽样，抽样内容为建议位置和当前位置</span>
+<span class="n">next_stop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">proposal</span><span class="p">,</span> <span class="n">current</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">alpha</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">])</span>
+
+<span class="c1"># 打印出下一个位置的值</span>
+<span class="n">next_stop</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1">#从第一段代码我们可以看到此时的接受概率α=1，因此接受了建议值作为我们的下一个值</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>输出：4.668047321311954</p>
+</div></blockquote>
+<p>上面就是MH算法的一次迭代演示。</p>
+<p><strong>定义单次采样函数</strong></p>
+<p>我们可以直接定义一个函数，将刚刚的操作全都结合在一起，这样当我们想进行抽样的时候，不用重复写代码。</p>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p>proposal</p></th>
+<th class="head text-center"><p>alpha</p></th>
+<th class="head text-center"><p>next_stop</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>0</p></td>
+<td class="text-center"><p>3.091205</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>3.091205</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 变换不同的随机数种子，其实也是生成不同的建议值</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">83</span><span class="p">)</span>
+<span class="n">one_mh_iteration</span><span class="p">(</span><span class="n">current</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p>proposal</p></th>
+<th class="head text-center"><p>alpha</p></th>
+<th class="head text-center"><p>next_stop</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>0</p></td>
+<td class="text-center"><p>3.849313</p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>3.849313</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>多次采样</strong></p>
+<p>上述函数只进行了一次采样，即当前位置为3时，下一个可能采样的结果</p>
+<p>基于当前位置，提出下一个采样值，接受或拒绝它。那么新的采样值就变成了当前位置，我们需要不断重复这个过程</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mh_tour</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    N为迭代次数，w为均匀分布的一半宽度</span>
+
+<span class="sd">    我们在单次采样函数的基础上叠加了一个循环</span>
+<span class="sd">    将每次的采样结果存在mu[i]中，</span>
+<span class="sd">    在每次采样结束后，将采样结果替换为当前位置</span>
+
+<span class="sd">    返回值为迭代次数，和每次采样得到的结果</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">sim</span> <span class="o">=</span> <span class="n">one_mh_iteration</span><span class="p">(</span><span class="n">current</span><span class="p">,</span><span class="n">sigma</span><span class="p">)</span>
+        <span class="n">mu</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;next_stop&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;next_stop&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;iteration&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="c1"># range(start,end) 这里对应1，N+1，才会使得iteration数列从1开始，便于理解</span>
+                         <span class="s1">&#39;mu&#39;</span><span class="p">:</span> <span class="n">mu</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 调用定义好的函数，将采样次数设为5000，均匀分布的一半宽度设为1</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">84735</span><span class="p">)</span>
+<span class="n">mh_simulation</span> <span class="o">=</span> <span class="n">mh_tour</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">mh_simulation</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span> <span class="c1">#.tail()为查看结果的最后几行，()默认为5行</span>
+</pre></div>
+</div>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p>iteration</p></th>
+<th class="head text-center"><p>mu</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>4995</p></td>
+<td class="text-center"><p>4996</p></td>
+<td class="text-center"><p>4.528634</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4996</p></td>
+<td class="text-center"><p>4997</p></td>
+<td class="text-center"><p>4.528634</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>4997</p></td>
+<td class="text-center"><p>4998</p></td>
+<td class="text-center"><p>4.745413</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4998</p></td>
+<td class="text-center"><p>4999</p></td>
+<td class="text-center"><p>5.847077</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>4999</p></td>
+<td class="text-center"><p>5000</p></td>
+<td class="text-center"><p>5.847077</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>采样结果图示</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1">#生成一行两列的画布</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1">#density plot：在第一列绘制出采样结果的分布</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">mh_simulation</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">],</span> 
+            <span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+            <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="n">density</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># 绘制分布外围线条</span>
+<span class="n">x_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10000</span><span class="p">)</span>                  
+<span class="n">y_norm</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_norm</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">mh_simulation</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">scale</span><span class="o">=</span><span class="n">mh_simulation</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_norm</span><span class="p">,</span> <span class="n">y_norm</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+
+<span class="c1">#trace plot：在第二列绘制出每一次的采样结果</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mh_simulation</span><span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">],</span> <span class="n">mh_simulation</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">],</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-82.png" /></p>
+<p>我们可以使用 arviz 简化这个绘图的过程</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">({</span><span class="s2">&quot;mu&quot;</span><span class="p">:</span><span class="n">mh_simulation</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]})</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-92.png" /></p>
+<section id="tuning-metropolis-hastings">
+<h3>调试(Tuning)Metropolis-Hastings 算法<a class="headerlink" href="#tuning-metropolis-hastings" title="Permalink to this heading">#</a></h3>
+<p>在建议分布<span class="math notranslate nohighlight">\(\mu_{n+1}|\mu_n \sim Normal(\mu_n,\sigma)\)</span>中，<span class="math notranslate nohighlight">\(\sigma\)</span>反映了建议选项的分布宽度，对它的选择也会影响马尔科夫链的表现</p>
+<p>🤔我们还是使用MH算法，请你判断三种不同的<span class="math notranslate nohighlight">\(\sigma\)</span>分别对应下面的哪些轨迹图和密度图？</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span>=0.01</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma=1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span>=100</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-102.png" /></p>
+<p>可以结合以下代码进行判断:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">def</span> <span class="nf">one_mh_iteration</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    def后面为函数值，current为输入值，作为建议分布(正态分布)的均值</span>
+<span class="sd">    </span>
+<span class="sd">    接下来的代码和之前一样</span>
+
+<span class="sd">    return 则是该函数返回的值，我们将建议值，接受概率，和下一个位置这三个值组成了一个数据框进行返回</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">proposal</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span><span class="o">.</span><span class="n">rvs</span><span class="p">()</span>
+
+    <span class="n">prior</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+        <span class="c1"># 假设数据 Y 为 6</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="k">return</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="n">theta</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">)</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        
+    <span class="n">proposal_posterior</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">proposal</span><span class="p">)</span> <span class="o">*</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">proposal</span><span class="p">)</span>
+    <span class="n">current_posterior</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">current</span><span class="p">)</span> <span class="o">*</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">proposal_posterior</span><span class="o">/</span><span class="n">current_posterior</span><span class="p">)</span>
+    <span class="n">next_stop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">proposal</span><span class="p">,</span> <span class="n">current</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">alpha</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;proposal&quot;</span><span class="p">:[</span><span class="n">proposal</span><span class="p">],</span>
+                         <span class="s2">&quot;alpha&quot;</span><span class="p">:[</span><span class="n">alpha</span><span class="p">],</span> 
+                         <span class="s2">&quot;next_stop&quot;</span><span class="p">:[</span><span class="n">next_stop</span><span class="p">[</span><span class="mi">0</span><span class="p">]]})</span>
+
+<span class="k">def</span> <span class="nf">mh_tour</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    N为迭代次数，sigma为正态建议分布的标准差</span>
+
+<span class="sd">    我们在单次采样函数的基础上叠加了一个循环</span>
+<span class="sd">    将每次的采样结果存在mu[i]中，</span>
+<span class="sd">    在每次采样结束后，将采样结果替换为当前位置</span>
+
+<span class="sd">    返回值为迭代次数，和每次采样得到的结果</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">sim</span> <span class="o">=</span> <span class="n">one_mh_iteration</span><span class="p">(</span><span class="n">current</span><span class="p">,</span><span class="n">sigma</span><span class="p">)</span>
+        <span class="n">mu</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;next_stop&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">sim</span><span class="p">[</span><span class="s2">&quot;next_stop&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;iteration&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
+                         <span class="s1">&#39;mu&#39;</span><span class="p">:</span> <span class="n">mu</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#===========================================================================</span>
+<span class="c1">#                            请修改 ... 中的值。</span>
+<span class="c1">#===========================================================================</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">84735</span><span class="p">)</span>
+
+<span class="n">mh_simulation</span> <span class="o">=</span> <span class="n">mh_tour</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">({</span><span class="s2">&quot;mu&quot;</span><span class="p">:</span> <span class="n">mh_simulation</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#===========================================================================</span>
+<span class="c1">#                            可以自行复制代码多试几次</span>
+<span class="c1">#===========================================================================</span>
+<span class="n">mh_simulation</span> <span class="o">=</span> <span class="n">mh_tour</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">({</span><span class="s2">&quot;mu&quot;</span><span class="p">:</span> <span class="n">mh_simulation</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<p><strong>总结</strong></p>
+<ul class="simple">
+<li><p>当<span class="math notranslate nohighlight">\(\sigma\)</span>=0.01时：</p></li>
+</ul>
+<p>建议分布的范围很窄，比如<span class="math notranslate nohighlight">\(Normal(3,0.001)\)</span>，这会导致下一个建议值和当前值非常接近，则<span class="math notranslate nohighlight">\(f(\mu')L(\mu'|y)≈f(\mu)L(\mu|y)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\alpha = min \{ 1,\frac{f(\mu')L(\mu'|y)}{f(\mu)L(\mu|y)}\} ≈ min \{ 1,1\} =1
+\]</div>
+<p>那么我们很容易接受下一个采样值，但尽管马尔科夫链一直在转移，但探索的范围太窄了，我们可以看到采样一直在3附近</p>
+<ul class="simple">
+<li><p>当<span class="math notranslate nohighlight">\(\sigma=100\)</span>时：</p></li>
+</ul>
+<p>类似的，我们可以推知此时建议分布的范围太宽了，超出了<span class="math notranslate nohighlight">\(\mu\)</span>可能的取值</p>
+<p>下一个建议值和当前值间隔太远，这会导致我们经常拒绝下一个采样值，多次停在当前位置。</p>
+<ul class="simple">
+<li><p>最后，推荐 MCMC 讲解最好的视频(没有之一)：【蒙特卡洛（Monte Carlo, MCMC）方法的原理和应用】 <a class="reference external" href="https://www.bilibili.com/video/BV17D4y1o7J2/?share_source=copy_web&amp;amp;vd_source=4b5b4646c3f53f1b80954c381226c913">https://www.bilibili.com/video/BV17D4y1o7J2/?share_source=copy_web&amp;vd_source=4b5b4646c3f53f1b80954c381226c913</a></p></li>
+</ul>
+<p>如果还是不懂 MCMC 原理，那放弃也行…..</p>
+<p>不了解 MCMC 原理，并不影响对于它的使用。</p>
+<p><strong>小结</strong></p>
+<p>无论是在这些相对简单的单参数模型设置中，还是在更复杂的模型设置中，Metropolis-Hastings 算法都是通过两步之间的迭代，从后验中产生近似样本：</p>
+<ul class="simple">
+<li><p>设定建议分布</p></li>
+<li><p>根据建议分布的参数、未标准化后验计算接受率</p></li>
+</ul>
+<p>本节课我们只考虑了一种 MCMC 算法，即 Metropolis-Hastings。这种算法虽然功能强大，但也有其局限性。</p>
+<ul class="simple">
+<li><p>在以后的章节中，我们的贝叶斯模型将增加大量参数。调整 Metropolis-Hastings 算法以充分探索每个参数会变得很笨重。</p></li>
+<li><p>然而，即使 Metropolis-Hastings 算法的实用性达到了极限，它仍然是一套更灵活的 MCMC 工具的基础，包括自适应 Metropolis-Hastings、Gibbs 和 Hamiltonian Monte Carlo (HMC) 算法。其中，HMC 是 pymc 默认使用的算法。</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter5_part1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Leture6: MCMC</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter6/chapter6_part1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture7 : Posterior Inference &amp; Estimation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proposed-distribution">建议分布(proposed distribution)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-probability">接受率(acceptance probability)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">不同接受策略的影响</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">代码演示</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuning-metropolis-hastings">调试(Tuning)Metropolis-Hastings 算法</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
