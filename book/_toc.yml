@@ -76,7 +76,13 @@ parts:
       title: 7.1 先验预测
     - file: chapter7/chapter7_part3.md
       title: 7.2 后验预测
-
+  - caption: 8. Bayes Factor
+    numberd: True
+    chapters:
+    - file: chapter8/chapter8_part1.md
+      title: 8.0 传统零假设显著性检验 vs 贝叶斯因子
+    - file: chapter8/chapter8_part2.md
+      title: 8.1 贝叶斯因子的计算与应用
 
 
 

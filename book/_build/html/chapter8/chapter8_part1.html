@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Bayes Factor &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter8/chapter8_part1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="贝叶斯因子的计算与应用" href="chapter8_part2.html" />
+    <link rel="prev" title="模型拟合" href="../chapter7/chapter7_part3.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Bayes Factor</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8_part2.html">8.1 贝叶斯因子的计算与应用</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter8/chapter8_part1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter8/chapter8_part1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bayes Factor</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">传统的假设检验方法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">为什么要介绍贝叶斯因子？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-factor-bf">贝叶斯因子（Bayes Factor，BF）的基本概念</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bayes-factor">
+<h1>Bayes Factor<a class="headerlink" href="#bayes-factor" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>前面的课主要涉及贝叶斯统计的原理、基于后验的一系列分析和推断等内容，而这节课我们开始讲解前几课中经常提到的<strong>贝叶斯因子(Bayes Factor, BF)</strong>，实际上就是在贝叶斯学派的框架下进行的假设检验。</p></li>
+</ul>
+<p>我们先简单回顾一下传统统计中的<strong>零假设显著性检验（Null Hypothesis Significance Test, NHST）</strong></p>
+<section id="id1">
+<h2>传统的假设检验方法<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>频率学派的假设检验主要是基于<strong>概率性质的反证法</strong>所实现的推论统计方法。</p>
+<p>———即承认如下前提:<em><strong>小概率事件(发生概率小于0.05的事件)在单次抽样中不会发生。</strong></em></p>
+<p>在传统的假设检验框架中，研究者需要根据研究对总体做互斥的两种假设，即零假设<span class="math notranslate nohighlight">\(H_0\)</span>和备择假设<span class="math notranslate nohighlight">\(H_1\)</span>:</p>
+<ul class="simple">
+<li><p><strong>零假设（Null Hypothesis，<span class="math notranslate nohighlight">\(H_0\)</span>）</strong>: 表示没有效应或差异的假设。在许多情况下，零假设代表“无差异”或“无效应”，例如认为两组数据的均值没有显著差异。</p></li>
+<li><p><strong>备择假设（Alternative Hypothesis, <span class="math notranslate nohighlight">\(H_1\)</span>）</strong>：表示零假设不成立时的假设，通常认为有显著效应或差异。</p></li>
+</ul>
+<p>传统假设检验的核心概念还包括：</p>
+<ul class="simple">
+<li><p><strong>Alpha（<span class="math notranslate nohighlight">\(\alpha\)</span>）</strong>：显著性水平，通常设定为0.05，表示在零假设(<span class="math notranslate nohighlight">\(H_0\)</span>)成立的情况下，错误拒绝<span class="math notranslate nohighlight">\(H_0\)</span>的概率。换句话说，alpha（<span class="math notranslate nohighlight">\(\alpha\)</span>）是我们愿意接受的一类错误概率（假阳性）。</p></li>
+<li><p><span class="math notranslate nohighlight">\(P\)</span>值：是指在零假设成立的前提下，观察到当前或更极端数据的概率。如果<span class="math notranslate nohighlight">\(P\)</span>值≤<span class="math notranslate nohighlight">\(\alpha\)</span>，传统统计学的框架下通常会拒绝零假设，认为数据提供了足够的证据支持备择假设。</p></li>
+</ul>
+<p>传统的假设检验方法主要依赖于<span class="math notranslate nohighlight">\(P\)</span>值，这一方法在统计学中应用广泛，但也存在多个问题：</p>
+<ul class="simple">
+<li><p><strong>假阳性结果</strong>：研究者可能会通过操纵p值来达到显著性，如增加样本量或调整变量，这会导致假阳性结果，误导后续研究。</p></li>
+<li><p><strong>忽视效应大小</strong>：<span class="math notranslate nohighlight">\(P\)</span>值无法提供效应大小的信息，仅仅是显著与否的二分判断，不能全面反映数据的实际意义。</p></li>
+<li><p><strong>不考虑先验信息</strong>：传统假设检验忽略了先验知识和理论背景，仅关注数据本身，无法有效利用已有的研究成果。</p></li>
+<li><p><strong>无法为直接为零假设提供支持</strong>：不显著结果不代表零假设为真。</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image4.png" /></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>胡传鹏等(2018). 贝叶斯因子及其在JASP中的实现. 心理科学进展</p></li>
+<li><p>吴凡, 顾全, 施壮华, 高在峰, 沈模卫. (2018). 跳出传统假设检验方法的陷阱——贝叶斯因子在心理学研究领域的应用. 应用心理学</p></li>
+</ul>
+</div></blockquote>
+<p>🤔思考</p>
+<ul class="simple">
+<li><p>问题1：<span class="math notranslate nohighlight">\(\alpha\)</span>错误是漏报还是虚报？</p></li>
+</ul>
+<p>答：这里我们将<span class="math notranslate nohighlight">\(H_0\)</span>看作是“没有信号”，<span class="math notranslate nohighlight">\(H_1\)</span>看作是“有信号”。那么，如果“无信号”成立，但我们却报告了“有信号”，这实际上是——<strong>虚报</strong>。</p>
+<ul class="simple">
+<li><p>问题2：假设<span class="math notranslate nohighlight">\(P\)</span>值为0.01，<span class="math notranslate nohighlight">\(\alpha\)</span>值为0.05，我们的一类错误的概率是多少？</p></li>
+</ul>
+<p>答：依旧是0.05（<span class="math notranslate nohighlight">\(\alpha\)</span>）。</p>
+</section>
+<section id="id2">
+<h2>为什么要介绍贝叶斯因子？<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>与传统假设检验方法相比，贝叶斯因子具有以下几方面的优势：</p>
+<ul class="simple">
+<li><p><strong>1.对假设一视同仁</strong>： 同时评估<span class="math notranslate nohighlight">\(H_0\)</span>和<span class="math notranslate nohighlight">\(H_1\)</span>的可能性，能够为<span class="math notranslate nohighlight">\(H_0\)</span>提供支持证据，解决传统假设检验难以证明<span class="math notranslate nohighlight">\(H_0\)</span>成立的问题。</p></li>
+<li><p><strong>2.结合先验信息</strong>： 贝叶斯因子分析可以利用先验知识，将前人的研究成果与当前数据结合，提供更为全面的证据评估。</p></li>
+<li><p><strong>3.避免p值操纵</strong>： 贝叶斯因子的计算基于全数据集，不受单个数据点的影响，能够有效避免p值操纵带来的假阳性结果。而NHST则可以通过扩大样本量来使P值逐渐缩小至0.05，这可能会导致假阳性结果。</p></li>
+<li><p><strong>4.支持多模型比较</strong>： 贝叶斯因子不仅适用于二元假设检验，还可以用于比较多个模型的适用性，提供更为灵活的统计分析工具。</p></li>
+<li><p><strong>5.可以直接支持零假设</strong>。</p></li>
+</ul>
+<blockquote>
+<div><p>吴凡, 顾全, 施壮华, 高在峰, 沈模卫. (2018). 跳出传统假设检验方法的陷阱——贝叶斯因子在心理学研究领域的应用. 应用心理学</p>
+</div></blockquote>
+</section>
+<section id="bayes-factor-bf">
+<h2>贝叶斯因子（Bayes Factor，BF）的基本概念<a class="headerlink" href="#bayes-factor-bf" title="Permalink to this heading">#</a></h2>
+<p>频率学派将随机事件发生的频率作为一种客观指标，而贝叶斯学派则<strong>从观察者的视角出发将概率理解为一种主观不确定性。</strong></p>
+<ul class="simple">
+<li><p>贝叶斯因子（Bayes Factor，BF）作为一种基于贝叶斯统计的验证方法，主要用于比较零假设与备择假设的相对支持程度，其衡量的主要是数据在这两种假设下的解释能力。</p></li>
+</ul>
+<p>具体来说，贝叶斯因子可以表示为：</p>
+<div class="math notranslate nohighlight">
+\[
+BF_{10}=\frac{posterior~odds}{prior~odds} = \frac{P(H_1|Data)}{P(H_0|Data)} * \frac{P(H_1)}{P(H_0)} = \frac{P(Data|H_1)}{P(Data|H_0)}
+\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(P(Data|H_1)\)</span>和<span class="math notranslate nohighlight">\(P(Data|H_0)\)</span>分别表示在备择假设和零假设下数据的似然性。</p>
+<ul class="simple">
+<li><p>posterior odds：后验概率比</p></li>
+<li><p>prior odds：先验概率比</p></li>
+<li><p><span class="math notranslate nohighlight">\(H_0\)</span>：零假设，<span class="math notranslate nohighlight">\(H_1\)</span>：备择假设</p></li>
+</ul>
+<blockquote>
+<div><p>Heck, D. W., Boehm, U., Böing-Messing, F., Bürkner, P.-C., Derks, K., Dienes, Z., Fu, Q., Gu, X., Karimova, D., Kiers, H. A. L., Klugkist, I., Kuiper, R. M., Lee, M. D., Leenders, R., Leplaa, H. J., Linde, M., Ly, A., Meijerink-Bosman, M., Moerbeek, M., … Hoijtink, H. (2023). A review of applications of the bayes factor in psychological research. Psychological Methods, 28(3), 558–579. <a class="reference external" href="https://doi.org/10.1037/met0000454">https://doi.org/10.1037/met0000454</a></p>
+</div></blockquote>
+<p>当然，贝叶斯因子还有一种表达方式，即后验概率比等于贝叶斯因子乘以先验概率比：</p>
+<div class="math notranslate nohighlight">
+\[
+posterior~odds=BF_{10}×Prior~odds
+\]</div>
+<ul class="simple">
+<li><p>这说明，贝叶斯因子不仅反映了数据对假设的支持程度，还反映了先验概率到后验概率变化的程度或证据。简单来说，贝叶斯因子反映了当前数据更可能在<span class="math notranslate nohighlight">\(H_0\)</span>还是<span class="math notranslate nohighlight">\(H_1\)</span>下出现，这比较符合我们的直觉。</p></li>
+</ul>
+<p>同时，贝叶斯因子分析能够帮助研究者根据现有证据评估不同假设成立的可能性之比，并且在评估证据强度上也有一套独立的标准：</p>
+<center><img width = '450' height ='400' src="image-1.png">
+</center>
+<blockquote>
+<div><p>Source: 该表改编自胡传鹏等(2018)，源引用于Lee &amp; Wagenmakers (2014)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(BF_{10}=1\)</span>，收集到的数据并没有改变备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的相对可能性</p></li>
+<li><p><span class="math notranslate nohighlight">\(BF_{10}&gt;1\)</span>，收集到的证据增加了备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的相对可能性，BF越大，表明支持备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的证据越强。</p></li>
+<li><p><span class="math notranslate nohighlight">\(BF_{10}&lt;1\)</span>，收集到的证据削弱了备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的相对可能性，BF越小，表明支持备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的证据越弱。</p></li>
+</ul>
+<p><em><strong>需要注意：</strong></em></p>
+<ul class="simple">
+<li><p>1.这只是一个大致的划分，而非绝对的标准。而在心理学研究当中，现在比较常用的两个标准是6和10。</p></li>
+<li><p>2.BF的下角标——“10”并不是指数字，而分别指代<span class="math notranslate nohighlight">\(H_1\)</span>和<span class="math notranslate nohighlight">\(H_0\)</span></p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>胡传鹏, 孔祥祯, Eric-Jan Wagenmakers, Alexander Ly, 彭凯平. (2018). 贝叶斯因子及其在JASP中的实现. 心理科学进展</p></li>
+<li><p>Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). bayestestR: Describing Effects and their Uncertainty, Existence and Significance within the Bayesian Framework. Journal of Open Source Software, 4(40), 1541. <a class="reference external" href="https://doi.org/10.21105/joss.01541">https://doi.org/10.21105/joss.01541</a></p></li>
+<li><p>Makowski, D., Ben-Shachar, M. S., Chen, S. H. A., &amp; Lüdecke, D. (2019). Indices of Effect Existence and Significance in the Bayesian Framework. Retrieved from 10.3389/fpsyg.2019.02767</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter8"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter7/chapter7_part3.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">模型拟合</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter8_part2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">贝叶斯因子的计算与应用</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">传统的假设检验方法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">为什么要介绍贝叶斯因子？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-factor-bf">贝叶斯因子（Bayes Factor，BF）的基本概念</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

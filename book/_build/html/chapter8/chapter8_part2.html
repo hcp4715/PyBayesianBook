@@ -1,0 +1,1164 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>贝叶斯因子的计算与应用 &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter8/chapter8_part2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Bayes Factor" href="chapter8_part1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Bayes Factor</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter8_part1.html">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8.1 贝叶斯因子的计算与应用</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter8/chapter8_part2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter8/chapter8_part2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>贝叶斯因子的计算与应用</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">简单线性回归模型的假设检验</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">假设检验 vs. 贝叶斯因子</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-models-parameters-with-bayes-factor">Testing Models’ Parameters with Bayes Factor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-against-a-null-region">Testing against a null-region</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#directional-hypotheses">练习: Directional hypotheses</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>贝叶斯因子的计算与应用<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
+<p>之前我们已经向大家介绍了 HDI + ROPE (最高密度区间 + 预设效应范围)方法，那么，这节课我们会主要基于贝叶斯因子来进行模型推断的讲解。</p>
+<section id="id2">
+<h2>简单线性回归模型的假设检验<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>贝叶斯回归与传统回归模型类似，但它通过先验分布、似然函数和后验分布来进行推断。</p>
+<p>我们依旧沿用之前自我匹配范式的例子，以<strong>探究两种条件（self与other）下的反应时差异</strong>。</p>
+<ul class="simple">
+<li><p>这里的<span class="math notranslate nohighlight">\(X_i\)</span>有两个取值，分别是0和1，指代self和other两个水平。此外，这里还有3个参数，<span class="math notranslate nohighlight">\(\beta_0，\beta_1和\sigma\)</span>。</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\beta_0 \sim N(m_0,s_0^2)\\
+\beta_1 \sim N(m_1,s_1^2)\\
+\sigma \sim Exp(\lambda)\\
+\Downarrow\\
+\mu_i=\beta_0+\beta_1X_i\\
+\Downarrow\\
+Y_i|\beta_0,\beta_1,\sigma \sim N(\mu_i,\sigma^2)
+\end{split}\]</div>
+<p><img alt="alt text" src="../_images/image-26.png" /></p>
+<ul class="simple">
+<li><p>这里涉及从t检验到用简单回归模型做t检验的一个过渡</p></li>
+</ul>
+<p>假设检验：</p>
+<ul class="simple">
+<li><p>零假设（<span class="math notranslate nohighlight">\(H_0\)</span>）:<span class="math notranslate nohighlight">\(\beta_1=0\)</span></p></li>
+<li><p>备择假设（<span class="math notranslate nohighlight">\(H_1\)</span>）:<span class="math notranslate nohighlight">\(\beta_1≠0\)</span></p></li>
+</ul>
+<section id="vs">
+<h3>假设检验 vs. 贝叶斯因子<a class="headerlink" href="#vs" title="Permalink to this heading">#</a></h3>
+<p>在传统假设检验中，我们会计算出一个P值，如果P值小于等于设定的显著性水平（例如 0.</p>
+<p>与传统的假设检验方法不同，贝叶斯统计使用 贝叶斯因子（Bayes Factor，BF） 来衡量不同模型之间的相对证据强度。</p>
+<ul class="simple">
+<li><p><strong>贝叶斯因子不是基于p值，而是通过比较模型间的后验概率来得出结论。</strong></p></li>
+</ul>
+<blockquote>
+<div><p>💡注意：在本课中我们关注的是两个条件之间的差异，因此我们仅重点关注<span class="math notranslate nohighlight">\(\beta_1\)</span>，因为它反映了self和other条件之间的反应时间差异。</p>
+</div></blockquote>
+<p>🤔具体而言，”贝叶斯因子能用来回答什么问题呢？”</p>
+<p>贝叶斯因子非常灵活，因为它不仅可以用于简单的假设检验，还可以用于比较复杂模型、评估模型拟合优度、以及在多模型比较中提供更丰富的信息。</p>
+<p><strong>以下是贝叶斯因子常见的三种应用及可能的假设示例：</strong></p>
+<p>对于自变量 （Label） 因变量（RT_sec） 的关系：</p>
+<ul class="simple">
+<li><p>我们的主观猜想是：在self条件下时的反应时间比在other条件下更短。</p></li>
+<li><p>在第八节课中，我们的先验设定也反映了我们的主观信念，但是支持我们假设的证据是什么，如何证明？</p></li>
+<li><p>如何检验<span class="math notranslate nohighlight">\(\beta_1=0\)</span>（零假设）与<span class="math notranslate nohighlight">\(\beta_1≠0\)</span>（备择假设）之间的关系？</p></li>
+</ul>
+<p>我们可以使用贝叶斯因子来比较这两个模型，计算贝叶斯因子<span class="math notranslate nohighlight">\(BF_{10}\)</span>,来量化零假设和备择假设之间的证据差异。</p>
+<p>几种可能去检验研究假设的做法：</p>
+<p><strong>1、Testing against the point-null</strong></p>
+<p>贝叶斯因子可以用来检验某个参数是否等于零，即检验点的零假设。</p>
+<p><strong>2、Testing against a null-region</strong></p>
+<p>有时，我们可能会设定一个“零区域”，即一个参数值的范围，该范围内的值被认为与零没有显著差异。假设我们设定一个区间<span class="math notranslate nohighlight">\(\beta_1 \in [-0.05,0.05]\)</span>，认为<span class="math notranslate nohighlight">\(\beta_1\)</span>落在这个区间内是可以接受的无效效应。也就是说，我们可以设置一个0值附近的区间，当<span class="math notranslate nohighlight">\(\beta_1\)</span>落在这个区间之外，我们才认为差异是有意义的。</p>
+<p><strong>3、Directional hypotheses</strong></p>
+<p>贝叶斯因子也可以用于检验某个参数是否有特定的方向性，即是否存在正向或负向的影响。例如，我们可以提出假设<span class="math notranslate nohighlight">\(H_1:\beta_1&gt;0\)</span>，认为自变量（Label）对因变量（RT_sec）有正向影响。贝叶斯因子将帮助我们评估数据是否支持这种方向性的假设，而不仅仅是支持或拒绝零假设。</p>
+<p>👏 接下来，我们会通过示例向大家介绍这三种方法。</p>
+</section>
+<section id="testing-models-parameters-with-bayes-factor">
+<h3>Testing Models’ Parameters with Bayes Factor<a class="headerlink" href="#testing-models-parameters-with-bayes-factor" title="Permalink to this heading">#</a></h3>
+<p><strong>Testing against the point-null</strong></p>
+<p>我们可以首先从最简单的假设开始，即假设没有效应，self和other条件下的反应时间相同，即探究 <span class="math notranslate nohighlight">\(\beta_1\)</span> 是否等于零🤔</p>
+<p>当我们检验参数是否等于零时（如检验参数 <span class="math notranslate nohighlight">\(\beta_1 = 0\)</span>），这就是点零假设的检验。</p>
+<p>贝叶斯因子可以帮助我们衡量数据对点零假设与非零假设的支持程度。在回归模型中，我们可以设定一个零假设 <span class="math notranslate nohighlight">\(H_0: \beta_1 = 0\)</span> 和备择假设 <span class="math notranslate nohighlight">\(H_1: \beta_1 \neq 0\)</span>，然后使用贝叶斯因子来计算零假设和备择假设的相对证据。</p>
+<div class="math notranslate nohighlight">
+\[
+BF_{10} = \frac{P(Data|H_1)}{P(Data|H_0)}=\frac{P(Data|\beta_1≠0)}{P(Data|\beta_1=0)}
+\]</div>
+<p>我们还是以编号为”201”的被试数据为例进行演示：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入 pymc 模型包，和 arviz 等分析工具 </span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># 忽略不必要的警告</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="c1"># 通过 pd.read_csv 加载数据 Kolvoort_2020_HBM_Exp1_Clean.csv</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/mw/input/bayes3797/Kolvoort_2020_HBM_Exp1_Clean.csv&#39;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/jovyan/data/Kolvoort_2020_HBM_Exp1_Clean.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 筛选出被试&quot;201&quot;，匹配类型为&quot;Matching&quot;的数据</span>
+<span class="n">df_raw</span><span class="p">[</span><span class="s2">&quot;Subject&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s2">&quot;Subject&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[(</span><span class="n">df_raw</span><span class="p">[</span><span class="s2">&quot;Subject&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;201&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s2">&quot;Matching&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Matching&quot;</span><span class="p">)]</span>
+
+<span class="c1"># 选择需要的两列</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Label&quot;</span><span class="p">,</span> <span class="s2">&quot;RT_sec&quot;</span><span class="p">]]</span>
+
+<span class="c1"># 重新编码标签（Label）</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="c1"># #设置索引</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+
+<span class="c1"># #保存数据</span>
+<span class="c1"># df.to_csv(&#39;/home/jovyan/data/Kolvoort_2020_HBM_Exp1_Clean_201.csv&#39;, index=False)</span>
+
+<span class="c1"># 显示部分数据</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>根据我们的模型：</strong></p>
+<div class="math notranslate nohighlight">
+\[
+Y_i = \beta_0,\beta_1,\sigma \sim N(\mu_i,\sigma^2)
+\]</div>
+<p><strong>先验（prior）</strong>：</p>
+<p><span class="math notranslate nohighlight">\(\beta_{0} \sim N\left(5, 2^2 \right)\)</span></p>
+<ul class="simple">
+<li><p>模型的截距项服从均值为 5，标准差为 2 的正态分布。</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\beta_1 \sim N\left(0, 1^2 \right)\)</span></p>
+<ul class="simple">
+<li><p>模型的斜率项，服从均值为 0，标准差为 1 的正态分布。</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\sigma \sim \text{Exp}(0.3)\)</span></p>
+<ul class="simple">
+<li><p>代表误差项的标准差，服从参数为 0.3 的指数分布。</p></li>
+</ul>
+<p><strong>似然（likelihood）</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mu_i = \beta_0 + \beta_1X_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Y_i {\sim} N\left(\mu_i, \sigma^2\right)\)</span></p></li>
+</ul>
+<p><strong>模型定义：</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 设置随机种子以确保结果可复现</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">linear_model</span><span class="p">:</span>
+
+    <span class="c1"># 定义先验分布参数</span>
+    <span class="n">beta_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        
+    <span class="n">beta_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>      
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>                    
+
+    <span class="c1"># 定义自变量 x</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">])</span>         
+
+    <span class="c1"># 定义 mu，将自变量与先验结合</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">beta_0</span> <span class="o">+</span> <span class="n">beta_1</span> <span class="o">*</span> <span class="n">x</span>
+
+    <span class="c1"># 定义似然：预测值y符合N(mu, sigma)分布</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y_est&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RT_sec&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>后验采样：</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">linear_model</span><span class="p">:</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>                   <span class="c1"># 使用mcmc方法进行采样，draws为采样次数</span>
+                      <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>                    <span class="c1"># tune为调整采样策略的次数，可以决定这些结果是否要被保留</span>
+                      <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>                     <span class="c1"># 链数</span>
+                      <span class="n">discard_tuned_samples</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># tune的结果将在采样结束后被丢弃</span>
+                      <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;beta_1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>MCMC诊断</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">axes</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-38.png" /></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-46.png" /></p>
+<p><strong>Arviz 实现计算贝叶斯因子</strong></p>
+<p>现在，我们有了<span class="math notranslate nohighlight">\(\beta_1\)</span>的先验分布和后验分布，我们分别计算贝叶斯因子<span class="math notranslate nohighlight">\(BF_{10}和BF_{01}\)</span>,分别表示数据支持备择假设和零假设的证据强度。</p>
+<p>在 Python 的 Arviz 库中，<code class="docutils literal notranslate"><span class="pre">arviz.plot_bf</span></code> 函数提供了直接计算贝叶斯因子的方法，并且可以对先验和后验分布在零假设点处的概率密度值进行可视化。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="c1"># 进行贝叶斯因子计算，需要采样先验分布</span>
+<span class="k">with</span> <span class="n">linear_model</span><span class="p">:</span>
+    <span class="n">trace</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="c1"># 绘制贝叶斯因子图</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_bf</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="n">ref_val</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 设置 x 轴的范围</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span> 
+
+<span class="c1"># 去除上框线和右框线</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-53.png" /></p>
+<ul class="simple">
+<li><p>结果显示<span class="math notranslate nohighlight">\(BF_{10}=6\)</span>，证明更多的证据支持<span class="math notranslate nohighlight">\(H_1\)</span>。</p></li>
+</ul>
+<p>大家可以看到，我们在这里实际上是针对一个特定的点，计算出先验分布似然值和后验分布似然值之间的一个比值。</p>
+<ul class="simple">
+<li><p>这是一种已被证实的计算贝叶斯因子的简化方法。我们设定的<span class="math notranslate nohighlight">\(H_0假设\)</span>为<span class="math notranslate nohighlight">\(\beta_1=0\)</span>，因此此处设定<code class="docutils literal notranslate"><span class="pre">ref_val=0</span></code>，然后分别计算出先验在0值处的似然和后验在0值处的似然，最后进行比值得出<span class="math notranslate nohighlight">\(BF_{01}\)</span>。</p></li>
+<li><p>需要注意：每次mcmc后得出的贝叶斯因子的具体值可能会不同，这是正常的现象。</p></li>
+</ul>
+<p>通过上图我们发现：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(BF_{10}=6\)</span>：表示数据支持<span class="math notranslate nohighlight">\(H_1\)</span>的强度相对于<span class="math notranslate nohighlight">\(H_0\)</span>为6。</p></li>
+<li><p><span class="math notranslate nohighlight">\(BF_{01}=0.17\)</span>：表示数据支持<span class="math notranslate nohighlight">\(H_0\)</span>的强度相对于<span class="math notranslate nohighlight">\(H_1\)</span>为0.17。</p></li>
+</ul>
+<p>总结：通过贝叶斯因子的计算，对于数据倾向于支持<span class="math notranslate nohighlight">\(\beta_1≠0\)</span>，即数据为存在效应的假设提供了中等强度的证据。</p>
+<p><em><strong>补充内容 ：与 JASP 的对比</strong></em>
+在 Python 中，我们利用 Arviz 来计算贝叶斯因子，通过直接比较先验和后验分布在零点的密度差异来检验某个效应是否为零。</p>
+<p>然而，JASP（Jeffreys’s Amazing Statistics Program）提供了一种不同的方法来计算贝叶斯因子：</p>
+<ul class="simple">
+<li><p>JASP 是一个基于 R 语言的开源软件，以其易用性和友好的图形界面广受欢迎，主要用于心理学、社会学等领域的统计分析。</p></li>
+<li><p>JASP 使用贝叶斯模型来计算贝叶斯因子，包括模型比较和桥采样法（Bridge Sampling）等技术，能够通过计算后验和先验分布的比值，评估不同模型或假设的相对支持程度。与 Savage-Dickey 方法不同，桥采样不局限于单参数或简单假设，因此更适合模型比较和复杂假设检验。</p></li>
+</ul>
+<p><strong>Python 版本的 JASP 实现</strong></p>
+<p>在 Python 中，虽然没有官方的 JASP API，但我们可以使用 arviz.compare 实现类似 JASP 中模型比较的方法来计算贝叶斯因子。</p>
+<ul class="simple">
+<li><p>需要注意的是，要计算贝叶斯因子，需要获得模型的边际似然（Marginal Likelihood），即模型中所有参数的联合似然。</p></li>
+<li><p>PyMC 提供了 pm.compute_log_likelihood 方法，可以计算模型中所有参数的联合似然。</p></li>
+</ul>
+<p>在arviz.compare()的输出中，没有直接提供贝叶斯因子（BF）的值。贝叶斯因子是用来比较模型的似然（或后验概率）的一种度量，可以通过权重(weight) 来间接理解模型的相对优劣，但它不是直接的贝叶斯因子。</p>
+<div class="math notranslate nohighlight">
+\[
+BF_{10}=\frac{weight~of~model1}{weight~of~model2}
+\]</div>
+<p><em><strong>注意：由于这里的方法基于模型比较，它更适合模型比较和复杂假设检验，因此和 Savage-Dickey 方法不同。</strong></em></p>
+<p>但可以看到两者结果的结论基本是一致的：<span class="math notranslate nohighlight">\(BF_{10}(SD方法)=5.16\)</span>；<span class="math notranslate nohighlight">\(BF_{10}(模型比较)=10.10\)</span></p>
+<p><em><strong>注意：在JASP的实际运算中，软件会自动调整先验，因此与我们设置的先验不同，计算得到的贝叶斯因子也会有所不同。</strong></em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义零假设模型（仅包含截距的模型）</span>
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model_H0</span><span class="p">:</span>
+
+    <span class="n">beta_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>                    
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">beta_0</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y_est&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RT_sec&#39;</span><span class="p">])</span>  
+    <span class="n">trace_H0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">discard_tuned_samples</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">compute_log_likelihood</span><span class="p">(</span><span class="n">trace_H0</span><span class="p">)</span>
+
+<span class="c1"># 定义备择假设模型（包含截距和斜率的模型）</span>
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model_H1</span><span class="p">:</span>
+    
+    <span class="n">beta_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        
+    <span class="n">beta_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>      
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>                    
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">])</span>         
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">beta_0</span> <span class="o">+</span> <span class="n">beta_1</span> <span class="o">*</span> <span class="n">x</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y_est&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RT_sec&#39;</span><span class="p">])</span>  
+    <span class="n">trace_H1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">discard_tuned_samples</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">compute_log_likelihood</span><span class="p">(</span><span class="n">trace_H1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 计算贝叶斯因子</span>
+<span class="n">model_compare</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">compare</span><span class="p">({</span><span class="s2">&quot;Label&quot;</span><span class="p">:</span> <span class="n">trace_H0</span><span class="p">,</span> <span class="s2">&quot;Null model&quot;</span><span class="p">:</span> <span class="n">trace_H1</span><span class="p">},</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;BB-pseudo-BMA&#39;</span><span class="p">)</span>
+<span class="n">weight_H0</span> <span class="o">=</span> <span class="n">model_compare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Label&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">]</span>
+<span class="n">weight_H1</span> <span class="o">=</span> <span class="n">model_compare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Null model&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">]</span>
+<span class="n">BF_10</span> <span class="o">=</span> <span class="n">weight_H1</span> <span class="o">/</span> <span class="n">weight_H0</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;贝叶斯因子 (BF_10): </span><span class="si">{</span><span class="n">BF_10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>贝叶斯因子 (BF_10): 10.494588319350406</p>
+</div></blockquote>
+</section>
+<section id="testing-against-a-null-region">
+<h3>Testing against a null-region<a class="headerlink" href="#testing-against-a-null-region" title="Permalink to this heading">#</a></h3>
+<p>现在，我们证实了<span class="math notranslate nohighlight">\(\beta_1 \neq 0\)</span>，即自我和他人条件对于反应时间有差异，但这个差异会不会非常小，是否在我们认为可以忽略的区间内呢？</p>
+<p><em><strong>回顾 ROPE</strong></em></p>
+<p>在之前的课程中，我们讨论过如何使用 HDI 和 ROPE 来进行假设检验。
+我们假设了 <span class="math notranslate nohighlight">\(\beta_1\)</span> 的值在 <span class="math notranslate nohighlight">\([-0.05, 0.05]\)</span> 范围内可以视为实用等效区间，也就是说，
+如果 <span class="math notranslate nohighlight">\(\beta_1\)</span> 落在这个区间内，我们可以认为 self 和 other 条件之间的反应时间差异可以忽略不计，从而在实践上认为两者无显著差异。</p>
+<p><em><strong>ROPE 对于贝叶斯因子的意义</strong></em></p>
+<ul class="simple">
+<li><p>在假设检验中，设定一个“零区域”（null region）可以帮助我们定义一个在实际意义上视为“无效”的效果范围。</p></li>
+<li><p>通过设定零区域，我们可以计算先验概率和后验概率，进而计算贝叶斯因子来量化数据对假设的支持强度。</p></li>
+<li><p>我们可以计算 “label” 条件下反应时间差异落在零假设区间之外的先验概率，以及落在零假设区间之内的先验概率，从而得到我们的先验概率比（prior odds）。</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+BF_{10}=\frac{P(Data|H_1)}{P(Data|H_0)}=\frac{P(Data|\beta_1\notin[-0.05,0.05])}{P(Data|\beta_1\in[-0.05,0.05])}
+\]</div>
+<p>由于 arviz 没有提供直接计算区间假设检验的方法，因此需要我们自己实现。</p>
+<p>根据上面公式，贝叶斯因子由两部分组成：先验概率比 + 后验概率比。</p>
+<blockquote>
+<div><p>如果大家觉得pymc在心理学研究中用得较少，也可以在R中实现，利用R的一整套贝叶斯体系去进行工作。
+参考资料：<a class="reference external" href="https://easystats.github.io/bayestestR/articles/bayes_factors.html#testing-against-a-null-region">https://easystats.github.io/bayestestR/articles/bayes_factors.html#testing-against-a-null-region</a></p>
+</div></blockquote>
+<ul class="simple">
+<li><p>下面我们先计算先验概率比</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_odds</span><span class="p">(</span><span class="n">tace_samples</span><span class="p">,</span> <span class="n">region</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]):</span>
+    
+    <span class="c1"># 计算区间 [-0.05, 0.05] 内的样本</span>
+    <span class="n">in_range</span> <span class="o">=</span> <span class="n">tace_samples</span><span class="p">[(</span><span class="n">tace_samples</span> <span class="o">&gt;=</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tace_samples</span> <span class="o">&lt;=</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+
+    <span class="c1"># 计算区间外的样本</span>
+    <span class="n">out_of_range</span> <span class="o">=</span> <span class="n">tace_samples</span><span class="p">[(</span><span class="n">tace_samples</span> <span class="o">&lt;</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">|</span> <span class="p">(</span><span class="n">tace_samples</span> <span class="o">&gt;</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+
+    <span class="c1"># 计算区间内外的比例</span>
+    <span class="n">P_in_range</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_range</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">tace_samples</span><span class="p">)</span>
+    <span class="n">P_out_of_range</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">out_of_range</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">tace_samples</span><span class="p">)</span>
+
+    <span class="c1"># 计算比率</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">P_out_of_range</span> <span class="o">/</span> <span class="n">P_in_range</span>
+    <span class="k">return</span> <span class="n">ratio</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prior_samples</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="s1">&#39;beta_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">prior_odds</span> <span class="o">=</span> <span class="n">calculate_odds</span><span class="p">(</span><span class="n">prior_samples</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;先验概率比（prior odds）: </span><span class="si">{</span><span class="n">prior_odds</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>先验概率比（prior odds）: 24.0000</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+
+<span class="k">def</span> <span class="nf">plot_region</span><span class="p">(</span><span class="n">trace_samples</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.05</span><span class="p">],</span> <span class="n">dist_type</span><span class="o">=</span><span class="s2">&quot;Prior&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    
+    <span class="n">kde</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">trace_samples</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="c1"># 获取核密度估计的曲线数据</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">get_lines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+    <span class="c1"># 高亮 [-0.05, 0.05] 区间的密度</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+        <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Null&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 高亮区间之外（替代区域）</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+        <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">|</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Alternative&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 图例和标题</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dist_type</span><span class="si">}</span><span class="s2"> Distribution with Null Region&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Density&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dist_type</span><span class="si">}</span><span class="s2"> regions&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">plot_region</span><span class="p">(</span><span class="n">prior_samples</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="c1"># 显示图形</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-64.png" /></p>
+<ul class="simple">
+<li><p>这里的Null实际上就是我们设定的零区间[-0.05,0.05]，它是用紫色部分的面积来表示。因此，Prior odds实际上就是紫色部分与黄色部分面积的比值。</p></li>
+</ul>
+<p>我们使用类似的方法计算后验概率比（Posterior Odds），评估数据更新后参数值在零假设区间内和区间外的相对支持程度。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">posterior_samples</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;beta_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">posterior_odds</span> <span class="o">=</span> <span class="n">calculate_odds</span><span class="p">(</span><span class="n">posterior_samples</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;后验概率比（posterior odds）: </span><span class="si">{</span><span class="n">posterior_odds</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>后验概率比（posterior odds）: 57.4795</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">plot_region</span><span class="p">(</span><span class="n">posterior_samples</span><span class="p">,</span><span class="n">dist_type</span><span class="o">=</span><span class="s2">&quot;Posterior&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="c1"># 显示图形</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-73.png" /></p>
+<p>通过先前的贝叶斯因子计算公式，我们可以知道贝叶斯因子为先验概率比和后验概率比的比值：</p>
+<div class="math notranslate nohighlight">
+\[
+BF_{10}=\frac{posterior~odds}{prior~odds}
+\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">BF_10</span> <span class="o">=</span> <span class="p">(</span><span class="n">posterior_odds</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">prior_odds</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;贝叶斯因子（BF 10）: </span><span class="si">{</span><span class="n">BF_10</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>贝叶斯因子（<span class="math notranslate nohighlight">\(BF_{10}\)</span>）: 2.3950</p>
+<p>通过对比可以发现，当我们将<span class="math notranslate nohighlight">\(H_0\)</span>的零区间扩展一部分后，贝叶斯因子支持<span class="math notranslate nohighlight">\(H_1\)</span>的强度会有所下降。</p>
+<p>接下来我们将可视化先验和后验分布，从而清晰地展示出数据对零假设区域内外的支持度如何发生了变化：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="c1"># 绘制密度图</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># 绘制先验分布的密度曲线</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_kde</span><span class="p">(</span><span class="n">prior_samples</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;prior&quot;</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span> <span class="n">fill_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">})</span>
+
+<span class="c1"># 绘制后验分布的密度曲线</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_kde</span><span class="p">(</span><span class="n">posterior_samples</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;posterior&quot;</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;coral&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span> <span class="n">fill_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">})</span>
+
+<span class="c1"># 添加一条垂直虚线，表示零效应参考值（0）</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 标注零假设区域</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span> 
+
+<span class="c1"># 设置x轴范围</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 设置图例和标签</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distribution&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Density&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Prior and Posterior Distribution&quot;</span><span class="p">)</span>
+
+<span class="c1"># 移除顶部和右侧边框</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="c1"># 显示图形</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-84.png" /></p>
+<p>总结：通过可视化，可以发现先验分布的较大部分在零假设区域内，而后验分布则主要集中在零假设区域外，表明数据对备择假设提供了支持，尽管支持的力度相对有限。</p>
+<p>同时，通过直接计算贝叶斯因子的结果也可得出：数据提供了2.3879倍的证据证明<span class="math notranslate nohighlight">\(\beta_1\)</span>落在[-0.05,0.05]区间外的概率更大。</p>
+<ul class="simple">
+<li><p>因此，比值直接计算的结果和可视化的结果基本是一致的，两者都表明数据对备择假设的支持存在，但并不非常强。</p></li>
+</ul>
+<p>接下来，可以尝试自行练习一下具有方向性的单侧检验：</p>
+</section>
+<section id="directional-hypotheses">
+<h3>练习: Directional hypotheses<a class="headerlink" href="#directional-hypotheses" title="Permalink to this heading">#</a></h3>
+<p>现在我们知道了数据支持在self和other条件下的反应时间有差异，而我们对于其效应的方向（正向或负向）有先验假设，即在“self”条件下的反应时间更短，</p>
+<p>那么我们可以通过Directional hypotheses 检验效应是否朝着我们预期的方向发展，计算方向假设（“单侧”）的贝叶斯因子。</p>
+<p>在本例中，我们希望测试的是在“self”条件下的反应时间是否比“other”条件更短，因此备择假设将限制在零假设（点或区间）的左侧区域，即更倾向负向的效果。</p>
+<p>那么<span class="math notranslate nohighlight">\(H_1：\beta_1&lt;0\)</span>表示“self”条件下反应时较短的情况</p>
+<p>思考🤔：如何通过贝叶斯因子量化支持该假设的相对证据强度呢?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="c1"># 请直接运行，无需修改</span>
+<span class="c1"># 这里由于是单侧检验，因此需要改变region的方向性</span>
+<span class="k">def</span> <span class="nf">calculate_odds</span><span class="p">(</span><span class="n">tace_samples</span><span class="p">,</span> <span class="n">region</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]):</span>
+    
+    <span class="c1"># 计算区间 [-0.05, 0.05] 内的样本，region[0]和[1]分别代表区间的下限和上限</span>
+    <span class="n">in_range</span> <span class="o">=</span> <span class="n">tace_samples</span><span class="p">[(</span><span class="n">tace_samples</span> <span class="o">&gt;=</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tace_samples</span> <span class="o">&lt;=</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+
+    <span class="c1"># 计算区间外的样本，即小于下限 或 大于上限</span>
+    <span class="n">out_of_range</span> <span class="o">=</span> <span class="n">tace_samples</span><span class="p">[(</span><span class="n">tace_samples</span> <span class="o">&lt;</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">|</span> <span class="p">(</span><span class="n">tace_samples</span> <span class="o">&gt;</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+
+    <span class="c1"># 计算区间内外的比例，这里实际上是通过计算值的数量来近似面积</span>
+    <span class="n">P_in_range</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_range</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">tace_samples</span><span class="p">)</span>
+    <span class="n">P_out_of_range</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">out_of_range</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">tace_samples</span><span class="p">)</span>
+
+    <span class="c1"># 计算比率</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">P_out_of_range</span> <span class="o">/</span> <span class="n">P_in_range</span>
+    <span class="k">return</span> <span class="n">ratio</span>
+
+<span class="k">def</span> <span class="nf">plot_region</span><span class="p">(</span><span class="n">trace_samples</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.05</span><span class="p">],</span> <span class="n">dist_type</span><span class="o">=</span><span class="s2">&quot;Prior&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    
+    <span class="n">kde</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">trace_samples</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="c1"># 获取核密度估计的曲线数据</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">get_lines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+    <span class="c1"># 高亮 [-0.05, 0.05] 区间的密度</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+        <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Null&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 高亮区间之外（替代区域）</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+        <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">|</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Alternative&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 图例和标题</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dist_type</span><span class="si">}</span><span class="s2"> Distribution with Null Region&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Density&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dist_type</span><span class="si">}</span><span class="s2"> regions&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#=====================================</span>
+<span class="c1">#      基于方向的贝叶斯因子计算</span>
+<span class="c1">#      自行练习</span>
+<span class="c1">#=====================================</span>
+
+<span class="c1"># 获取 beta_1的先验分布的采样</span>
+<span class="c1"># beta_1_prior = ...</span>
+
+
+<span class="c1"># 获取 beta_1的后验分布的采样</span>
+<span class="c1"># beta_1_posterior = ...</span>
+</pre></div>
+</div>
+<p>答案：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#=====================================</span>
+<span class="c1">#      基于方向的贝叶斯因子计算</span>
+<span class="c1">#      自行练习</span>
+<span class="c1">#=====================================</span>
+
+<span class="c1"># 获取 beta_1的先验分布的采样</span>
+<span class="n">beta_1_prior</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="s1">&#39;beta_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 获取 beta_1的后验分布的采样</span>
+<span class="n">beta_1_posterior</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s1">&#39;beta_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义区间</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span>
+
+<span class="c1"># region = ...</span>
+
+<span class="c1"># 计算先验比</span>
+
+<span class="c1"># prior_odds = ...</span>
+
+<span class="c1"># 计算后验比</span>
+<span class="c1"># posterior_odds = ...</span>
+
+<span class="c1"># 计算贝叶斯因子</span>
+<span class="c1"># bayes_factor = ...</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bayes_factor:&quot;</span><span class="p">,</span> <span class="n">bayes_factor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>答案：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义区间</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span>
+<span class="n">region</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">inf</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>  <span class="c1">#-inf为负无穷</span>
+
+<span class="c1"># 计算先验比</span>
+<span class="n">prior_odds</span> <span class="o">=</span> <span class="n">calculate_odds</span><span class="p">(</span><span class="n">beta_1_prior</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
+
+<span class="c1"># 计算后验比</span>
+<span class="n">posterior_odds</span> <span class="o">=</span> <span class="n">calculate_odds</span><span class="p">(</span><span class="n">beta_1_posterior</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
+
+<span class="c1"># 计算贝叶斯因子</span>
+<span class="n">bayes_factor</span> <span class="o">=</span> <span class="n">posterior_odds</span> <span class="o">/</span> <span class="n">prior_odds</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bayes_factor:&quot;</span><span class="p">,</span> <span class="n">bayes_factor</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 最后检查结果，前面部分的代码运行无误后，请直接运行该代码块</span>
+
+<span class="c1"># 绘制密度图</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># 绘图</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_kde</span><span class="p">(</span><span class="n">beta_1_prior</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;prior&quot;</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span> <span class="n">fill_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">})</span>
+
+<span class="n">az</span><span class="o">.</span><span class="n">plot_kde</span><span class="p">(</span><span class="n">beta_1_posterior</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;posterior&quot;</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;coral&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span> <span class="n">fill_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">})</span>
+
+<span class="c1"># 添加垂直虚线</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 标注零假设区域</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span> 
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 设置图例和标签</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distribution&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Density&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Prior and Posterior Distribution&quot;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><em><strong>总结</strong></em></p>
+<ul class="simple">
+<li><p>贝叶斯因子较传统统计方法有很多优势，其中最突出的优势是对零假设和备择假设一视同仁。这一方面能够帮助研究者解决为零假设提供证据的问题，另一 方面还能帮助研究者拓宽思路，如本节课介绍了三种贝叶斯因子的计算与应用。</p></li>
+<li><p>与传统的P值不同，贝叶斯因子不仅能够告诉我们是否拒绝零假设，还能展示数据支持哪一个假设的证据强度。</p></li>
+<li><p>最后，请大家不要谨慎看待P值，P值并不教你相信/不相信什么，而只是为你修正自己的信念提供参考。</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter8"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter8_part1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Bayes Factor</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">简单线性回归模型的假设检验</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">假设检验 vs. 贝叶斯因子</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-models-parameters-with-bayes-factor">Testing Models’ Parameters with Bayes Factor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-against-a-null-region">Testing against a null-region</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#directional-hypotheses">练习: Directional hypotheses</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
