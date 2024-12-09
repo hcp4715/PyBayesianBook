@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Lecture 4: Balance and Sequentiality in Bayesian Analyses &#8212; Bayesian Inference with Python</title>
+    <title>Bayes Factor &#8212; Bayesian Inference with Python</title>
   
   
   
@@ -62,11 +62,13 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter3/Lecture4_part1';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter8/chapter8_part1';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Different data, different posteriors" href="Lecture4_part2.html" />
-    <link rel="prev" title="Part 4: Beta-Binomial model and simulation" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html" />
+    <link rel="next" title="贝叶斯因子的计算与应用" href="chapter8_part2.html" />
+    <link rel="prev" title="模型拟合" href="../chapter7/chapter7_part3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -189,11 +191,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">3.0 回顾Bayes'Rule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
 <ul class="nav bd-sidenav">
@@ -218,9 +220,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Bayes Factor</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part1.html">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part2.html">8.1 贝叶斯因子的计算与应用</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8_part2.html">8.1 贝叶斯因子的计算与应用</a></li>
 </ul>
 
     </div>
@@ -292,7 +294,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter3/Lecture4_part1.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter8/chapter8_part1.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -322,7 +324,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/chapter3/Lecture4_part1.md" target="_blank"
+      <li><a href="../_sources/chapter8/chapter8_part1.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -406,7 +408,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Lecture 4:  Balance and Sequentiality in Bayesian Analyses</h1>
+    <h1>Bayes Factor</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -416,7 +418,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-rule">回顾 Bayes’ Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">传统的假设检验方法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">为什么要介绍贝叶斯因子？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-factor-bf">贝叶斯因子（Bayes Factor，BF）的基本概念</a></li>
 </ul>
             </nav>
         </div>
@@ -428,102 +432,115 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="lecture-4-balance-and-sequentiality-in-bayesian-analyses">
-<h1>Lecture 4:  Balance and Sequentiality in Bayesian Analyses<a class="headerlink" href="#lecture-4-balance-and-sequentiality-in-bayesian-analyses" title="Permalink to this heading">#</a></h1>
-<p>  首先来对目前所学进行简单的课程回顾，之前实际上有实质内容的课程大概是两节。在这两节课中，我们通过几个简单的例子，帮助大家建立了对贝叶斯方法的直觉。作为一门与统计学相关的课程，我们并没有一开始就让大家陷入复杂的公式计算，而是从一个非常简单的事例开始。</p>
-<p>  这个事例是心理学研究者们最近讨论的热门话题之一，即单个事件或单个研究，这种研究通常无法重复。接着我们引入先验概率和似然的概念。</p>
-<p><strong>先验概率：</strong> 是关于一个特定的心理学实验能否被重复的可能性。</p>
-<p><strong>似然：</strong> 新信息的引入，具体来说，就是关于文章语言的信息。</p>
-<section id="bayes-rule">
-<h2>回顾 Bayes’ Rule<a class="headerlink" href="#bayes-rule" title="Permalink to this heading">#</a></h2>
-<p>  在前面的课程中，我们讨论了贝叶斯模型在处理不同类型数据时的应用，包括单一事件、离散变量和连续变量。</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="bayes-factor">
+<h1>Bayes Factor<a class="headerlink" href="#bayes-factor" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
-<li><p>现在我们对这些概念再次进行简要的回顾和总结：</p></li>
+<li><p>前面的课主要涉及贝叶斯统计的原理、基于后验的一系列分析和推断等内容，而这节课我们开始讲解前几课中经常提到的<strong>贝叶斯因子(Bayes Factor, BF)</strong>，实际上就是在贝叶斯学派的框架下进行的假设检验。</p></li>
 </ul>
-<table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>知识点</p></th>
-<th class="head"><p>内容描述</p></th>
-<th class="head"><p>先验</p></th>
-<th class="head"><p>似然</p></th>
-<th class="head"><p>贝叶斯更新</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>单个事件</strong></p></td>
-<td><p>一个使用特定语言风格的心理学实验被成功重复出来的可能性</p></td>
-<td><p>OSC2015的结果</p></td>
-<td><p>Psych sci 2024年的研究结果</p></td>
-<td><p>可视化的方式 + 简单计算</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>离散变量</strong></p></td>
-<td><p>多次试验(多次进行重复实验)的成功率</p></td>
-<td><p>人为分配的三种成功率(0.2, 0.5, 0.8)和它们出现的可能性</p></td>
-<td><p>进行重复后的结果在<strong>三种</strong>成功率下出现的可能性</p></td>
-<td><p>简单的手动计算</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>连续变量</strong></p></td>
-<td><p>多次试验(多次进行重复实验)的成功率/正确率</p></td>
-<td><p>符合成功率/正确率(0~1)特点和先验经验的概率分布</p></td>
-<td><p>进行重复后的结果在<strong>所有</strong>成功率/正确率下出现的可能性</p></td>
-<td><p>已被证明的统计学公式</p></td>
-</tr>
-</tbody>
-</table>
+<p>我们先简单回顾一下传统统计中的<strong>零假设显著性检验（Null Hypothesis Significance Test, NHST）</strong></p>
+<section id="id1">
+<h2>传统的假设检验方法<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>频率学派的假设检验主要是基于<strong>概率性质的反证法</strong>所实现的推论统计方法。</p>
+<p>———即承认如下前提:<em><strong>小概率事件(发生概率小于0.05的事件)在单次抽样中不会发生。</strong></em></p>
+<p>在传统的假设检验框架中，研究者需要根据研究对总体做互斥的两种假设，即零假设<span class="math notranslate nohighlight">\(H_0\)</span>和备择假设<span class="math notranslate nohighlight">\(H_1\)</span>:</p>
 <ul class="simple">
-<li><p>在<strong>第一个示例</strong>中，我们人为地将成功率设定为一个离散情况，分配了三种不同的成功率：0.2、0.5、0.8。同时，我们对每一种成功率出现的可能性进行了主观概率的分配。似然则是基于观察数据重复实验后的结果，它结合了数据和相应的概率。通过简单的手动运算，我们可以得到各种成功率的后验概率。先验概率是我们人为分配的，而通过计算，我们得到了后验概率。</p></li>
-<li><p>在<strong>第二个示例</strong>中，我们处理的是一个人为设定为离散的变量。这是一个无法直接观测的概率，只能通过数据来推断。我们通过手动计算来确定这个概率。</p></li>
+<li><p><strong>零假设（Null Hypothesis，<span class="math notranslate nohighlight">\(H_0\)</span>）</strong>: 表示没有效应或差异的假设。在许多情况下，零假设代表“无差异”或“无效应”，例如认为两组数据的均值没有显著差异。</p></li>
+<li><p><strong>备择假设（Alternative Hypothesis, <span class="math notranslate nohighlight">\(H_1\)</span>）</strong>：表示零假设不成立时的假设，通常认为有显著效应或差异。</p></li>
 </ul>
-<p>🤔<strong>以上两节课我们学习到了什么？</strong></p>
-<ol class="arabic simple">
-<li><p>贝叶斯更新本质上类似于数数，符合人类推理的直觉。</p></li>
-<li><p>贝叶斯统计的主要作用在于将上述的直觉进行数学化，从而帮助我们在更复杂的情境中解决问题。</p></li>
-</ol>
+<p>传统假设检验的核心概念还包括：</p>
+<ul class="simple">
+<li><p><strong>Alpha（<span class="math notranslate nohighlight">\(\alpha\)</span>）</strong>：显著性水平，通常设定为0.05，表示在零假设(<span class="math notranslate nohighlight">\(H_0\)</span>)成立的情况下，错误拒绝<span class="math notranslate nohighlight">\(H_0\)</span>的概率。换句话说，alpha（<span class="math notranslate nohighlight">\(\alpha\)</span>）是我们愿意接受的一类错误概率（假阳性）。</p></li>
+<li><p><span class="math notranslate nohighlight">\(P\)</span>值：是指在零假设成立的前提下，观察到当前或更极端数据的概率。如果<span class="math notranslate nohighlight">\(P\)</span>值≤<span class="math notranslate nohighlight">\(\alpha\)</span>，传统统计学的框架下通常会拒绝零假设，认为数据提供了足够的证据支持备择假设。</p></li>
+</ul>
+<p>传统的假设检验方法主要依赖于<span class="math notranslate nohighlight">\(P\)</span>值，这一方法在统计学中应用广泛，但也存在多个问题：</p>
+<ul class="simple">
+<li><p><strong>假阳性结果</strong>：研究者可能会通过操纵p值来达到显著性，如增加样本量或调整变量，这会导致假阳性结果，误导后续研究。</p></li>
+<li><p><strong>忽视效应大小</strong>：<span class="math notranslate nohighlight">\(P\)</span>值无法提供效应大小的信息，仅仅是显著与否的二分判断，不能全面反映数据的实际意义。</p></li>
+<li><p><strong>不考虑先验信息</strong>：传统假设检验忽略了先验知识和理论背景，仅关注数据本身，无法有效利用已有的研究成果。</p></li>
+<li><p><strong>无法为直接为零假设提供支持</strong>：不显著结果不代表零假设为真。</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image4.png" /></p>
 <blockquote>
-<div><p>对于最简单的情况，我们可以通过数数来确定可能性。但对于更复杂的情况，手动计算变得困难。贝叶斯更新的思路是，看到数据后更新我们对事件的看法或信念，这符合人类的推理直觉。
-<strong>贝叶斯更新的核心思想在于</strong>：当我们观察到新数据后，我们会更新对某个事件的看法或信念，这与人类日常推理的直觉相符合。在日常生活中，我们可能无意识地进行这样的推理，但贝叶斯统计将这种直觉数学化，使用数学和统计工具，包括编程，来解决更复杂的问题。</p>
-</div></blockquote>
-<p>  在之前的简单例子中，我们通过单个被试的数据来判断其在特定条件下判断方向的能力。然而，在真实的实验中，我们通常会有多个被试，每个被试可能在不同的时间点收集不同的数据，使得情境变得更加复杂。</p>
-<p>🔍回顾：与心理学数据的结合——<strong>随机点运动任务(random dot task)</strong></p>
-<ul class="simple">
-<li><p>随机点运动任务要求被试判断运动点的移动方向（例如，向左还是向右）。</p></li>
-<li><p>根据正确率的数据，可以使用心理物理曲线描述运动强度（点的一致性百分比）与决策正确率之间的关系。</p></li>
+<div><ul class="simple">
+<li><p>胡传鹏等(2018). 贝叶斯因子及其在JASP中的实现. 心理科学进展</p></li>
+<li><p>吴凡, 顾全, 施壮华, 高在峰, 沈模卫. (2018). 跳出传统假设检验方法的陷阱——贝叶斯因子在心理学研究领域的应用. 应用心理学</p></li>
 </ul>
-<center>  
-    <table>  
-            <tr>  
-                <td><img src="https://cdn.kesci.com/upload/sjwnyt1yq4.gif?imageView2/0/w/400/h/400" alt=""></td>  
-                <td><img src="https://cdn.kesci.com/upload/sjzjcgwjrm.png?imageView2/0/w/400/h/400" alt=""></td>  
-            </tr>  
-            <tr>  
-                <td>一致性60%</td>  
-                <td>正确率与任务难度</td>  
-            </tr>  
-    </table>  
-</center>  
+</div></blockquote>
+<p>🤔思考</p>
+<ul class="simple">
+<li><p>问题1：<span class="math notranslate nohighlight">\(\alpha\)</span>错误是漏报还是虚报？</p></li>
+</ul>
+<p>答：这里我们将<span class="math notranslate nohighlight">\(H_0\)</span>看作是“没有信号”，<span class="math notranslate nohighlight">\(H_1\)</span>看作是“有信号”。那么，如果“无信号”成立，但我们却报告了“有信号”，这实际上是——<strong>虚报</strong>。</p>
+<ul class="simple">
+<li><p>问题2：假设<span class="math notranslate nohighlight">\(P\)</span>值为0.01，<span class="math notranslate nohighlight">\(\alpha\)</span>值为0.05，我们的一类错误的概率是多少？</p></li>
+</ul>
+<p>答：依旧是0.05（<span class="math notranslate nohighlight">\(\alpha\)</span>）。</p>
+</section>
+<section id="id2">
+<h2>为什么要介绍贝叶斯因子？<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>与传统假设检验方法相比，贝叶斯因子具有以下几方面的优势：</p>
+<ul class="simple">
+<li><p><strong>1.对假设一视同仁</strong>： 同时评估<span class="math notranslate nohighlight">\(H_0\)</span>和<span class="math notranslate nohighlight">\(H_1\)</span>的可能性，能够为<span class="math notranslate nohighlight">\(H_0\)</span>提供支持证据，解决传统假设检验难以证明<span class="math notranslate nohighlight">\(H_0\)</span>成立的问题。</p></li>
+<li><p><strong>2.结合先验信息</strong>： 贝叶斯因子分析可以利用先验知识，将前人的研究成果与当前数据结合，提供更为全面的证据评估。</p></li>
+<li><p><strong>3.避免p值操纵</strong>： 贝叶斯因子的计算基于全数据集，不受单个数据点的影响，能够有效避免p值操纵带来的假阳性结果。而NHST则可以通过扩大样本量来使P值逐渐缩小至0.05，这可能会导致假阳性结果。</p></li>
+<li><p><strong>4.支持多模型比较</strong>： 贝叶斯因子不仅适用于二元假设检验，还可以用于比较多个模型的适用性，提供更为灵活的统计分析工具。</p></li>
+<li><p><strong>5.可以直接支持零假设</strong>。</p></li>
+</ul>
 <blockquote>
-<div><p>Shooshtari, S. V., Sadrabadi, J. E., Azizi, Z., &amp; Ebrahimpour, R. (2018). Confidence representation of perceptual decision by EEG and eye data in a random dot motion task. <em>Neuroscience</em>, 406, 510–527. <a class="reference external" href="https://doi.org/10.1016/j.neuroscience.2019.03.031">https://doi.org/10.1016/j.neuroscience.2019.03.031</a></p>
+<div><p>吴凡, 顾全, 施壮华, 高在峰, 沈模卫. (2018). 跳出传统假设检验方法的陷阱——贝叶斯因子在心理学研究领域的应用. 应用心理学</p>
 </div></blockquote>
-<p>上一节课中，我们仅考虑了通过一名被试的数据来推断其方向判断的能力。</p>
+</section>
+<section id="bayes-factor-bf">
+<h2>贝叶斯因子（Bayes Factor，BF）的基本概念<a class="headerlink" href="#bayes-factor-bf" title="Permalink to this heading">#</a></h2>
+<p>频率学派将随机事件发生的频率作为一种客观指标，而贝叶斯学派则<strong>从观察者的视角出发将概率理解为一种主观不确定性。</strong></p>
 <ul class="simple">
-<li><p>然而，在实际的实验中，我们通常会同时收集多个被试的数据，并希望通过这些数据来推断出被试的总体方向判断能力。</p></li>
-<li><p>另一方面，上一节课仅考虑了一项研究的结果作为先验，不同研究之间的先验可能存在差异。</p></li>
+<li><p>贝叶斯因子（Bayes Factor，BF）作为一种基于贝叶斯统计的验证方法，主要用于比较零假设与备择假设的相对支持程度，其衡量的主要是数据在这两种假设下的解释能力。</p></li>
 </ul>
-<p><em><strong>如下展示了不同被试在随机点任务中的正确率：</strong></em></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="k">try</span><span class="p">:</span>
-  <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;/home/mw/input/bayes3797/evans2020JExpPsycholLearn_exp1_full_data.csv&quot;</span><span class="p">)</span>
-<span class="k">except</span><span class="p">:</span>
-  <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/evans2020JExpPsycholLearn_exp1_full_data.csv&#39;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;被试数量：&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
-<span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;subject&quot;</span><span class="p">])[[</span><span class="s2">&quot;correct&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>本节课的主要目标是加深两个关键的贝叶斯直觉：</strong></p>
-<p><strong>数据对后验的影响</strong>：我们希望强调，不同的数据会导致不同的后验信念。后验信念是我们在收集数据后更新的信念，它反映了数据对我们原有信念的影响。</p>
-<p><strong>先验对后验的影响</strong>：我们同样希望强调，不同的先验信念会导致不同的后验信念。先验信念是我们在收集数据前对某一事件的信念。</p>
+<p>具体来说，贝叶斯因子可以表示为：</p>
+<div class="math notranslate nohighlight">
+\[
+BF_{10}=\frac{posterior~odds}{prior~odds} = \frac{P(H_1|Data)}{P(H_0|Data)} * \frac{P(H_1)}{P(H_0)} = \frac{P(Data|H_1)}{P(Data|H_0)}
+\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(P(Data|H_1)\)</span>和<span class="math notranslate nohighlight">\(P(Data|H_0)\)</span>分别表示在备择假设和零假设下数据的似然性。</p>
+<ul class="simple">
+<li><p>posterior odds：后验概率比</p></li>
+<li><p>prior odds：先验概率比</p></li>
+<li><p><span class="math notranslate nohighlight">\(H_0\)</span>：零假设，<span class="math notranslate nohighlight">\(H_1\)</span>：备择假设</p></li>
+</ul>
+<blockquote>
+<div><p>Heck, D. W., Boehm, U., Böing-Messing, F., Bürkner, P.-C., Derks, K., Dienes, Z., Fu, Q., Gu, X., Karimova, D., Kiers, H. A. L., Klugkist, I., Kuiper, R. M., Lee, M. D., Leenders, R., Leplaa, H. J., Linde, M., Ly, A., Meijerink-Bosman, M., Moerbeek, M., … Hoijtink, H. (2023). A review of applications of the bayes factor in psychological research. Psychological Methods, 28(3), 558–579. <a class="reference external" href="https://doi.org/10.1037/met0000454">https://doi.org/10.1037/met0000454</a></p>
+</div></blockquote>
+<p>当然，贝叶斯因子还有一种表达方式，即后验概率比等于贝叶斯因子乘以先验概率比：</p>
+<div class="math notranslate nohighlight">
+\[
+posterior~odds=BF_{10}×Prior~odds
+\]</div>
+<ul class="simple">
+<li><p>这说明，贝叶斯因子不仅反映了数据对假设的支持程度，还反映了先验概率到后验概率变化的程度或证据。简单来说，贝叶斯因子反映了当前数据更可能在<span class="math notranslate nohighlight">\(H_0\)</span>还是<span class="math notranslate nohighlight">\(H_1\)</span>下出现，这比较符合我们的直觉。</p></li>
+</ul>
+<p>同时，贝叶斯因子分析能够帮助研究者根据现有证据评估不同假设成立的可能性之比，并且在评估证据强度上也有一套独立的标准：</p>
+<center><img width = '450' height ='400' src="image-1.png">
+</center>
+<blockquote>
+<div><p>Source: 该表改编自胡传鹏等(2018)，源引用于Lee &amp; Wagenmakers (2014)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(BF_{10}=1\)</span>，收集到的数据并没有改变备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的相对可能性</p></li>
+<li><p><span class="math notranslate nohighlight">\(BF_{10}&gt;1\)</span>，收集到的证据增加了备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的相对可能性，BF越大，表明支持备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的证据越强。</p></li>
+<li><p><span class="math notranslate nohighlight">\(BF_{10}&lt;1\)</span>，收集到的证据削弱了备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的相对可能性，BF越小，表明支持备择假设<span class="math notranslate nohighlight">\(H_1\)</span>的证据越弱。</p></li>
+</ul>
+<p><em><strong>需要注意：</strong></em></p>
+<ul class="simple">
+<li><p>1.这只是一个大致的划分，而非绝对的标准。而在心理学研究当中，现在比较常用的两个标准是6和10。</p></li>
+<li><p>2.BF的下角标——“10”并不是指数字，而分别指代<span class="math notranslate nohighlight">\(H_1\)</span>和<span class="math notranslate nohighlight">\(H_0\)</span></p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>胡传鹏, 孔祥祯, Eric-Jan Wagenmakers, Alexander Ly, 彭凯平. (2018). 贝叶斯因子及其在JASP中的实现. 心理科学进展</p></li>
+<li><p>Makowski, D., Ben-Shachar, M. S., &amp; Lüdecke, D. (2019). bayestestR: Describing Effects and their Uncertainty, Existence and Significance within the Bayesian Framework. Journal of Open Source Software, 4(40), 1541. <a class="reference external" href="https://doi.org/10.21105/joss.01541">https://doi.org/10.21105/joss.01541</a></p></li>
+<li><p>Makowski, D., Ben-Shachar, M. S., Chen, S. H. A., &amp; Lüdecke, D. (2019). Indices of Effect Existence and Significance in the Bayesian Framework. Retrieved from 10.3389/fpsyg.2019.02767</p></li>
+</ul>
+</div></blockquote>
 </section>
 </section>
 
@@ -540,7 +557,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./chapter3"
+            path: "./chapter8"
         },
         predefinedOutput: true
     }
@@ -558,20 +575,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../chapter2_Beta_Binomial/BetaBinomial_part4.html"
+       href="../chapter7/chapter7_part3.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Part 4: Beta-Binomial model and simulation</p>
+        <p class="prev-next-title">模型拟合</p>
       </div>
     </a>
     <a class="right-next"
-       href="Lecture4_part2.html"
+       href="chapter8_part2.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Different data, different posteriors</p>
+        <p class="prev-next-title">贝叶斯因子的计算与应用</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -590,7 +607,9 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-rule">回顾 Bayes’ Rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">传统的假设检验方法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">为什么要介绍贝叶斯因子？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-factor-bf">贝叶斯因子（Bayes Factor，BF）的基本概念</a></li>
 </ul>
   </nav></div>
 
