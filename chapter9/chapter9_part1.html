@@ -446,7 +446,7 @@ document.write(`
 <section id="id1">
 <h2>回顾<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>在前面的九次课程中，我们系统性地介绍了贝叶斯统计的核心概念，并通过一个简单的线性回归模型展示了如何构建和应用一个相对简单的贝叶斯workflow。</p></li>
+<li><p>在前面的九次课程中，我们系统性地介绍了贝叶斯统计的核心概念，并通过一个简单的线性回归模型展示了如何构建和应用一个相对简单的贝叶斯全流程(workflow)。</p></li>
 </ul>
 <p><img alt="alt text" src="../_images/image5.png" /></p>
 <ul class="simple">
@@ -497,13 +497,13 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>在chapter8、9中，我们以一个认知实验中的研究问题——<strong>自我和他人条件下的反应时间是否有差异</strong> 出发，建立了一个简单的线性回归模型，并完成了贝叶斯数据分析的全流程。</p>
+<p>在第7、8两章中，以一个认知实验中的研究问题——<strong>自我和他人条件下的反应时间是否有差异</strong> 出发，建立了一个简单的线性回归模型，并完成了贝叶斯数据分析的全流程。</p>
 <p><img alt="alt text" src="../_images/image-27.png" /></p>
 <blockquote>
 <div><p>Sui, J., He, X., &amp; Humphreys, G. W. (2012). Perceptual effects of social salience: Evidence from self-prioritization effects on perceptual matching. Journal of Experimental Psychology: Human Perception and Performance, 38(5), 1105–1117. <a class="reference external" href="https://doi.org/10.1037/a0029792">https://doi.org/10.1037/a0029792</a></p>
 </div></blockquote>
-<p>-然而，我们在真实的实验研究中很少只涉及单因素两水平设计，更多会采用多因素的设计，并且需要考察交互作用。至此，我们可以开始进入更真实的场景，使用贝叶斯数据分析来解决一个真实的问题。</p>
-<p>Sui等人(2012)的真实数据如下(2*3的被试内设计)：</p>
+<p>-然而，我们在真实的实验研究中很少只涉及单因素两水平设计，更多会采用多因素的设计，且需要考察交互作用。至此，我们可以开始进入更真实的场景，使用贝叶斯数据分析来解决一个真实的问题。</p>
+<p>以采用<a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/22963229">Sui等(2012)</a>实验范式的真实数据为例，这些任务通常为2*3的被试内设计：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入 pymc 模型包，和 arviz 等分析工具 </span>
 <span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
 <span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
@@ -556,7 +556,7 @@ document.write(`
 <li><p>2×3的多元线性回归模型（无交互）</p></li>
 <li><p>2×3的多元线性回归模型（有交互）</p></li>
 </ul>
-<p>注：为了简化研究问题，本节课使用的是多个被试的数据。“Subject” 为被试编号，代表不同被试。</p>
+<p>注：为了简化研究问题，本节课使用的是多个被试的平均数据。“Subject” 为被试编号，代表不同被试。</p>
 <p>此外，数据中的因变量不是单个试次下被试的反应时和正确性，而是在<strong>不同条件下的平均反应时和正确率。</strong></p>
 </section>
 <section id="id2">
@@ -621,7 +621,7 @@ document.write(`
 <p>treatment coding这种以 [0, 1] 的编码方式是R语言中的默认方式，也称为哑变量编码（dummy coding）。这种方式以 [0, 1] 为编码规则，默认将第一个因子水平作为参考类别（reference level），其他水平与其进行比较。</p>
 <p>此外无序因子常用的还有sum coding，采用的是[1, -1]的编码方式，以使因子效应在模型中进行加权平均。</p>
 <ul class="simple">
-<li><p>其他的编码方式还有很多，如果感兴趣，可以通过以下参考资料自行了解。（尤其是最后一篇文章，它比较详细地介绍了各种情境下该如何建立编码矩阵，进而顺利解决研究问题）</p></li>
+<li><p>其他的编码方式还有很多，如果感兴趣，可以通过以下参考资料自行了解。（尤其是最后Schad等的这个文章，它比较详细地介绍了各种情境下该如何建立编码矩阵，进而顺利解决研究问题）</p></li>
 </ul>
 <style>
 .center 
