@@ -83,6 +83,15 @@ parts:
       title: 8.0 传统零假设显著性检验 vs 贝叶斯因子
     - file: chapter8/chapter8_part2.md
       title: 8.1 贝叶斯因子的计算与应用
+  - caption: 9. Multivariable linear regression
+    numberd: True
+    chapters:
+    - file: chapter9/chapter9_part1.md
+      title: 9.0 三水平的简单线性回归模型
+    - file: chapter9/chapter9_part2.md
+      title: 9.1 2×3的多元线性回归模型：无交互
+    - file: chapter9/chapter9_part3.md
+      title: 9.1 2×3的多元线性回归模型：有交互
 
 
 
