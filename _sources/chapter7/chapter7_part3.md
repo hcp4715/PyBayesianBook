@@ -982,7 +982,7 @@ Bambi是一个基于PyMC的包，特别优化了心理学和神经科学领域�
 
 Bambi 是一个用于贝叶斯统计建模的 Python 包，建立在 PyMC 上。  
 
-```pyhon  
+```python  
 model = bmb.Model('RT_sec ~ Label',  
                   data=df,  
                   dropna=True)  
@@ -1046,12 +1046,14 @@ Multiprocess sampling (4 chains in 4 jobs)
 NUTS: [sigma, Intercept, Label]
 
 ```
+
 ```
 Sampling 4 chains for 1_000 tune and 5_000 draw iterations (4_000 + 20_000 draws total) took 4 seconds.
 
 ```
-```python
+
 模型诊断部分的分析和之前直接使用 PyMC 是一致的。
+```python
 ax = az.plot_trace(trace, figsize=(7,7), compact=False)
 plt.tight_layout()
 plt.show()
