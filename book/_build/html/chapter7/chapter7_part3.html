@@ -1366,9 +1366,9 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 <h2>使用bambi进行模型定义<a class="headerlink" href="#bambi" title="Permalink to this heading">#</a></h2>
 <p>Bambi是一个基于PyMC的包，特别优化了心理学和神经科学领域的使用。它简化了模型构建过程，更符合心理学研究者在R和Python中的使用习惯，例如通过简洁的公式定义自变量和因变量，且支持数据清理（如去除NA值）。尽管如此，课程中建议使用PyMC来定义模型，因为这样有助于从概率编程的角度深入理解模型。对于实际数据分析，Bambi能够帮助用户更高效地构建模型，最终的结果也可以通过ArviZ进行相同的分析。</p>
 <p>Bambi 是一个用于贝叶斯统计建模的 Python 包，建立在 PyMC 上。</p>
-<div class="highlight-pyhon notranslate"><div class="highlight"><pre><span></span>model = bmb.Model(&#39;RT_sec ~ Label&#39;,  
-                  data=df,  
-                  dropna=True)  
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s1">&#39;RT_sec ~ Label&#39;</span><span class="p">,</span>  
+                  <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>  
+                  <span class="n">dropna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
 </pre></div>
 </div>
 <ul class="simple">
@@ -1434,10 +1434,10 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>模型诊断部分的分析和之前直接使用 PyMC 是一致的。
-ax = az.plot_trace(trace, figsize=(7,7), compact=False)
-plt.tight_layout()
-plt.show()
+<p>模型诊断部分的分析和之前直接使用 PyMC 是一致的。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><img alt="alt text" src="../_images/img16.png" /></p>
