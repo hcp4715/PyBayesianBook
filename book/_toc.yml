@@ -91,7 +91,9 @@ parts:
     - file: chapter9/chapter9_part2.md
       title: 9.1 2×3的多元线性回归模型：无交互
     - file: chapter9/chapter9_part3.md
-      title: 9.1 2×3的多元线性回归模型：有交互
+      title: 9.2 2×3的多元线性回归模型：有交互
+    - file: chapter9/chapter9_part4.md
+      title: 9.3 练习
 
 
 
