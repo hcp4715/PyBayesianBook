@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>课程回顾与复习 &#8212; Bayesian Inference with Python</title>
   
@@ -15,53 +14,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter14/chapter14';</script>
@@ -77,28 +72,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -120,12 +110,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -141,6 +139,8 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../chapter_overview/intro.html">
@@ -159,7 +159,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -274,7 +285,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -283,14 +294,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -415,10 +426,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -426,14 +437,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -482,12 +493,12 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1>课程回顾与复习<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
+<h1>课程回顾与复习<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <section id="vs">
-<h2>频率vs.概率<a class="headerlink" href="#vs" title="Permalink to this heading">#</a></h2>
+<h2>频率vs.概率<a class="headerlink" href="#vs" title="Link to this heading">#</a></h2>
 <p>频率与概率是统计学中的两个核心概念，它们之间既有区别也有联系。</p>
 <ul class="simple">
 <li><p><em><strong>频率的定义</strong></em></p>
@@ -513,7 +524,7 @@ document.write(`
 </ul>
 </section>
 <section id="id2">
-<h2>条件概率和贝叶斯公式<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2>条件概率和贝叶斯公式<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>从条件概率开始，这个概念描述了一个事件在另一个事件已经发生的情况下发生的概率。</p></li>
 </ul>
@@ -543,7 +554,7 @@ P(A \cap B)=P(A|B)×P(B)=P(B|A)×P(A)
 </ul>
 </section>
 <section id="ppl-mcmc">
-<h2>PPL 与 MCMC<a class="headerlink" href="#ppl-mcmc" title="Permalink to this heading">#</a></h2>
+<h2>PPL 与 MCMC<a class="headerlink" href="#ppl-mcmc" title="Link to this heading">#</a></h2>
 <p>在贝叶斯统计中，其分析的关键是结合先验与似然以确定后验分布。它可以告诉哪个参数值最大化了观察到已观察过的特定数据的概率，并把先验信念考虑在内。</p>
 <ul class="simple">
 <li><p>后验分布它可以给出每个参数值的可能性分布，但是很难得到完整的分布，也无法解析地求解，这时候就需要采用MCMC方法解决这一问题。</p></li>
@@ -567,7 +578,7 @@ P(A \cap B)=P(A|B)×P(B)=P(B|A)×P(A)
 </ul>
 </section>
 <section id="bayesian-workflow">
-<h2>Bayesian Workflow<a class="headerlink" href="#bayesian-workflow" title="Permalink to this heading">#</a></h2>
+<h2>Bayesian Workflow<a class="headerlink" href="#bayesian-workflow" title="Link to this heading">#</a></h2>
 <p>贝叶斯分析框架的最大优势在于其提供的灵活性，这使得研究者能够根据具体的研究背景和需求构建模型。然而，这种灵活性也带来了复杂性，要求研究者具备较高的统计技能和理解力。</p>
 <p><em><strong>模型设定</strong></em></p>
 <ul class="simple">
@@ -596,18 +607,18 @@ P(A \cap B)=P(A|B)×P(B)=P(B|A)×P(A)
 <p><img alt="alt text" src="../_images/image-114.png" /></p>
 </section>
 <section id="id3">
-<h2>演示如何将贝叶斯统计应用到真实研究中？<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<h2>演示如何将贝叶斯统计应用到真实研究中？<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <p>在真实的研究中，对于研究者而言，在确定一个可行的研究问题后，应用贝叶斯方法进行数据分析时，重点需要考虑的步骤为模型设定、模型评估及统计推断。</p>
 <p>接下来，依旧以本学期课上经常使用到的随机点运动范式为例，通过完整的研究报告形式对贝叶斯工作流程进行回顾和阐述。</p>
 <section id="id4">
-<h3>研究问题<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<h3>研究问题<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>首先，研究者需要从实际数据出发，明确研究问题并理解数据的特征。这包括数据的收集、预处理和探索性分析，以便为后续的建模提供基础。</p>
 <ul class="simple">
 <li><p>例如，现在想知道在“随机点运动范式中，反应时间如何受到随机点运动方向一致性比例的影响，如果会的话，其影响程度是怎么样的？”</p></li>
 </ul>
 </section>
 <section id="id5">
-<h3>数据收集<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<h3>数据收集<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>通常情况下，为解决上述问题，需要进行数据收集：</p>
 <p>1.参与者被要求对一系列随机运动的点进行反应，记录每次反应所需的时间（反应时间）。</p>
 <p>2.随机点运动方向的一致性比例（例如，80%的点朝同一方向，20%的点随机方向）作为自变量。</p>
@@ -617,7 +628,7 @@ P(A \cap B)=P(A|B)×P(B)=P(B|A)×P(A)
 </div></blockquote>
 </section>
 <section id="id6">
-<h3>数据集描述<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<h3>数据集描述<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <p>Evans数据集包括12个变量，包括被试编号（subject）、反应时间、随机点运动方向的一致性（percentCoherence）等。</p>
 <p><em><strong>参与者</strong></em></p>
 <ul class="simple">
@@ -629,19 +640,19 @@ P(A \cap B)=P(A|B)×P(B)=P(B|A)×P(A)
 <div><p>Kruschke, J.K. Bayesian Analysis Reporting Guidelines. Nat Hum Behav 5, 1282–1291 (2021). <a class="reference external" href="https://doi.org/10.1038/s41562-021-01177-7">https://doi.org/10.1038/s41562-021-01177-7</a></p>
 </div></blockquote>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入 pymc 模型包，和 arviz 等分析工具 </span>
-<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
-<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">ipywidgets</span>
-<span class="kn">import</span> <span class="nn">bambi</span> <span class="k">as</span> <span class="nn">bmb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ipywidgets</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bambi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bmb</span>
 
 <span class="c1"># 忽略不必要的警告</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -670,7 +681,7 @@ P(A \cap B)=P(A|B)×P(B)=P(B|A)×P(A)
 </div>
 </section>
 <section id="id7">
-<h3>模型设定<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<h3>模型设定<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <p>建立三个不同的模型来探讨反应时间与一致性比例之间的关系。</p>
 <p><em><strong>模型1：完全池化模型</strong></em></p>
 <ul class="simple">
@@ -726,7 +737,7 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
 </div>
 </section>
 <section id="mcmc">
-<h3>拟合数据及MCMC评估<a class="headerlink" href="#mcmc" title="Permalink to this heading">#</a></h3>
+<h3>拟合数据及MCMC评估<a class="headerlink" href="#mcmc" title="Link to this heading">#</a></h3>
 <p>接下来会对3个模型进行数据拟合、MCMC评估及后验计算。</p>
 <p><em><strong>模型1：完全池化模型</strong></em></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">complete_pooled_trace</span> <span class="o">=</span> <span class="n">complete_pooled_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">idata_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;log_likelihood&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
@@ -755,7 +766,7 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
 </section>
 </section>
 <section id="id8">
-<h2>模型比较<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h2>
+<h2>模型比较<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
 <p><em><strong>模型评估指标</strong></em></p>
 <p>在分析模型的预测能力时，有绝对指标和相对指标，绝对指标用于衡量模型预测值与真实值之间的差异，相对指标用于比较不同模型的预测能力，通常用于不同方法或模型之间的性能对比。</p>
 <p><em><strong>绝对指标：</strong></em></p>
@@ -777,8 +788,8 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义计算 MAE 函数</span>
-<span class="kn">from</span> <span class="nn">statistics</span> <span class="kn">import</span> <span class="n">median</span>
-<span class="k">def</span> <span class="nf">MAE</span><span class="p">(</span><span class="n">trace</span><span class="p">):</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">median</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">MAE</span><span class="p">(</span><span class="n">trace</span><span class="p">):</span>
     <span class="c1"># 计算每个X取值下对应的后验预测模型的均值</span>
     <span class="n">pre_x</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;log_RTs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span>
     <span class="n">pre_y_mean</span> <span class="o">=</span> <span class="n">pre_x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
@@ -799,7 +810,7 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义</span>
-<span class="k">def</span> <span class="nf">counter_outlier</span><span class="p">(</span><span class="n">model_trace</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">counter_outlier</span><span class="p">(</span><span class="n">model_trace</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
     <span class="c1"># 将az.summary生成的结果存到hdi_multi这个变量中，该变量为数据框</span>
     <span class="n">hdi</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">model_trace</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="n">hdi_prob</span><span class="p">)</span>
     <span class="n">lower</span> <span class="o">=</span> <span class="n">hdi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
@@ -856,10 +867,10 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
 <p>因此，根据模型评估的结果，可以发现模型3（变化截距和变化斜率）的结果在3个模型中是最好的。</p>
 </section>
 <section id="id9">
-<h2>贝叶斯统计推断<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h2>
+<h2>贝叶斯统计推断<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
 <p>模型比较发现，模型3（变化截距和变化斜率）的结果在3个模型中是最好的。最后，将使用 HDI + ROPE 和贝叶斯因子（Bayes Factor，BF）来进行统计推断。</p>
 <section id="hdi-rope">
-<h3>HDI + ROPE 的统计推断<a class="headerlink" href="#hdi-rope" title="Permalink to this heading">#</a></h3>
+<h3>HDI + ROPE 的统计推断<a class="headerlink" href="#hdi-rope" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>反应时差异的后验分布平均值为 -281 ms，然而，这一数值并不足以断定实验条件对反应时间有显著的减少作用。</p></li>
 <li><p>95% HDI 范围为 [-608 ms, 48 ms]，表明后验分布中95%的概率下的反应时差异位于此区间。由于95% HDI 包含了0，并且分布主要集中在负值方向，但这一趋势并不足以证明存在显著的效应。</p></li>
@@ -867,7 +878,7 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
 </ul>
 </section>
 <section id="bayes-factor-bf">
-<h3>贝叶斯因子（Bayes Factor，BF）<a class="headerlink" href="#bayes-factor-bf" title="Permalink to this heading">#</a></h3>
+<h3>贝叶斯因子（Bayes Factor，BF）<a class="headerlink" href="#bayes-factor-bf" title="Link to this heading">#</a></h3>
 <p>反应时的差异（beta_1）在统计上和实际意义上均不显著。</p>
 <ul class="simple">
 <li><p>数据强烈支持 无效假设（beta_1 = 0），即反应时差异可能不存在或非常微弱。</p></li>
@@ -875,7 +886,7 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
 <li><p>从后验分布来看，数据更新后 beta_1 的可能值仍然集中在 0 附近，进一步支持无效假设。</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 从贝叶斯模型的后验分布中提取参数</span>
-<span class="k">def</span> <span class="nf">inv_log</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">inv_log</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="n">Intercept_mu</span> <span class="o">=</span> <span class="n">var_both_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">)</span>
@@ -926,7 +937,7 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
 </section>
 </section>
 <section id="id10">
-<h2>总结<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h2>
+<h2>总结<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
 <p>贝叶斯统计的核心思想包括先验分布、后验分布、贝叶斯推断和模型比较等内容，在学习了基础理论之后，重点探讨了如何在实际研究中应用贝叶斯统计方法，并使用PyMC等工具进行模型构建和分析。</p>
 <p><img alt="alt text" src="../_images/image-38.png" /></p>
 <ul class="simple">
@@ -965,7 +976,7 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -985,6 +996,7 @@ Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1059,8 +1071,8 @@ By Dr. Hu Chuan-Peng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

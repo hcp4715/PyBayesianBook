@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>模型拟合 &#8212; Bayesian Inference with Python</title>
   
@@ -15,53 +14,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter7/chapter7_part3';</script>
@@ -78,28 +73,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -121,12 +111,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -142,6 +140,8 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../chapter_overview/intro.html">
@@ -160,7 +160,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -275,7 +286,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -284,14 +295,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -416,10 +427,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -427,14 +438,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -479,12 +490,12 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1>模型拟合<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
+<h1>模型拟合<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <section id="id2">
-<h2>模型定义<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2>模型定义<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p>现在，我们可以结合数据与先验，为参数<span class="math notranslate nohighlight">\((\beta_0, \beta_1, \sigma)\)</span>生成后验模型</p>
 <ul class="simple">
 <li><p>之后我们可以使用 PyMC 来完成对于模型后验分布的采样过程</p></li>
@@ -515,7 +526,7 @@ document.write(`
 </ul>
 <p>在建立模型时，我们使用了刚才讨论的先验分布和似然函数。具体来说，<span class="math notranslate nohighlight">\(β_0\)</span>采用正态分布，均值为5，标准差为2；<span class="math notranslate nohighlight">\(β_1\)</span>使用均值为0，标准差为1的正态分布；<span class="math notranslate nohighlight">\(σ\)</span>则采用参数为0.3的指数分布。通过这些设置，模型的先验部分就定义完成了。</p>
 <p>接下来，我们将这些内容转化为代码。代码的编写其实非常简单，尤其是对于正态分布部分，大家在使用PyMC库时已经相当熟悉了。具体实现时，首先定义先验的分布，并为每个参数命名，比如<span class="math notranslate nohighlight">\(β_0、β_1和σ\)</span>。之后，我们将自变量X定义为数据集中的对应列。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
 
 <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">linear_model</span><span class="p">:</span>
 
@@ -539,7 +550,7 @@ document.write(`
 <p>定义似然函数时，我们的模型会与实际数据进行组合。通过将数据与模型相结合，我们得到了最终的模型形式。在代码中，y_est 表示基于当前参数（即 <code class="docutils literal notranslate"><span class="pre">μ</span></code> 和 <code class="docutils literal notranslate"><span class="pre">σ</span></code>）计算出来的预测值，而我们通过 <code class="docutils literal notranslate"><span class="pre">observe</span></code> 来对比模型预测与实际观察到的数据。</p>
 </section>
 <section id="id3">
-<h2>后验采样<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<h2>后验采样<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>接下来我们使用<code class="docutils literal notranslate"><span class="pre">pm.sample()</span></code>进行mcmc采样</p></li>
 </ol>
@@ -653,9 +664,9 @@ trace.posterior[‘beta_0’][0, 10]</p>
 <p>不过，这种固定命名方式也有局限性，因为我们无法随意更改这些 group 的名称。如果有特定需求需要重新定义或修改某些数据结构的名称，可能会受到限制。尽管如此，一旦理解了这些常用 group 的含义，使用起来就会变得更加顺手和高效。</p>
 </section>
 <section id="mcmc">
-<h2>MCMC 诊断<a class="headerlink" href="#mcmc" title="Permalink to this heading">#</a></h2>
+<h2>MCMC 诊断<a class="headerlink" href="#mcmc" title="Link to this heading">#</a></h2>
 <p>使用<code class="docutils literal notranslate"><span class="pre">az.plot_trace()</span></code>可视化参数的后验分布</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span><span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -731,7 +742,7 @@ trace.posterior[‘beta_0’][0, 10]</p>
 <p>需要注意的是，由于模型较为简单，即使将采样次数减少到 2000 次，可能仍然能够得到类似的高质量结果。简单模型通常更容易快速达到收敛。</p>
 </section>
 <section id="id4">
-<h2>后验预测<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
+<h2>后验预测<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <p>在确认 MCMC 采样结果可靠后，下一步需要检验模型与数据的匹配程度。之前我们评估的是参数估计的稳定性，即 MCMC 链是否收敛；但模型是否适合数据尚未验证。<strong>这一步的目标是判断模型对数据的拟合效果是否良好。</strong></p>
 <p>MCMC 诊断仅能显示采样过程的收敛性和采样质量，而不能直接说明模型在观测数据上的拟合效果或预测能力。<strong>为评估模型的预测能力，我们可以进行后验预测检查，通过模拟新的数据样本来比较模型生成的数据与实际观测数据的分布是否一致，从而验证模型的合理性和适用性。</strong></p>
 <ul class="simple">
@@ -744,7 +755,7 @@ trace.posterior[‘beta_0’][0, 10]</p>
 <p>在模型匹配评估中，有一种<strong>非常直观且符合逻辑的方式</strong>：首先，根据观测数据拟合出模型并得到参数的后验分布；然后，利用这些后验分布的参数生成模拟数据；最后，将生成的数据与原始观测数据进行对比，观察二者在特性上的相似性。如果生成的数据能够很好地再现原始数据的特性，就说明模型与数据的拟合效果较好。</p>
 <p><strong>后验预测(Posterior Predictive Check)正是完成这一任务的重要步骤</strong>。在完成后验采样并确认 MCMC 链的收敛性和采样质量之后，仍需通过后验预测进一步验证模型的合理性。具体而言，通过 MCMC 采样获得的后验分布，我们可以提取大量的参数组合，用以生成模拟数据。例如，假设有 2 万组后验参数组合，这相当于生成了 2 万条回归线。这些回归线是否能够捕捉到观测数据中的特性，例如变量间的差异，是模型是否合理的重要评估标准。</p>
 <section id="id5">
-<h3>🎯练习<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<h3>🎯练习<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>根据 <strong>先验预测检验可视化预测结果</strong>的思路，对于后验预测结果进行可视化。</p>
 <ol class="arabic simple">
 <li><p>使用真实数据中的自变量Label</p></li>
@@ -803,7 +814,7 @@ trace.posterior[‘beta_0’][0, 10]</p>
 <blockquote>
 <div><p>😎<em>跑起来快很多</em></p>
 </div></blockquote>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="c1"># 导入真实的自变量</span>
 
@@ -841,7 +852,7 @@ trace.posterior[‘beta_0’][0, 10]</p>
 <p>绘图中的预测均值相当于正态分布中的<span class="math notranslate nohighlight">\(μ\)</span>，每条线代表不同自变量<span class="math notranslate nohighlight">\(X\)</span>取值（如<span class="math notranslate nohighlight">\(X=0\)</span> 和 <span class="math notranslate nohighlight">\(X=1\)</span>）时的预测均值。此外，基于这些预测均值<span class="math notranslate nohighlight">\(μ\)</span>和观测数据中相应的标准差<span class="math notranslate nohighlight">\(σ\)</span>，我们还可以生成模拟的随机观测数据（如反应时）。</p>
 </section>
 <section id="id6">
-<h3>通过MCMC采样值理解后验预测分布<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<h3>通过MCMC采样值理解后验预测分布<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>通过MCMC采样，三个参数各获得了20000个采样值<span class="math notranslate nohighlight">\(\left(\beta_0^{(i)},\beta_1^{(i)},\sigma^{(i)}\right)\)</span></p></li>
 <li><p>根据 20000 组参数值 <span class="math notranslate nohighlight">\(\beta_0\)</span> 和 <span class="math notranslate nohighlight">\(\beta_1\)</span>，可以得到 20000 个均值 <span class="math notranslate nohighlight">\(\mu\)</span> 的可能值。然后再根据 <span class="math notranslate nohighlight">\(\mu\)</span> 生成预测值 <span class="math notranslate nohighlight">\(Y_{\text{new}}\)</span>。</p></li>
@@ -896,7 +907,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 <p>同时，从采样结果中也可以提取对应的<span class="math notranslate nohighlight">\(σ\)</span>值，与这些均值配合，用来表征预测分布的波动范围。这种方式让我们能够更精确地构建每组采样参数下的预测分布，进一步检验模型对数据的拟合程度。</p>
 </section>
 <section id="id7">
-<h3>提取后验样本并生成预测<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<h3>提取后验样本并生成预测<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <p><strong>我们也可以用代码来进行模拟，首先我们先进行单次完整的抽取过程</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
 <span class="c1"># 采样得到的参数后验分布都储存在 trace.posterior中，我们进行一些提取操作</span>
@@ -1006,7 +1017,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 </div></blockquote>
 </section>
 <section id="id8">
-<h3>总体后验预测分布<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<h3>总体后验预测分布<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>除了生成特定自变量下，因变量的分布，也可以生成总体因变量的后验预测分布</p></li>
 <li><p>通过 <code class="docutils literal notranslate"><span class="pre">pymc.sample_posterior_predictive</span></code>方法可以快速从模型生成后验预测数据。</p></li>
@@ -1040,7 +1051,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 <p>运行后，可以通过ArviZ的<code class="docutils literal notranslate"><span class="pre">plot</span> <span class="pre">PPC</span></code>绘制预测观测值与实际观测值的关系。由于有2万个预测值，直接绘制会显得非常混乱，因此通常选择只画其中一部分，通常为500条或1000条。蓝色线条表示每组MCMC参数生成的预测线，每组参数会生成与观测值数量相同的数据点，绘制出对应的密度曲线。通过这些曲线，能够看出模型的整体分布情况，黄色虚线代表这些曲线的均值，反映了一个近似正态分布。然而，实际观测值（黑色曲线）与预测结果之间存在偏差，表明数据并不完全符合正态分布。尽管如此，这个模型在大致趋势上与观测数据相符，但进一步的改进可能涉及更适合反应时间（RT）分布的模型，如广义线性模型。</p>
 </section>
 <section id="id9">
-<h3>对新数据的预测<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
+<h3>对新数据的预测<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>采样得到的后验参数基于编号为”201”的被试数据，到目前为止，我们都在使用后验参数对这一批数据做出后验预测</p></li>
 <li><p>那么基于编号为”201”的被试数据得出的后验参数估计对其他数据的预测效果如何？</p></li>
@@ -1065,12 +1076,12 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 </pre></div>
 </div>
 <p><img alt="alt text" src="../_images/image-49.png" /></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
-<span class="k">def</span> <span class="nf">plot_posterior_predictive</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Posterior Predictive&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_posterior_predictive</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Posterior Predictive&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    绘制后验预测线性模型，展示不同 Label 条件下的平均反应时间 (RT) 及其不确定性。</span>
 
@@ -1145,7 +1156,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 </section>
 </section>
 <section id="id10">
-<h2>后验推断<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h2>
+<h2>后验推断<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
 <p>我们共得到20000对<span class="math notranslate nohighlight">\(\beta_0\)</span>和<span class="math notranslate nohighlight">\(\beta_1\)</span>值，可以通过<code class="docutils literal notranslate"><span class="pre">az.summary()</span></code>总结参数的基本信息</p>
 <ul class="simple">
 <li><p>此表包含了模型的诊断信息，例如参数的均值、标准差和有效样本大小（ess_bulk 和 ess_tail）。</p></li>
@@ -1352,7 +1363,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 </ol>
 <p>规范推断通常是使用大家认可的方法，比如HDI（Highest Density Interval）加上ROPE（Region of Practical Equivalence）。ROPE的定义是，当两个条件之间的差距在±50毫秒以内时，我们认为它们没有差异。ROPE是一个比较保守的标准，意味着只有当差距超出这个区间，才认为两个条件之间有实际差异。在这个例子中，如果我们设定ROPE为±50毫秒，那么它对应的区间就是-0.05到+0.05。</p>
 <p>一旦设定了ROPE，我们可以通过ArviZ中的一行代码，使用plot HDI和ROPE功能，来查看HDI与ROPE之间的重叠情况，从而评估模型的差异是否显著。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
 
 <span class="c1"># 定义 ROPE 区间，根据研究的需要指定实际等效范围</span>
 
@@ -1381,7 +1392,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 <p>由于95%的HDI落在ROPE之外，我们有信心认为自我和他人条件之间存在显著差异，<span class="math notranslate nohighlight">\(β_1\)</span>足够大，可以认为它们不是相等的。这类似于频率主义方法中的显著性推断，只是使用了不同的术语。</p>
 </section>
 <section id="id11">
-<h2>总结<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h2>
+<h2>总结<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>本节课通过一个简单的线性回归示例，展示了如何使用 PyMC 构建贝叶斯模型，并结合之前的内容对模型结果进行深入分析。</p>
 <ul>
@@ -1394,7 +1405,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 <p><img alt="Image Name" src="chapter7/img%202.png" /></p>
 </section>
 <section id="bambi">
-<h2>使用bambi进行模型定义<a class="headerlink" href="#bambi" title="Permalink to this heading">#</a></h2>
+<h2>使用bambi进行模型定义<a class="headerlink" href="#bambi" title="Link to this heading">#</a></h2>
 <p>Bambi是一个基于PyMC的包，特别优化了心理学和神经科学领域的使用。它简化了模型构建过程，更符合心理学研究者在R和Python中的使用习惯，例如通过简洁的公式定义自变量和因变量，且支持数据清理（如去除NA值）。尽管如此，课程中建议使用PyMC来定义模型，因为这样有助于从概率编程的角度深入理解模型。对于实际数据分析，Bambi能够帮助用户更高效地构建模型，最终的结果也可以通过ArviZ进行相同的分析。</p>
 <p>Bambi 是一个用于贝叶斯统计建模的 Python 包，建立在 PyMC 上。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s1">&#39;RT_sec ~ Label&#39;</span><span class="p">,</span>  
@@ -1412,7 +1423,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 <ol class="arabic simple">
 <li><p>首先定义模型</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">bambi</span> <span class="k">as</span> <span class="nn">bmb</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">bambi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bmb</span>
 
 <span class="c1"># 定义先验并传入模型中</span>
 <span class="n">beta_0</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Prior</span><span class="p">(</span><span class="s2">&quot;Normal&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  
@@ -1547,7 +1558,7 @@ Y_{\text{new}}^{(i)} = \mu^{(i)} + \epsilon^{(i)}, \quad \epsilon^{(i)} \sim \ma
 </div>
 </section>
 <section id="id12">
-<h2>补充材料：为什么使用MCMC是必要的<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h2>
+<h2>补充材料：为什么使用MCMC是必要的<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
 <p>最后还有一个补充材料：关于为什么要使用MCMC的而不是用normal或者这种模型计算后验。大家可以去感受一下最后这个公式，如果手动的去求的话，它的复杂程度。</p>
 <blockquote>
 <div><p>我们都知道当后验分布的计算过于复杂时，我们应该选用MCMC来近似后验分布</p>
@@ -1617,7 +1628,7 @@ f(\beta_0,\beta_1,\sigma \; | \; \vec{y})
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -1646,6 +1657,7 @@ f(\beta_0,\beta_1,\sigma \; | \; \vec{y})
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1716,8 +1728,8 @@ By Dr. Hu Chuan-Peng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
