@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>分层模型中的组层面预测因子(group-level predictors) &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter13/chapter13_part5';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="练习" href="chapter13_part6.html" />
+    <link rel="prev" title="Model3: Hierarchical model with varying intercepts &amp; slopes(变化截距和斜率模型)" href="chapter13_part4.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Bayes Factor</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part1.html">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part2.html">8.1 贝叶斯因子的计算与应用</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Multivariable linear regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part1.html">9.0 三水平的简单线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part2.html">9.1 2×3的多元线性回归模型：无交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter13/chapter13_part5.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter13/chapter13_part5.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>分层模型中的组层面预测因子(group-level predictors)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="group-level-predictors">
+<h1>分层模型中的组层面预测因子(group-level predictors)<a class="headerlink" href="#group-level-predictors" title="Permalink to this heading">#</a></h1>
+<p>🤔 在上面的例子中，考虑了个体压力对于自我控制的影响，并且分不同站点来考虑这一问题。然而，我们是否考虑过不同站点的其他特性对于自我控制的影响呢？</p>
+<ul class="simple">
+<li><p>例如，原数据想要探究的核心问题为温度和社会行为的关系，不同站点对应了不同国家和地区，<strong>而这些地区的平均气温是否会对自我控制产生影响呢</strong>？</p>
+<ul>
+<li><p>由于该数据的收集时间为夏季，因此在查阅了每一站点的夏季平均气温后，将其作为<strong>组层面的预测变量</strong></p></li>
+</ul>
+</li>
+<li><p>组层面预测因子(group-level predictors)是指在组间(站点)层面的特征，这是相对于组内预测因子(group-level predictors)而言的。</p>
+<ul>
+<li><p>例如，个体压力分数(stress)是组内预测因子。这个值在不同个体间具有不同值。</p></li>
+<li><p>而地区的夏季平均温度是组层面预测因子。这些值在不同站点(site)间不同，但是在站点内的个体间保持相同。</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="alt text" src="../_images/image-281.png" /></p>
+<p><strong>构建具有组层面预测因子的分层模型</strong></p>
+<ul class="simple">
+<li><p>在变化截距模型的基础上继续添加：</p></li>
+</ul>
+<p>先前的变化截距模型：</p>
+<p><strong>prior</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\beta_0 \sim N(0,50^2)\\
+\beta_1 \sim N(0,5^2)\\
+\sigma_y \sim Exp(1)\\
+\sigma_0 \sim Exp(1)
+\end{split}\]</div>
+<p><strong>likelihood</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\beta_{0j}|\beta_0,\sigma_0 \overset{ind}{\sim}N(\beta_0,\sigma_0^2)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Layer2:站点水平（表示截距在站点间的变化）
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+Y_{ij}|\beta_{0j},\beta_1,\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~~\mu_{ij}=\beta_{0j}+\beta_1X_{ij}~~~Layer1:被试水平（表示每个站点内的线性模型）
+\]</div>
+<p>🤔 如果考虑组层面预测因子，那么该变量该放在哪一层(Layer)？</p>
+<ul class="simple">
+<li><p>由于组层面预测因子是组间(站点<span class="math notranslate nohighlight">\(j\)</span>)层面的特征，因此该变量主要影响截距在站点间的变化。</p></li>
+<li><p>公式写作：<span class="math notranslate nohighlight">\(\beta_{0j}=\gamma_0+\gamma_1U_j\)</span></p>
+<ul>
+<li><p>其中，<span class="math notranslate nohighlight">\(U_j\)</span>是站点<span class="math notranslate nohighlight">\(j\)</span>的组层面预测因子</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma_1\)</span>是组层面预测因子<span class="math notranslate nohighlight">\(U_j\)</span>的回归系数；而<span class="math notranslate nohighlight">\(\gamma_0\)</span>是站点间变化的截距</p></li>
+<li><p>因此，每个站点的截距<span class="math notranslate nohighlight">\(\beta_{0j}\)</span>，受到组层面预测因子<span class="math notranslate nohighlight">\(U_j\)</span>的影响</p></li>
+</ul>
+</li>
+<li><p>也可以写作<span class="math notranslate nohighlight">\(\mu_{ij}=\beta_{0j}+\beta_1X_{ij}=(\gamma_0+\gamma_1U_j)+\beta_1X_{ij}\)</span></p></li>
+</ul>
+<p>类似地，如果是认知实验也可以构建组层面预测因子的分层模型。在认知实验中，被试层面的因素可以作为组层面预测因子进行考量。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#选择需要的变量</span>
+<span class="n">df_temp</span> <span class="o">=</span><span class="n">df_first5</span><span class="p">[[</span><span class="s2">&quot;site_idx&quot;</span><span class="p">,</span><span class="s2">&quot;obs_id&quot;</span><span class="p">,</span><span class="s2">&quot;Site&quot;</span><span class="p">,</span><span class="s2">&quot;stress&quot;</span><span class="p">,</span><span class="s2">&quot;scontrol&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="n">df_temp</span><span class="p">[</span><span class="s1">&#39;Site&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+<span class="c1">#生成各站点的夏季平均气温</span>
+<span class="n">level_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="mf">17.6</span><span class="p">,</span>
+    <span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mf">24.8</span><span class="p">,</span>
+    <span class="n">levels</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="mf">19.9</span><span class="p">,</span>
+    <span class="n">levels</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mf">30.3</span><span class="p">,</span>
+    <span class="n">levels</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="mi">19</span>
+<span class="p">}</span>
+
+<span class="c1">#将气温信息合并到数据框中</span>
+<span class="n">df_temp</span><span class="p">[</span><span class="s1">&#39;avetemp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_temp</span><span class="p">[</span><span class="s1">&#39;Site&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">level_mapping</span><span class="p">)</span>
+<span class="n">df_temp</span>
+</pre></div>
+</div>
+<p><strong>夏季平均气温对自我控制平均分的影响</strong></p>
+<ul class="simple">
+<li><p>注意：由于只考虑了5个站点的数据，因此只有少量的5个数据点</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;avetemp&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;scontrol&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_temp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Site&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-291.png" /></p>
+<p><strong>总的公式</strong></p>
+<p>将<span class="math notranslate nohighlight">\(\beta_{0j}=\gamma_0+\gamma_1U_j\)</span>放入之前的公式，并且为新参数<span class="math notranslate nohighlight">\(\gamma_0和\gamma_1\)</span>引入先验分布：</p>
+<p><strong>prior</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\gamma_0 \sim N(0,50^2)\\
+\gamma_1 \sim N(0,5^2)\\
+\beta_1 \sim N(0,5^2)\\
+\sigma_y \sim Exp(1)\\
+\sigma_0 \sim Exp(1)
+\end{split}\]</div>
+<p><strong>likelihood</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\beta_{0j}|\gamma_0,\gamma_1,\sigma_0 \overset{ind}{\sim}N(\gamma_0+\gamma_1U_j,\sigma_0^2)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Layer2:站点水平
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+Y_{ij}|\beta_{0j},\beta_1,\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~~\mu_{ij}=\beta_{0j}+\beta_1X_{ij}~~~Layer1:被试水平
+\]</div>
+<p><strong>另一种定义形式</strong></p>
+<ul class="simple">
+<li><p>在此之前我们认为<span class="math notranslate nohighlight">\(\beta_{0j}=\beta_0+b_{0j}\)</span>，即在共同截距的基础上增加组的变异</p></li>
+<li><p>但在具有组层面（group-level）预测因子的模型中，实际上截距又会受到组层面的影响</p>
+<ul>
+<li><p>相当于:<span class="math notranslate nohighlight">\(\beta_0=\gamma+\gamma_1U_j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_{0j}=\gamma_0+\gamma_1U_j+b_{0j}\)</span></p></li>
+<li><p>进一步将<span class="math notranslate nohighlight">\(\beta_{0j}\)</span>放入<span class="math notranslate nohighlight">\(\mu_{ij}=\beta_{0j}+\beta_1X_{ij}\)</span>中：<span class="math notranslate nohighlight">\(\mu_{ij}=(\gamma_0+\gamma_1U_j+b_{0j})+\beta_1X_{ij}\)</span></p></li>
+</ul>
+</li>
+</ul>
+<p>整理后：</p>
+<p><strong>prior</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\gamma_0 \sim N(0,50^2)\\
+\gamma_1 \sim N(0,5^2)\\
+\beta_1 \sim N(0,5^2)\\
+\sigma_y \sim Exp(1)\\
+\sigma_0 \sim Exp(1)
+\end{split}\]</div>
+<p><strong>likelihood</strong></p>
+<div class="math notranslate nohighlight">
+\[
+b_{0j}|\sigma_0 \overset{ind}{\sim}N(0,\sigma_0^2)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Layer2:站点水平
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+Y_{ij}|\beta_{0j},\beta_1,\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~~\mu_{ij}=(\gamma_0+\gamma_1U_j+b_{0j})+\beta_1X_{ij}~~~Layer1:被试水平
+\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 采用第二种定义方式</span>
+
+<span class="c1">#定义数据坐标，包括站点和观测索引</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;site&quot;</span><span class="p">:</span> <span class="n">df_temp</span><span class="p">[</span><span class="s2">&quot;Site&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span>
+        <span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="n">df_temp</span><span class="o">.</span><span class="n">obs_id</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">group_pred_model</span><span class="p">:</span>
+    <span class="c1">#定义全局参数</span>
+    <span class="n">gamma_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;gamma_0&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">gamma_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;gamma_1&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> 
+    <span class="n">beta_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> 
+    <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma_y&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+    <span class="n">sigma_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma_0&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1">#传入自变量、获得观测值对应的站点映射</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">df_temp</span><span class="o">.</span><span class="n">stress</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">df_temp</span><span class="o">.</span><span class="n">avetemp</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;site&quot;</span><span class="p">)</span>
+    <span class="n">site_idx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;site&quot;</span><span class="p">,</span> <span class="n">df_temp</span><span class="o">.</span><span class="n">site_idx</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span> 
+
+    <span class="c1">#定义组层面变量</span>
+    <span class="n">beta_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="n">gamma_0</span> <span class="o">+</span> <span class="n">gamma_1</span><span class="o">*</span><span class="n">u</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;site&quot;</span><span class="p">)</span>
+    <span class="n">beta_0_offset</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_0_offset&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;site&quot;</span><span class="p">)</span>
+    <span class="n">beta_0j</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;beta_0j&quot;</span><span class="p">,</span> <span class="n">beta_0</span> <span class="o">+</span> <span class="n">sigma_0</span><span class="o">*</span><span class="n">beta_0_offset</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;site&quot;</span><span class="p">)</span>
+
+    <span class="c1">#线性关系</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="n">beta_0j</span><span class="p">[</span><span class="n">site_idx</span><span class="p">]</span><span class="o">+</span><span class="n">beta_1</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+ 
+    <span class="c1"># 定义 likelihood</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y_est&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_y</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">df_temp</span><span class="o">.</span><span class="n">scontrol</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>
+
+    <span class="n">group_pred_trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>           <span class="c1"># 使用mcmc方法进行采样，draws为采样次数</span>
+                        <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>                    <span class="c1"># tune为调整采样策略的次数，可以决定这些结果是否要被保留</span>
+                        <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>                     <span class="c1"># 链数</span>
+                        <span class="n">discard_tuned_samples</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># tune的结果将在采样结束后被丢弃</span>
+                        <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">,</span>
+                        <span class="n">target_accept</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>bambi code（补充内容）</strong></p>
+<ul class="simple">
+<li><p>当模型变得复杂， 在 PyMC 中定义分层模型将变得困难。</p></li>
+<li><p>使用 Bambi 可以简化这一过程，其模型定义公式为<code class="docutils literal notranslate"><span class="pre">&quot;stress</span> <span class="pre">+</span> <span class="pre">avetemp</span> <span class="pre">+</span> <span class="pre">(stress|Site)&quot;</span></code></p></li>
+<li><p>只需要在原来分层模型的基础上加入组层面预测因子即可</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group_pred_bmb</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s2">&quot;scontrol ~ stress + avetemp + (stress|Site)&quot;</span><span class="p">,</span>
+                      <span class="n">df_temp</span><span class="p">,</span>
+                      <span class="n">categorical</span><span class="o">=</span><span class="s2">&quot;Site&quot;</span><span class="p">)</span>
+
+<span class="n">group_pred_bmb</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="n">group_pred_bmb</span><span class="o">.</span><span class="n">graph</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>MCMC采样&amp;后验参数估计</strong></p>
+<ul class="simple">
+<li><p>可以看到组层面预测因子（平均最低气温）的回归斜率<span class="math notranslate nohighlight">\(\gamma_{1j}\)</span>和截距<span class="math notranslate nohighlight">\(\gamma_{0j}\)</span></p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">group_pred_trace</span><span class="p">,</span>
+           <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gamma_0&quot;</span><span class="p">,</span><span class="s2">&quot;gamma_1&quot;</span><span class="p">,</span><span class="s2">&quot;beta_0j&quot;</span><span class="p">,</span><span class="s2">&quot;beta_1&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group_pred_trace</span>
+</pre></div>
+</div>
+<p><strong>后验预测回归线(站点平均气温的影响)</strong></p>
+<ul class="simple">
+<li><p>下面展示了组层面预测因子(夏季平均气温)与截距的关系</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 提取每个站点的温度</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">group_pred_trace</span><span class="o">.</span><span class="n">constant_data</span><span class="o">.</span><span class="n">u</span>
+<span class="c1"># 提取组层面截距与温度的关系，体现在beta_0: beta_0 = gamma_0 + gamma_1 * u</span>
+<span class="n">beta_0</span> <span class="o">=</span> <span class="n">group_pred_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">beta_0</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span><span class="s2">&quot;draw&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">values</span>
+<span class="c1">#提取每个站点的截距</span>
+<span class="n">beta_0j</span> <span class="o">=</span> <span class="n">group_pred_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">beta_0j</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span><span class="s2">&quot;draw&quot;</span><span class="p">))</span>
+<span class="n">temp_hdi</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">hdi</span><span class="p">(</span><span class="n">group_pred_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">beta_0j</span><span class="p">)</span>
+<span class="c1"># 绘制每个站点的截距均值</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">beta_0j</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean site-intercept&quot;</span><span class="p">)</span>
+<span class="c1">#绘制截距与温度之间的关系</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">beta_0</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean intercept&quot;</span><span class="p">)</span>
+<span class="c1">#绘制每个站点截距95%HDI</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_hdi</span><span class="p">(</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">group_pred_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">beta_0j</span><span class="p">,</span>
+        <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+        <span class="n">fill_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Mean intercept HPD&quot;</span><span class="p">}</span>
+        <span class="p">)</span>
+<span class="c1">#生成横坐标名称</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Site-level temparature&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="c1"># 生成纵坐标名称</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Intercept estimate&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-301.png" /></p>
+<p><strong>总结</strong></p>
+<p>本节课介绍了如何使用将分层模型扩展到一般线性模型，以及广义线性模型。</p>
+<p>重点内容包括：</p>
+<ul class="simple">
+<li><p>如何根据研究问题和假设来确定模型</p></li>
+<li><p>如何在PyMC中定义分层模型，包括变化的截距、变化的斜率</p></li>
+<li><p>如何通过模型比较来检验不同的假设</p></li>
+<li><p>如何使用分层模型预测其他群体(站点)的结果</p></li>
+</ul>
+<p>🎉🎉🎉🎉🎉 最后，本课程的正式内容也到此为止，感谢大家参与本门课程，希望大家能在实践中应用课程中的知识和技能，提高自己统计分析的能力。</p>
+<p>通过本课程的学习，大家应该能对贝叶斯工作流有一个初步的理解，这将帮助你们更好地应用贝叶斯方法进行数据分析。</p>
+<p><img alt="alt text" src="../_images/image-312.png" /></p>
+<blockquote>
+<div><p>本学期贝叶斯课程中使用了许多心理学研究中的示例。如果你们有兴趣查看其他示例研究，可以浏览去年的课件，已经将其上传到 Gitee 上，链接如下：
+<a class="reference external" href="https://gitee.com/hcp4715/PyBayesian/tree/master/Archive/2023/Notebooks">https://gitee.com/hcp4715/PyBayesian/tree/master/Archive/2023/Notebooks</a></p>
+</div></blockquote>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter13"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter13_part4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Model3: Hierarchical model with varying intercepts &amp; slopes(变化截距和斜率模型)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter13_part6.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">练习</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

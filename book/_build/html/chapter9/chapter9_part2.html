@@ -231,6 +231,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -593,7 +623,7 @@ Y_i | \beta_0,\beta_1\,\beta_2,\beta_3,\sigma \sim N(\mu_i,\sigma^2)\\
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">model2_trace</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-104.png" /></p>
+<p><img alt="alt text" src="../_images/image-108.png" /></p>
 <p>使用 ROPE+HDI 对参数进行检验，可以看到<span class="math notranslate nohighlight">\(\beta_3\)</span>非常接近0，表明该参数没有显著性。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义 ROPE 区间，根据研究的需要指定实际等效范围</span>
 <span class="n">rope_interval</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>
@@ -611,7 +641,7 @@ Y_i | \beta_0,\beta_1\,\beta_2,\beta_3,\sigma \sim N(\mu_i,\sigma^2)\\
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-114.png" /></p>
+<p><img alt="alt text" src="../_images/image-1111.png" /></p>
 <ul class="simple">
 <li><p>使用贝叶斯因子进行差异检验:</p></li>
 </ul>
@@ -640,7 +670,7 @@ Y_i | \beta_0,\beta_1\,\beta_2,\beta_3,\sigma \sim N(\mu_i,\sigma^2)\\
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-123.png" /></p>
+<p><img alt="alt text" src="../_images/image-128.png" /></p>
 <p>我们可以看到，<span class="math notranslate nohighlight">\(\beta_3的BF_{01}\)</span>接近30，表明有较强的证据说明不同匹配条件下Y的均值相同。</p>
 <p><strong>后验预测</strong></p>
 <p>最后，我们可以使用<code class="docutils literal notranslate"><span class="pre">pm.sample_posterior_predictive</span></code>函数来生成后验预测。</p>
@@ -650,7 +680,7 @@ Y_i | \beta_0,\beta_1\,\beta_2,\beta_3,\sigma \sim N(\mu_i,\sigma^2)\\
 <span class="n">az</span><span class="o">.</span><span class="n">plot_ppc</span><span class="p">(</span><span class="n">model2_ppc</span><span class="p">,</span> <span class="n">num_pp_samples</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-133.png" /></p>
+<p><img alt="alt text" src="../_images/image-137.png" /></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="c1"># 导入真实的自变量</span>
@@ -679,7 +709,7 @@ Y_i | \beta_0,\beta_1\,\beta_2,\beta_3,\sigma \sim N(\mu_i,\sigma^2)\\
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-143.png" /></p>
+<p><img alt="alt text" src="../_images/image-147.png" /></p>
 <p>从模型预测结果来看：</p>
 <ul class="simple">
 <li><p>模型1中，不同匹配条件下的反应时预测相同；但在模型2中，不同匹配条件下的反应时预测不同，说明匹配条件对反应时存在影响。</p></li>

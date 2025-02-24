@@ -231,6 +231,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -449,7 +479,7 @@ document.write(`
 <section id="id1">
 <h2>多个理解变量下，不同编码和研究效应的关系<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p>如图所示，表中列出了 Treatment Coding 和 Sum Coding 两种常用的因子变量编码方式，并展示了它们在研究主效应和交互效应时的特点：</p>
-<p><img alt="alt text" src="../_images/image-152.png" /></p>
+<p><img alt="alt text" src="../_images/image-156.png" /></p>
 <blockquote>
 <div><p>参考资料：
 <a class="reference external" href="https://zhuanlan.zhihu.com/p/103547646">线性（混合）模型中如何对因子变量事先生成虚拟变量 - 知乎</a></p>
@@ -631,7 +661,7 @@ Y=\beta_0+\beta_1·X_{L1}+\beta_2·X_{L2}+\beta_3·X_{M1}+\beta_4·(X_{L1}·X_{M
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">model3_trace</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-162.png" /></p>
+<p><img alt="alt text" src="../_images/image-165.png" /></p>
 <p>使用 ROPE+HDI 对参数进行检验:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义 ROPE 区间，根据研究的需要指定实际等效范围</span>
 <span class="n">rope_interval</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>
@@ -649,7 +679,7 @@ Y=\beta_0+\beta_1·X_{L1}+\beta_2·X_{L2}+\beta_3·X_{M1}+\beta_4·(X_{L1}·X_{M
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-172.png" /></p>
+<p><img alt="alt text" src="../_images/image-175.png" /></p>
 <ul class="simple">
 <li><p>可以看出，<span class="math notranslate nohighlight">\(\beta_4和\beta_5\)</span>的HDI与ROPE区间重叠非常大，表明没有交互作用。</p></li>
 </ul>
@@ -675,7 +705,7 @@ Y=\beta_0+\beta_1·X_{L1}+\beta_2·X_{L2}+\beta_3·X_{M1}+\beta_4·(X_{L1}·X_{M
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-182.png" /></p>
+<p><img alt="alt text" src="../_images/image-183.png" /></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\beta_4和\beta_5的BF_{01}\)</span>在10~20之间，即有较强的证据支持不存在交互作用。</p></li>
 </ul>
@@ -687,7 +717,7 @@ Y=\beta_0+\beta_1·X_{L1}+\beta_2·X_{L2}+\beta_3·X_{M1}+\beta_4·(X_{L1}·X_{M
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_ppc</span><span class="p">(</span><span class="n">model3_ppc</span><span class="p">,</span> <span class="n">num_pp_samples</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-192.png" /></p>
+<p><img alt="alt text" src="../_images/image-193.png" /></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="c1"># 导入真实的自变量</span>
@@ -726,7 +756,7 @@ Y=\beta_0+\beta_1·X_{L1}+\beta_2·X_{L2}+\beta_3·X_{M1}+\beta_4·(X_{L1}·X_{M
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-201.png" /></p>
+<p><img alt="alt text" src="../_images/image-203.png" /></p>
 <ul class="simple">
 <li><p>我们可以观察到Model3的红点（预测值）相比于Model2更加拟合数据的集中趋势，表明将交互作用纳入考虑的Model3相比于没有考虑交互的Model2有了一个显著的提升。</p></li>
 </ul>

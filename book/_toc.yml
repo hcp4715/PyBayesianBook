@@ -94,6 +94,52 @@ parts:
       title: 9.2 2×3的多元线性回归模型：有交互
     - file: chapter9/chapter9_part4.md
       title: 9.3 练习
+  - caption: 10. Evaluating Regression Models
+    numberd: True
+    chapters:
+    - file: chapter10/chapter10_part1.md
+      title: 10.0 贝叶斯回顾模型的评估
+    - file: chapter10/chapter10_part2.md
+      title: 10.1 练习
+  - caption: 11. Logistic Regression
+    numberd: True
+    chapters:
+    - file: chapter11/chapter11_part1.md
+      title: 11.0 贝叶斯逻辑回归
+    - file: chapter11/chapter11_part2.md
+      title: 11.1 练习
+  - caption: 12. Hierarchical Models
+    numberd: True
+    chapters:
+    - file: chapter12/chapter12_part1.md
+      title: 12.0 层级数据结构与完全池化模型
+    - file: chapter12/chapter12_part2.md
+      title: 12.1 非池化模型
+    - file: chapter12/chapter12_part3.md
+      title: 12.2 部分池化模型
+    - file: chapter12/chapter12_part4.md
+      title: 12.3 开放式练习
+  - caption: 13. Hierarchical Regression Models
+    numberd: True
+    chapters:
+    - file: chapter13/chapter13_part1.md
+      title: 13.0 普通线性模型
+    - file: chapter13/chapter13_part2.md
+      title: 13.1 变化截距模型
+    - file: chapter13/chapter13_part3.md
+      title: 13.2 变化斜率模型
+    - file: chapter13/chapter13_part4.md
+      title: 13.3 变化截距和斜率模型
+    - file: chapter13/chapter13_part5.md
+      title: 13.4 分层模型中的组层面预测因子
+    - file: chapter13/chapter13_part6.md
+      title: 13.5 练习
+  - caption: 14. 课程回顾与复习
+    numberd: True
+    chapters:
+    - file: chapter14/chapter14.md
+      title: 14.0 课程回顾与复习
+
 
 
 

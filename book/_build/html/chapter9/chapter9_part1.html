@@ -231,6 +231,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -449,11 +479,11 @@ document.write(`
 <ul class="simple">
 <li><p>在前面的九次课程中，我们系统性地介绍了贝叶斯统计的核心概念，并通过一个简单的线性回归模型展示了如何构建和应用一个相对简单的贝叶斯全流程(workflow)。</p></li>
 </ul>
-<p><img alt="alt text" src="../_images/image5.png" /></p>
+<p><img alt="alt text" src="../_images/image14.png" /></p>
 <ul class="simple">
 <li><p>贝叶斯公式——基础：</p></li>
 </ul>
-<p><img alt="alt text" src="../_images/image-113.png" /></p>
+<p><img alt="alt text" src="../_images/image-127.png" /></p>
 <ul class="simple">
 <li><p>为了帮助大家建立关于贝叶斯推断的直觉，我们使用了三种情境：单一事件、离散变量和连续变量：</p></li>
 </ul>
@@ -499,7 +529,7 @@ document.write(`
 </table>
 </div>
 <p>在第7、8两章中，以一个认知实验中的研究问题——<strong>自我和他人条件下的反应时间是否有差异</strong> 出发，建立了一个简单的线性回归模型，并完成了贝叶斯数据分析的全流程。</p>
-<p><img alt="alt text" src="../_images/image-27.png" /></p>
+<p><img alt="alt text" src="../_images/image-219.png" /></p>
 <blockquote>
 <div><p>Sui, J., He, X., &amp; Humphreys, G. W. (2012). Perceptual effects of social salience: Evidence from self-prioritization effects on perceptual matching. Journal of Experimental Psychology: Human Perception and Performance, 38(5), 1105–1117. <a class="reference external" href="https://doi.org/10.1037/a0029792">https://doi.org/10.1037/a0029792</a></p>
 </div></blockquote>
@@ -539,7 +569,7 @@ document.write(`
 <span class="n">df</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-39.png" /></p>
+<p><img alt="alt text" src="../_images/image-318.png" /></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Label列共有 </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="si">}</span><span class="s2"> 类&quot;</span> <span class="p">)</span>
 </pre></div>
 </div>
@@ -775,7 +805,7 @@ Y|\beta_0,\beta_1,\beta_2,\sigma \sim N(\mu_i,\sigma^2)，\mu_i=\beta_0+\beta_1�
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">model1_trace</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-47.png" /></p>
+<p><img alt="alt text" src="../_images/image-412.png" /></p>
 <p>使用 ROPE+HDI 对参数进行检验:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义 ROPE 区间，根据研究的需要指定实际等效范围</span>
 <span class="n">rope_interval</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>
@@ -793,7 +823,7 @@ Y|\beta_0,\beta_1,\beta_2,\sigma \sim N(\mu_i,\sigma^2)，\mu_i=\beta_0+\beta_1�
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-54.png" /></p>
+<p><img alt="alt text" src="../_images/image-58.png" /></p>
 <ul class="simple">
 <li><p>从上图可以看出，<span class="math notranslate nohighlight">\(\beta_1和\beta_2\)</span>参数的HDI内不包含0，但两者均与ROPE重叠，表明效应不明显。可以使用贝叶斯因子进行进一步假设检验。</p></li>
 <li><p>此外，<span class="math notranslate nohighlight">\(\beta_1\)</span>的效应在均值和HDI范围均大于<span class="math notranslate nohighlight">\(\beta_2\)</span>。</p></li>
@@ -820,7 +850,7 @@ Y|\beta_0,\beta_1,\beta_2,\sigma \sim N(\mu_i,\sigma^2)，\mu_i=\beta_0+\beta_1�
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-65.png" /></p>
+<p><img alt="alt text" src="../_images/image-69.png" /></p>
 <ul class="simple">
 <li><p>可以看出，无论对于<span class="math notranslate nohighlight">\(\beta_1还是\beta_2\)</span>，<span class="math notranslate nohighlight">\(BF_{10}\)</span>都接近于1，表明两个参数都没有证据支持它们与0有区别。</p></li>
 </ul>
@@ -832,7 +862,7 @@ Y|\beta_0,\beta_1,\beta_2,\sigma \sim N(\mu_i,\sigma^2)，\mu_i=\beta_0+\beta_1�
 <span class="n">az</span><span class="o">.</span><span class="n">plot_ppc</span><span class="p">(</span><span class="n">model1_ppc</span><span class="p">,</span> <span class="n">num_pp_samples</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-74.png" /></p>
+<p><img alt="alt text" src="../_images/image-78.png" /></p>
 <p>从后验预测图可以看出，大部分是比较符合的，但模型在比较极端的地方表现得没那么好。</p>
 <p>🤔那么，我们在真实的研究中也会遇到这种情况，此时需要我们进行权衡：（1）接受这种稍微没有那么完美的模型（2）利用更复杂的模型来进行更完美的拟合。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
@@ -865,7 +895,7 @@ Y|\beta_0,\beta_1,\beta_2,\sigma \sim N(\mu_i,\sigma^2)，\mu_i=\beta_0+\beta_1�
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-85.png" /></p>
+<p><img alt="alt text" src="../_images/image-89.png" /></p>
 <p>在实际的认知实验中，我们通常要看每个条件下的平均反应时，现在我们用箱型图进行绘制，并观察预测值和真实观测值之间的差异：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_prediction</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">predicted_y</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
@@ -907,7 +937,7 @@ Y|\beta_0,\beta_1,\beta_2,\sigma \sim N(\mu_i,\sigma^2)，\mu_i=\beta_0+\beta_1�
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-94.png" /></p>
+<p><img alt="alt text" src="../_images/image-98.png" /></p>
 <p>可以看到，当仅考虑“Label”条件时，由于没有考虑到“Matching”条件的影响，模型预测的 y 值与真实值存在较大的偏差。</p>
 </section>
 </section>

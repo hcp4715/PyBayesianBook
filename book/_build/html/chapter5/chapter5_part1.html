@@ -231,6 +231,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -453,7 +483,7 @@ document.write(`
 <section id="monte-carlo">
 <h3>什么是 Monte Carlo ?<a class="headerlink" href="#monte-carlo" title="Permalink to this heading">#</a></h3>
 <p>🤔问题：假设我们知道这个正方形的面积，想估算图中圆形的面积（但不使用圆的面积的公式），通过何种近似的方法可以怎么解决这一问题呢？</p>
-<p><img alt="alt text" src="../_images/image2.png" /></p>
+<p><img alt="alt text" src="../_images/image7.png" /></p>
 <ul class="simple">
 <li><p>思路：假设我们向这个正方形内随机抛入一些点，并且这些点落在这个空间当中的概率是均等的，那么就意味着它落在这个圆里和落在圆外的数量应当是成比例的。既然这样的话，那么落在圆里的点的数量与总数量之比，大概就是这个圆和整个正方形的面积之比。</p></li>
 </ul>
@@ -563,14 +593,14 @@ posterior ~ variance=\frac{1^2×0.75^2}{1^2+0.75^2}=0.6^2
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-18.png" /></p>
+<p><img alt="alt text" src="../_images/image-118.png" /></p>
 <p>我们观察发现，二者形状大致相同，并且6.25这个位置采样的次数确实是最多的。</p>
 <p>🤔现在我们思考一个问题：是不是通过Monte Carlo采样就可以直接得到后验呢？</p>
 <p><strong>未归一化的后验分布(unnormalized posterior pdf)</strong></p>
 <p>我们在上节课讲到，在现实的数据分布中，往往模型比较复杂，导致我们进行的计算变得复杂，尤其是分母部分的归一化因子。我们需要将所有可能的参数取值情况下的likelihood的值全部求出来，这个时候就会变得很复杂。</p>
 <p>❓为什么归一化因子比较难以计算？</p>
 <p>假如归一化因子（分母）比较难以计算，是不是可以不计算？</p>
-<p><img alt="alt text" src="../_images/image2.png" /></p>
+<p><img alt="alt text" src="../_images/image7.png" /></p>
 <p>Q: 假如我们只知道上面随机点的信息，但不知道正方形的面积，我们如何估算圆的面积？</p>
 <p>A: 使用足够多的点，计算圆内点的比例</p>
 <ul class="simple">
@@ -586,7 +616,7 @@ f(\mu|y=6.25) \sim f(\mu)L(\mu|y=6.25)
 <li><p>重要的是，两个分布中，<span class="math notranslate nohighlight">\(μ\)</span>的结果主要集中在 2-6 之间</p></li>
 </ul>
 <p>因此，当进行采样时，我们可以使用<strong>未归一化的后验分布</strong>的结果来替代计算真实的后验分布<span class="math notranslate nohighlight">\(f(\mu)\)</span></p>
-<p><img alt="alt text" src="../_images/image-2.png" /></p>
+<p><img alt="alt text" src="../_images/image-214.png" /></p>
 <p>🤔思考：如何在不计算复杂归一化常数的情况下，有效地生成样本？</p>
 </section>
 </section>
@@ -607,7 +637,7 @@ f(\mu|y=6.25) \sim f(\mu)L(\mu|y=6.25)
 <li><p>这样，我们可以确定参数选择的范围<span class="math notranslate nohighlight">\(\theta_k \sim [0,1]\)</span>，参数是离散变量，每一个值对应一种心情。</p></li>
 <li><p>注意，我们用下标 k 来表示不同的心情以及对应的参数值。</p></li>
 </ul>
-<p><img alt="alt text" src="../_images/image-35.png" /></p>
+<p><img alt="alt text" src="../_images/image-314.png" /></p>
 <ul class="simple">
 <li><p><strong>状态转移</strong>：每一天我们的心情都会发生变化或者不变，代表一次采样，即一次状态的转移。</p></li>
 <li><p>长时间的跟踪这些状态，我们会得到一个马尔科夫链：{<span class="math notranslate nohighlight">\(\theta^{(1)},\theta^{(2)},.....\theta^{(n)}\)</span>}，这里n表示天数，<span class="math notranslate nohighlight">\(\theta^{(n)}\)</span>是第n天的具体心情。</p></li>
