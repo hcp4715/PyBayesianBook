@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Part 4: Beta-Binomial model and simulation &#8212; Bayesian Inference with Python</title>
   
@@ -15,53 +14,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter2_Beta_Binomial/BetaBinomial_part4';</script>
@@ -78,28 +73,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -121,12 +111,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -142,6 +140,8 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../chapter_overview/intro.html">
@@ -160,7 +160,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -231,6 +242,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -245,7 +286,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -254,14 +295,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -386,10 +427,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -397,14 +438,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -439,13 +480,13 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="part-4-beta-binomial-model-and-simulation">
-<h1>Part 4: Beta-Binomial model and simulation<a class="headerlink" href="#part-4-beta-binomial-model-and-simulation" title="Permalink to this heading">#</a></h1>
+<h1>Part 4: Beta-Binomial model and simulation<a class="headerlink" href="#part-4-beta-binomial-model-and-simulation" title="Link to this heading">#</a></h1>
 <p>  这个部分的主要目的就是通过代码的模拟帮助大家看到这个过程是如何发生的。大家可以逐渐通过了解代码的含义，然后尝试着将它运用到新的场景。并且，课程最后会有相应的小练习，大家可以通过完成小练习来学习如何在python里使用一些基本的数据操作和数据处理的小技巧。</p>
 <section id="beta-binomial-model">
-<h2>Beta-Binomial model的一般数学形式<a class="headerlink" href="#beta-binomial-model" title="Permalink to this heading">#</a></h2>
+<h2>Beta-Binomial model的一般数学形式<a class="headerlink" href="#beta-binomial-model" title="Link to this heading">#</a></h2>
 <p>在前一节中，我们对随机点运动任务的正确率ACC建立了基本、更加完整的Beta-Binomial模型。</p>
 <ul class="simple">
 <li><p>我们现在假设了一个特定的Beta(45,55)先验分布和特定的正确判断次数（正确次数： Y = 30，总试次： n = 50）。</p></li>
@@ -474,11 +515,11 @@ document.write(`
 模拟结果：10,000对ACC和y值的模拟数据</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入数据加载和处理包：pandas</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="c1"># 导入数字和向量处理包：numpy</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="c1"># 导入基本绘图工具：matplotlib</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="c1"># 设置随机种子，以便后续可以重复结果</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">84735</span><span class="p">)</span>
@@ -514,10 +555,10 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-13.png" /></p>
+<p><img alt="alt text" src="../_images/image-134.png" /></p>
 <p>当我们仅关注与我们的Y = 30正确次数匹配的对时，剩下的ACC值的很好地逼近了后验模型Beta(75,75)：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入绘图工具 seaborn 为 sns</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
 <span class="c1"># 从模拟数据中筛选出 y 值为 30 的样本，生成对应的后验分布。</span>
 <span class="n">king_posterior</span> <span class="o">=</span> <span class="n">king_sim</span><span class="p">[</span><span class="n">king_sim</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">30</span><span class="p">]</span>
@@ -529,10 +570,10 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-141.png" /></p>
+<p><img alt="alt text" src="../_images/image-145.png" /></p>
 <p>同时绘制出先验、似然和后验:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入统计建模工具包 scipy.stats 为 st</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span> 
 
 <span class="c1"># 设置 x 轴范围 [0,1]</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10000</span><span class="p">)</span>
@@ -565,7 +606,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-15.png" /></p>
+<p><img alt="alt text" src="../_images/image-154.png" /></p>
 <hr class="docutils" />
 <p>我们还可以使用模拟样本近似后验特征，例如随机点运动任务正确率的均值和标准差。</p>
 <ul class="simple">
@@ -596,7 +637,7 @@ document.write(`
 50,000次模拟中, 1045次与观测到的Y = 30数据匹配</p>
 </section>
 <section id="id1">
-<h2>总结<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<h2>总结<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>  在第3章中，我们对一个真实的现象(随机点运动任务中特定条件下正确判断的能力)，构建了Beta-Binomial模型，并通过数据进行了一次信念更新：</p>
 <center>
 <p><span class="math notranslate nohighlight">\(Y|ACC\sim Bin(n,ACC)\)</span>
@@ -616,7 +657,7 @@ document.write(`
 <p><span class="math notranslate nohighlight">\(f(ACC|y)\propto f(ACC)L(ACC|y)\propto ACC^{(a+y)-1}(1-ACC^{(\beta+n-y)-1})\)</span></p>
 </section>
 <section id="id2">
-<h2>练习<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2>练习<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>假设心理学研究中的可重复研究出现的概率为 0.4（这里概率用π表示），请自行选择一个合适的 Beta 分布，模拟10000个<span class="math notranslate nohighlight">\(\pi\)</span>值。</p></li>
 <li><p>请根据<span class="math notranslate nohighlight">\(\pi\)</span>模拟相应的数据<span class="math notranslate nohighlight">\(Y\)</span>(可重复研究的数量)，假设总的可重复研究数量n=100。</p></li>
@@ -624,10 +665,10 @@ document.write(`
 </ul>
 </section>
 <section id="bonus-1-beta-70-30">
-<h2>Bonus 1：<span class="math notranslate nohighlight">\(Beta(70, 30)\)</span>这个先验是怎么选取的?<a class="headerlink" href="#bonus-1-beta-70-30" title="Permalink to this heading">#</a></h2>
+<h2>Bonus 1：<span class="math notranslate nohighlight">\(Beta(70, 30)\)</span>这个先验是怎么选取的?<a class="headerlink" href="#bonus-1-beta-70-30" title="Link to this heading">#</a></h2>
 <p>在回答这个问题之前，我们先来了解一下<strong>Beta分布的集中趋势量数</strong></p>
 <p>需要注意的是，虽然我们可能比较熟悉计算正态分布的均值、众数和标准差；但 Beta 分布的相关统计量的计算有所不同：</p>
-<p><img alt="alt text" src="../_images/image-16.png" /></p>
+<p><img alt="alt text" src="../_images/image-163.png" /></p>
 <blockquote>
 <div><p>source:<a class="reference external" href="https://en.wikipedia.org/wiki/Probability_density_function">https://en.wikipedia.org/wiki/Probability_density_function</a></p>
 </div></blockquote>
@@ -658,9 +699,9 @@ document.write(`
 <p><span class="math notranslate nohighlight">\(\alpha=0.7(\alpha+\beta)\)</span>
 <span class="math notranslate nohighlight">\(\alpha≈\frac{7}{3}\beta\)</span></p>
 <p>一个合适的分布中，<span class="math notranslate nohighlight">\(\alpha\)</span>和<span class="math notranslate nohighlight">\(\beta\)</span>需要满足的条件如上，我们可以选择 <span class="math notranslate nohighlight">\(Beta(70, 30)\)</span>, <span class="math notranslate nohighlight">\(Beta(7,3)\)</span>, <span class="math notranslate nohighlight">\(Beta(14,6)\)</span>，我们可以通过以下代码来画出这些分布的形状：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">beta</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">pz</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">plot_pdf</span><span class="p">(</span><span class="n">pointinterval</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
@@ -670,7 +711,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-17.png" /></p>
+<p><img alt="alt text" src="../_images/image-173.png" /></p>
 <p>如图所示，我们选择ACC∼Beta(70,30)作为先验模型</p>
 <p>带入公式，可以计算出先验<span class="math notranslate nohighlight">\(f(ACC)\)</span>的pdf、平均数、众数、方差和标准差：</p>
 <ul class="simple">
@@ -695,7 +736,7 @@ document.write(`
 <p><span class="math notranslate nohighlight">\(SD(ACC)=\sqrt{0.0021}=0.0458\)</span></p>
 </section>
 <section id="bonus-2-beta-binomial-beta">
-<h2>Bonus 2: Beta-Binomial 模型生成的后验仍是Beta分布<a class="headerlink" href="#bonus-2-beta-binomial-beta" title="Permalink to this heading">#</a></h2>
+<h2>Bonus 2: Beta-Binomial 模型生成的后验仍是Beta分布<a class="headerlink" href="#bonus-2-beta-binomial-beta" title="Link to this heading">#</a></h2>
 <p><strong>公式推导</strong></p>
 <p>对于ACC的后验模型为<span class="math notranslate nohighlight">\(Beta(\alpha+y,\beta+n-y)\)</span>的推导过程（其中，正确次数为y，总试次为n）</p>
 <p><strong>1、首先写出先验的公式</strong></p>
@@ -739,7 +780,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -768,6 +809,7 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -828,8 +870,8 @@ By Dr. Hu Chuan-Peng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

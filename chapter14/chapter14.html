@@ -1,0 +1,1080 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>课程回顾与复习 &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter14/chapter14';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="练习" href="../chapter13/chapter13_part6.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Bayes Factor</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part1.html">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part2.html">8.1 贝叶斯因子的计算与应用</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Multivariable linear regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part1.html">9.0 三水平的简单线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part2.html">9.1 2×3的多元线性回归模型：无交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">14.0 课程回顾与复习</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter14/chapter14.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter14/chapter14.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>课程回顾与复习</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">频率vs.概率</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">条件概率和贝叶斯公式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ppl-mcmc">PPL 与 MCMC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-workflow">Bayesian Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">演示如何将贝叶斯统计应用到真实研究中？</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">研究问题</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">数据收集</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">数据集描述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">模型设定</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mcmc">拟合数据及MCMC评估</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">模型比较</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">贝叶斯统计推断</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hdi-rope">HDI + ROPE 的统计推断</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-factor-bf">贝叶斯因子（Bayes Factor，BF）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">总结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>课程回顾与复习<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="vs">
+<h2>频率vs.概率<a class="headerlink" href="#vs" title="Link to this heading">#</a></h2>
+<p>频率与概率是统计学中的两个核心概念，它们之间既有区别也有联系。</p>
+<ul class="simple">
+<li><p><em><strong>频率的定义</strong></em></p>
+<ul>
+<li><p>频率是指在一定次数的实验中，某个事件发生的次数与实验总次数的比值。它基于实际观测数据，是实验结果的直接体现。</p></li>
+</ul>
+</li>
+<li><p><em><strong>概率的定义</strong></em></p>
+<ul>
+<li><p>概率则是对某个事件发生可能性的度量。它可以是基于理论计算，也可以是基于主观判断。</p></li>
+</ul>
+</li>
+</ul>
+<p><em><strong>二者的区别</strong></em></p>
+<ul class="simple">
+<li><p>频率是基于实验数据，而概率是基于理论或主观判断。</p></li>
+<li><p>频率随着实验次数的增加而趋于稳定，而概率是一个固定的值。</p></li>
+</ul>
+<p><em><strong>二者的联系</strong></em></p>
+<ul class="simple">
+<li><p>在大量重复实验的情况下，频率可以作为概率的估计值。</p></li>
+<li><p>概率论中的大数定律表明，当实验次数足够多时，频率将趋近于概率的真实值。</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>条件概率和贝叶斯公式<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>从条件概率开始，这个概念描述了一个事件在另一个事件已经发生的情况下发生的概率。</p></li>
+</ul>
+<p>条件概率可以通过面积的形式来理解，设事件 A 和 B 在概率空间中的交集为<span class="math notranslate nohighlight">\((A\cap B)\)</span>。</p>
+<p>条件概率公式为：</p>
+<div class="math notranslate nohighlight">
+\[
+P(A|B)=\frac{P(A\cap B)}{P(B)}
+\]</div>
+<p><span class="math notranslate nohighlight">\((A\cap B)\)</span>可以表示为：</p>
+<div class="math notranslate nohighlight">
+\[
+P(A \cap B)=P(A|B)×P(B)=P(B|A)×P(A)
+\]</div>
+<ul class="simple">
+<li><p>该公式表明，无论从事件 A 出发还是从事件 B 出发，它们的交集概率是一样的。</p></li>
+<li><p>频率学派认为确定的值，讨论概率的分布没有意义。虽然没有上帝视角，还不知道具体的概率值，但相信概率就是确定的。</p></li>
+<li><p>贝叶斯学派则认为任何一个未知量都可以看作是随机的，应该用一个概率分布去描述未知参数，而不是频率派认为的固定值。</p></li>
+</ul>
+<p>在条件概率的基础上，通过重组公式，可以得到贝叶斯公式：</p>
+<p><img alt="alt text" src="../_images/image4.png" /></p>
+<ul class="simple">
+<li><p>贝叶斯公式描述的是，给定事件 B 已经发生的情况下，事件 A 的发生概率如何调整。</p></li>
+<li><p>我们结合先验知识<span class="math notranslate nohighlight">\(P(A)\)</span>和观测数据<span class="math notranslate nohighlight">\(P(B|A)\)</span>，从而得到更新后的概率<span class="math notranslate nohighlight">\(P(A|B)\)</span>。</p></li>
+<li><p>这正是贝叶斯推断的核心思想：<strong>在新数据的条件下，更新我们的信念。</strong></p></li>
+<li><p>以及贝叶斯推断的特点：<strong>（不同的）先验与（不同的）数据之间平衡、序列性等。</strong></p></li>
+</ul>
+</section>
+<section id="ppl-mcmc">
+<h2>PPL 与 MCMC<a class="headerlink" href="#ppl-mcmc" title="Link to this heading">#</a></h2>
+<p>在贝叶斯统计中，其分析的关键是结合先验与似然以确定后验分布。它可以告诉哪个参数值最大化了观察到已观察过的特定数据的概率，并把先验信念考虑在内。</p>
+<ul class="simple">
+<li><p>后验分布它可以给出每个参数值的可能性分布，但是很难得到完整的分布，也无法解析地求解，这时候就需要采用MCMC方法解决这一问题。</p></li>
+<li><p>MCMC通过在概率空间中随机采样以近似兴趣参数的后验分布，以近似感兴趣的参数的后验分布，因此允许在无法直接计算的情况下评估后验分布的形状。</p></li>
+</ul>
+<p>在第六课中对MCMC进行了介绍，其核心思想为：</p>
+<ul class="simple">
+<li><p><em><strong>构建一个符合目标分布的马尔可夫链：</strong></em></p></li>
+</ul>
+<p>每次新样本的生成依赖于前一个状态，逐步逼近目标分布。</p>
+<ul class="simple">
+<li><p><em><strong>长时间采样达到平稳分布：</strong></em></p></li>
+</ul>
+<p>当马尔可夫链达到稳态分布时，采样结果便可以作为目标分布的近似。</p>
+<ul class="simple">
+<li><p>尽管 MCMC 的实现方式多种多样，但所有方法的目标都是构建一个符合目标后验分布的马尔可夫链。许多 MCMC 算法，如 吉布斯采样、差分进化算法 以及 PyMC 默认使用的 NUTS（No-U-Turn Sampler），都是 Metropolis-Hastings 算法的变种。</p></li>
+</ul>
+<p>在第七课中，介绍了PyMC作为概率编程语言（PPL，probabilistic programming language）框架的代表之一。不同的PPL框架（如Stan）在设计和功能上各有特色，适用于不同的应用场景和需求。</p>
+<ul class="simple">
+<li><p>目前，可以通过Python中的PyMC、Bambi等包实现MCMC算法，从而在Python中进行贝叶斯模型的构建和后验推断。</p></li>
+</ul>
+</section>
+<section id="bayesian-workflow">
+<h2>Bayesian Workflow<a class="headerlink" href="#bayesian-workflow" title="Link to this heading">#</a></h2>
+<p>贝叶斯分析框架的最大优势在于其提供的灵活性，这使得研究者能够根据具体的研究背景和需求构建模型。然而，这种灵活性也带来了复杂性，要求研究者具备较高的统计技能和理解力。</p>
+<p><em><strong>模型设定</strong></em></p>
+<ul class="simple">
+<li><p>模型设定允许研究者将研究假设直接整合到模型结构中。这种整合有助于更准确地反映研究问题和理论框架。</p></li>
+</ul>
+<p><em><strong>整合先验知识</strong></em></p>
+<ul class="simple">
+<li><p>模型先验的设定为研究者提供了一个平台，用以整合先验知识或信念。这些先验信息可以在数据稀缺时提供重要的补充信息。</p></li>
+</ul>
+<p><em><strong>MCMC方法的应用</strong></em></p>
+<ul class="simple">
+<li><p>由于基于假设和机制的贝叶斯模型，尤其是分层模型的复杂性，常常需要采用马尔可夫链蒙特卡罗（MCMC）方法来进行参数估计。这一过程要求对模型进行细致的诊断，以确保估计的准确性和可靠性。</p></li>
+</ul>
+<p><em><strong>模型评估</strong></em></p>
+<ul class="simple">
+<li><p>模型评估是贝叶斯工作流程中的一个关键步骤，它确保模型能够合理地解释数据。这包括检查模型拟合度、预测能力和假设的合理性。</p></li>
+</ul>
+<p><em><strong>模型比较</strong></em></p>
+<ul class="simple">
+<li><p>模型比较环节允许研究者通过比较不同的研究假设，来确定哪个假设对数据的解释力最强。这种方法有助于筛选出最优模型。</p></li>
+</ul>
+<p><em><strong>统计推断</strong></em></p>
+<ul class="simple">
+<li><p>研究者可以利用贝叶斯统计推断来得出结论。这包括分析后验分布以获取参数估计的不确定性，以及使用贝叶斯因子来进行假设检验和模型选择。</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-114.png" /></p>
+</section>
+<section id="id3">
+<h2>演示如何将贝叶斯统计应用到真实研究中？<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>在真实的研究中，对于研究者而言，在确定一个可行的研究问题后，应用贝叶斯方法进行数据分析时，重点需要考虑的步骤为模型设定、模型评估及统计推断。</p>
+<p>接下来，依旧以本学期课上经常使用到的随机点运动范式为例，通过完整的研究报告形式对贝叶斯工作流程进行回顾和阐述。</p>
+<section id="id4">
+<h3>研究问题<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>首先，研究者需要从实际数据出发，明确研究问题并理解数据的特征。这包括数据的收集、预处理和探索性分析，以便为后续的建模提供基础。</p>
+<ul class="simple">
+<li><p>例如，现在想知道在“随机点运动范式中，反应时间如何受到随机点运动方向一致性比例的影响，如果会的话，其影响程度是怎么样的？”</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>数据收集<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>通常情况下，为解决上述问题，需要进行数据收集：</p>
+<p>1.参与者被要求对一系列随机运动的点进行反应，记录每次反应所需的时间（反应时间）。</p>
+<p>2.随机点运动方向的一致性比例（例如，80%的点朝同一方向，20%的点随机方向）作为自变量。</p>
+<p>为方便演示，依旧采用Evans et al.（2020, Exp. 1） 的数据为例进行探索，并对其实验1的数据集进行描述。</p>
+<blockquote>
+<div><p>Evans, N. J., Hawkins, G. E., &amp; Brown, S. D. (2020). The role of passing time in decision-making. Journal of Experimental Psychology: Learning, Memory, and Cognition, 46(2), 316–326. <a class="reference external" href="https://doi.org/10.1037/xlm0000725">https://doi.org/10.1037/xlm0000725</a></p>
+</div></blockquote>
+</section>
+<section id="id6">
+<h3>数据集描述<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>Evans数据集包括12个变量，包括被试编号（subject）、反应时间、随机点运动方向的一致性（percentCoherence）等。</p>
+<p><em><strong>参与者</strong></em></p>
+<ul class="simple">
+<li><p>被试为在校本科生，一共有63人在线完成了实验，实验通过Javascript代码完成，在开始数据收集之前，为随机点运动范式设定了一个排除标准，及决策正确率为60%，低于这一标准的被试将不被视为正确完成任务。数据收集完成之后，低于这一标准的被试都被剔除，最终有6名被试的数据被剔除。</p></li>
+</ul>
+<p>因此，最终纳入分析的被试数量一共为57人。</p>
+<p>关于贝叶斯分析方法指南可参考：</p>
+<blockquote>
+<div><p>Kruschke, J.K. Bayesian Analysis Reporting Guidelines. Nat Hum Behav 5, 1282–1291 (2021). <a class="reference external" href="https://doi.org/10.1038/s41562-021-01177-7">https://doi.org/10.1038/s41562-021-01177-7</a></p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入 pymc 模型包，和 arviz 等分析工具 </span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ipywidgets</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bambi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bmb</span>
+
+<span class="c1"># 忽略不必要的警告</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用 pandas 导入示例数据</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">df_raw</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;/home/mw/input/bayes3797/evans2020JExpPsycholLearn_exp1_full_data.csv&quot;</span><span class="p">)</span> 
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">df_raw</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/evans2020JExpPsycholLearn_exp1_full_data.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 筛选出特定被试并创建索引</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;percentCoherence in [5, 10]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Coherence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;percentCoherence&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 为每个被试建立索引 &#39;subj_id&#39; 和 &#39;obs_id&#39;</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;subj_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;obs_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;subject&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">cumcount</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># 对反应时间取对数</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;log_RTs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;RT&quot;</span><span class="p">])</span>
+
+<span class="c1"># 为每一行生成全局唯一编号 &#39;global_id&#39;</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;global_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>模型设定<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>建立三个不同的模型来探讨反应时间与一致性比例之间的关系。</p>
+<p><em><strong>模型1：完全池化模型</strong></em></p>
+<ul class="simple">
+<li><p>目的：不考虑随机点运动方向一致性的比例对反应时间的影响</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+Y_i|\beta_0,\beta_1,\sigma \overset{ind}{\sim} N(\mu_i,\sigma^2)~~with~~\mu_i=\beta_0+\beta_1X_i
+\]</div>
+<p><em><strong>模型2：部分池化模型（变化截距）</strong></em></p>
+<ul class="simple">
+<li><p>目的：随机点运动方向的一致性与反应时间之间的关系在被试内有什么不同</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\mu_{\beta_0},\sigma_{\beta_0},\sigma_y ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Layer3:群体水平
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\beta_{0j}|\mu_{\beta_0},\sigma_{\beta_0} \overset{ind}{\sim} N(\mu_{\beta_0},\sigma_{\beta_0}^2)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Layer2:组水平
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+Y_{ij}|\beta_{0j},\beta_1,\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=\beta_{0j}+\beta_1X_{ij}~~~~~~~~~~~~Layer1:被试水平/数据点
+\]</div>
+<p><em><strong>模型3：部分池化模型（变化斜率和截距）</strong></em></p>
+<ul class="simple">
+<li><p>目的：考虑截距和斜率共同变化的情况，并全局参数进行定义</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\mu_{\beta_0},\mu_{\beta_1},\sigma_{\beta_0},\sigma_{\beta_1},\sigma_y ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Layer3:群体水平
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\beta_{0j}|\mu_{\beta_0},\sigma_{\beta_0} \overset{ind}{\sim} N(\mu_{\beta_0},\sigma_{\beta_0}^2)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Layer2:组水平(截距在被试间的变化)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\beta_{1j}|\mu_{\beta_1},\sigma_{\beta_1} \overset{ind}{\sim} N(\mu_{\beta_1},\sigma_{\beta_1}^2)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Layer2:组水平(斜率在被试间的变化)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+Y_{ij}|\beta_{0j},\beta_{1j},\sigma_y \sim N(\mu_{ij},\sigma_y^2)~with~\mu_{ij}=\beta_{0j}+\beta_{1j}X_{ij}~~~~~~~~~~~~Layer1:被试水平/数据点
+\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## 模型1：完全池化模型</span>
+<span class="n">complete_pooled_model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s2">&quot;log_RTs ~ 1 + Coherence&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+<span class="c1">## 模型2：随机截距模型</span>
+<span class="n">var_inter_model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s2">&quot;log_RTs ~ 1 + Coherence + (1|subj_id)&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+<span class="c1"># 模型3：随机截距和斜率模型   </span>
+<span class="n">var_both_model</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s2">&quot;log_RTs ~ Coherence + (Coherence|subj_id)&quot;</span><span class="p">,</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="mcmc">
+<h3>拟合数据及MCMC评估<a class="headerlink" href="#mcmc" title="Link to this heading">#</a></h3>
+<p>接下来会对3个模型进行数据拟合、MCMC评估及后验计算。</p>
+<p><em><strong>模型1：完全池化模型</strong></em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">complete_pooled_trace</span> <span class="o">=</span> <span class="n">complete_pooled_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">idata_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;log_likelihood&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">complete_pooled_para</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">complete_pooled_trace</span><span class="p">)</span>
+<span class="n">complete_pooled_para</span>
+</pre></div>
+</div>
+<p><em><strong>模型2：部分池化模型（变化截距）</strong></em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">var_inter_trace</span> <span class="o">=</span> <span class="n">var_inter_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">idata_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;log_likelihood&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">var_inter_para</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">var_inter_trace</span><span class="p">)</span>
+<span class="n">var_inter_para</span>
+</pre></div>
+</div>
+<p><em><strong>模型3：部分池化模型（变化截距和斜率）</strong></em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">var_both_trace</span> <span class="o">=</span> <span class="n">var_both_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">idata_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;log_likelihood&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">var_both_para</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">var_both_trace</span><span class="p">)</span>
+<span class="n">var_both_para</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2>模型比较<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<p><em><strong>模型评估指标</strong></em></p>
+<p>在分析模型的预测能力时，有绝对指标和相对指标，绝对指标用于衡量模型预测值与真实值之间的差异，相对指标用于比较不同模型的预测能力，通常用于不同方法或模型之间的性能对比。</p>
+<p><em><strong>绝对指标：</strong></em></p>
+<p>在之前的课程中介绍过对后验预测结果进行评估的两种方法</p>
+<ul class="simple">
+<li><p>一是MAE，即后验预测值与真实值之间预测误差的中位数，二是within_95，即真实值是否落在95%后验预测区间内</p></li>
+<li><p>在这里调用之前写过的计算两种指标的方法，评估两种分层模型的后验预测结果</p></li>
+</ul>
+<p><em><strong>相对指标</strong></em></p>
+<p>在实际操作中，我们通过 ArViz 的函数az.loo计算<span class="math notranslate nohighlight">\(ELPD_{LOO-CV}\)</span></p>
+<p>两大优势：</p>
+<ul class="simple">
+<li><p>计算速度快，且结果稳健</p></li>
+<li><p>提供了丰富的模型诊断指标</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">complete_pooled_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">complete_pooled_trace</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;pps&quot;</span><span class="p">)</span>
+<span class="n">var_inter_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">var_inter_trace</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;pps&quot;</span><span class="p">)</span>
+<span class="n">var_both_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">var_both_trace</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;pps&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义计算 MAE 函数</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">median</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">MAE</span><span class="p">(</span><span class="n">trace</span><span class="p">):</span>
+    <span class="c1"># 计算每个X取值下对应的后验预测模型的均值</span>
+    <span class="n">pre_x</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;log_RTs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span>
+    <span class="n">pre_y_mean</span> <span class="o">=</span> <span class="n">pre_x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># 提取观测值Y，提取对应Y值下的后验预测模型的均值</span>
+    <span class="n">MAE</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s2">&quot;ppc_mean&quot;</span><span class="p">:</span> <span class="n">pre_y_mean</span><span class="p">,</span>
+        <span class="s2">&quot;original&quot;</span><span class="p">:</span> <span class="n">trace</span><span class="o">.</span><span class="n">observed_data</span><span class="o">.</span><span class="n">log_RTs</span><span class="o">.</span><span class="n">values</span>
+    <span class="p">})</span>
+
+    <span class="c1"># 计算预测误差</span>
+    <span class="n">MAE</span><span class="p">[</span><span class="s2">&quot;pre_error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">MAE</span><span class="p">[</span><span class="s2">&quot;original&quot;</span><span class="p">]</span> <span class="o">-</span>\
+                            <span class="n">MAE</span><span class="p">[</span><span class="s2">&quot;ppc_mean&quot;</span><span class="p">])</span>
+
+    <span class="c1"># 最后，计算预测误差的中位数</span>
+    <span class="n">MAE</span> <span class="o">=</span> <span class="n">median</span><span class="p">(</span><span class="n">MAE</span><span class="o">.</span><span class="n">pre_error</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">MAE</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">counter_outlier</span><span class="p">(</span><span class="n">model_trace</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+    <span class="c1"># 将az.summary生成的结果存到hdi_multi这个变量中，该变量为数据框</span>
+    <span class="n">hdi</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">model_trace</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="n">hdi_prob</span><span class="o">=</span><span class="n">hdi_prob</span><span class="p">)</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">hdi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">hdi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># 将原数据中的自我控制分数合并，便于后续进行判断</span>
+    <span class="n">y_obs</span> <span class="o">=</span> <span class="n">model_trace</span><span class="o">.</span><span class="n">observed_data</span><span class="p">[</span><span class="s2">&quot;log_RTs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># 判断原数据中的压力分数是否在后验预测的95%可信区间内，并计数</span>
+    <span class="n">hdi</span><span class="p">[</span><span class="s2">&quot;verify&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">&lt;=</span> <span class="n">lower</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">&gt;=</span> <span class="n">upper</span><span class="p">)</span>
+    <span class="n">hdi</span><span class="p">[</span><span class="s2">&quot;y_obs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_obs</span>
+    <span class="n">hdi_num</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">hdi</span><span class="p">[</span><span class="s2">&quot;verify&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">hdi_num</span>
+
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 将每个模型的PPC储存为列表</span>
+<span class="n">ppc_samples_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">complete_pooled_trace</span><span class="p">,</span> <span class="n">var_inter_trace</span><span class="p">,</span> <span class="n">var_both_trace</span><span class="p">]</span>
+<span class="n">model_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;完全池化&quot;</span><span class="p">,</span> <span class="s2">&quot;变化截距&quot;</span><span class="p">,</span> <span class="s2">&quot;变化截距、斜率&quot;</span><span class="p">]</span>
+
+<span class="c1"># 建立一个空列表来存储结果</span>
+<span class="n">results_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 遍历模型并计算MAE和超出95%hdi的值</span>
+<span class="k">for</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">ppc_samples</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model_names</span><span class="p">,</span> <span class="n">ppc_samples_list</span><span class="p">):</span>
+    <span class="n">outliers</span> <span class="o">=</span> <span class="n">counter_outlier</span><span class="p">(</span><span class="n">ppc_samples</span><span class="p">)</span>
+    <span class="n">MAEs</span> <span class="o">=</span> <span class="n">MAE</span><span class="p">(</span><span class="n">ppc_samples</span><span class="p">)</span>
+    <span class="n">results_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;Model&#39;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span> <span class="s1">&#39;MAE&#39;</span><span class="p">:</span><span class="n">MAEs</span><span class="p">,</span> <span class="s1">&#39;Outliers&#39;</span><span class="p">:</span> <span class="n">outliers</span><span class="p">})</span>
+
+<span class="c1"># 从结果列表创建一个DataFrame</span>
+<span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results_list</span><span class="p">)</span>
+
+<span class="n">results_df</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-213.png" /></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">comparison_list</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model1(complete pooling)&quot;</span><span class="p">:</span><span class="n">complete_pooled_trace</span><span class="p">,</span>
+    <span class="s2">&quot;model2(hierarchical intercept)&quot;</span><span class="p">:</span><span class="n">var_inter_trace</span><span class="p">,</span>
+    <span class="s2">&quot;model3(hierarchy both)&quot;</span><span class="p">:</span><span class="n">var_both_trace</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">az</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">comparison_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">complete_pooled_trace</span>
+</pre></div>
+</div>
+<p>通过 arviz.compare 方法来对比多个模型的 elpd。从下面结果可见：</p>
+<ul class="simple">
+<li><p>模型3的 elpd_loo 最大，表明它对<strong>样本外数据</strong>的预测性能最好。</p></li>
+<li><p>而模型1的 elpd_loo 最小，表明它的预测性能最差。</p></li>
+</ul>
+<p>因此，根据模型评估的结果，可以发现模型3（变化截距和变化斜率）的结果在3个模型中是最好的。</p>
+</section>
+<section id="id9">
+<h2>贝叶斯统计推断<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<p>模型比较发现，模型3（变化截距和变化斜率）的结果在3个模型中是最好的。最后，将使用 HDI + ROPE 和贝叶斯因子（Bayes Factor，BF）来进行统计推断。</p>
+<section id="hdi-rope">
+<h3>HDI + ROPE 的统计推断<a class="headerlink" href="#hdi-rope" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>反应时差异的后验分布平均值为 -281 ms，然而，这一数值并不足以断定实验条件对反应时间有显著的减少作用。</p></li>
+<li><p>95% HDI 范围为 [-608 ms, 48 ms]，表明后验分布中95%的概率下的反应时差异位于此区间。由于95% HDI 包含了0，并且分布主要集中在负值方向，但这一趋势并不足以证明存在显著的效应。</p></li>
+<li><p>ROPE 设定了一个 [-30 ms, 30 ms] 的实用等效区间，用以判断反应时差异是否具有实际意义。ROPE 内的概率仅为1.6%，尽管这表明在大多数情况下反应时差异超出了可忽略的范围，但这一差异仍不足以被视为显著。</p></li>
+</ul>
+</section>
+<section id="bayes-factor-bf">
+<h3>贝叶斯因子（Bayes Factor，BF）<a class="headerlink" href="#bayes-factor-bf" title="Link to this heading">#</a></h3>
+<p>反应时的差异（beta_1）在统计上和实际意义上均不显著。</p>
+<ul class="simple">
+<li><p>数据强烈支持 无效假设（beta_1 = 0），即反应时差异可能不存在或非常微弱。</p></li>
+<li><p>贝叶斯因子 BF_10 = 0.01 提供了明确的证据，表明 beta_1 不显著。</p></li>
+<li><p>从后验分布来看，数据更新后 beta_1 的可能值仍然集中在 0 附近，进一步支持无效假设。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 从贝叶斯模型的后验分布中提取参数</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">inv_log</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">Intercept_mu</span> <span class="o">=</span> <span class="n">var_both_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Intercept&quot;</span><span class="p">)</span>
+<span class="n">Coherence_mu</span> <span class="o">=</span> <span class="n">var_both_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Coherence&quot;</span><span class="p">)</span>
+<span class="n">Intercept_sigma</span> <span class="o">=</span> <span class="n">var_both_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;1|subj_id_sigma&quot;</span><span class="p">)</span>
+<span class="n">Coherence_sigma</span> <span class="o">=</span> <span class="n">var_both_trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Coherence|subj_id_sigma&quot;</span><span class="p">)</span>
+
+<span class="c1"># 计算两个条件下的反应时间</span>
+<span class="n">rt_coh_5</span> <span class="o">=</span> <span class="n">inv_log</span><span class="p">(</span><span class="n">Intercept_mu</span><span class="p">,</span> <span class="n">Intercept_sigma</span><span class="p">)</span>
+<span class="n">rt_coh_10</span> <span class="o">=</span> <span class="n">inv_log</span><span class="p">(</span><span class="n">Intercept_mu</span><span class="o">+</span><span class="n">Coherence_mu</span><span class="p">,</span> <span class="n">Coherence_sigma</span><span class="p">)</span>
+<span class="n">rt_coh_5</span> <span class="o">=</span> <span class="n">rt_coh_5</span><span class="p">[(</span><span class="n">rt_coh_5</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">rt_coh_5</span> <span class="o">&lt;=</span> <span class="mi">1500</span><span class="p">)]</span>
+<span class="n">rt_coh_10</span> <span class="o">=</span> <span class="n">rt_coh_10</span><span class="p">[(</span><span class="n">rt_coh_10</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">rt_coh_10</span> <span class="o">&lt;=</span> <span class="mi">1500</span><span class="p">)]</span>
+
+<span class="n">rt_diff</span> <span class="o">=</span> <span class="n">rt_coh_10</span> <span class="o">-</span> <span class="n">rt_coh_5</span>
+<span class="n">rt_diff</span> <span class="o">=</span> <span class="n">rt_diff</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># 定义 ROPE 区间，根据研究的需要指定实际等效范围</span>
+<span class="n">rope_interval</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+
+<span class="c1"># 绘制后验分布，显示 HDI 和 ROPE</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;RT Difference&quot;</span><span class="p">:</span><span class="n">rt_diff</span><span class="p">},</span>
+    <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">rope</span><span class="o">=</span><span class="n">rope_interval</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">textsize</span><span class="o">=</span><span class="mi">12</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进行贝叶斯因子计算，需要采样先验分布</span>
+<span class="n">var_both_trace</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">var_both_model</span><span class="o">.</span><span class="n">prior_predictive</span><span class="p">(</span><span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="c1"># 绘制贝叶斯因子图</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_bf</span><span class="p">(</span><span class="n">var_both_trace</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Coherence&quot;</span><span class="p">,</span> <span class="n">ref_val</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 设置 x 轴的范围</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span> 
+
+<span class="c1"># 去除上框线和右框线</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>结论</strong></p>
+<p>通过模型建立和模型比较，相比于模型1和模型2，模型3（变化截距和变化斜率）的效果最好。因此，在随机点运动范式中，反应时间显著受到随机点运动方向一致性比例的影响。</p>
+<p>具体而言，模型3考虑了变化截距和变化斜率，这意味着它不仅捕捉到了不同条件下反应时间的平均差异，还考虑了这些差异随条件变化的趋势。相比之下，模型1和模型2未能充分捕捉到这些复杂的变化模式，因而在预测精度和模型拟合度上表现不如模型3。</p>
+</section>
+</section>
+<section id="id10">
+<h2>总结<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<p>贝叶斯统计的核心思想包括先验分布、后验分布、贝叶斯推断和模型比较等内容，在学习了基础理论之后，重点探讨了如何在实际研究中应用贝叶斯统计方法，并使用PyMC等工具进行模型构建和分析。</p>
+<p><img alt="alt text" src="../_images/image-38.png" /></p>
+<ul class="simple">
+<li><p>贝叶斯统计的基本原理：理解先验分布、似然函数和后验分布的关系。</p></li>
+<li><p>贝叶斯推断：学习如何通过贝叶斯方法进行参数估计和假设检验。</p></li>
+<li><p>模型比较：掌握使用贝叶斯因子和其他指标进行模型比较的方法。</p></li>
+<li><p>实际应用：通过实际案例，演示如何使用PyMC进行贝叶斯模型的构建、拟合和诊断。</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter14"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter13/chapter13_part6.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">练习</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">频率vs.概率</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">条件概率和贝叶斯公式</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ppl-mcmc">PPL 与 MCMC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-workflow">Bayesian Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">演示如何将贝叶斯统计应用到真实研究中？</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">研究问题</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">数据收集</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">数据集描述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">模型设定</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mcmc">拟合数据及MCMC评估</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">模型比较</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">贝叶斯统计推断</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hdi-rope">HDI + ROPE 的统计推断</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-factor-bf">贝叶斯因子（Bayes Factor，BF）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">总结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

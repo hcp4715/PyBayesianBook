@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>MCMC诊断 &#8212; Bayesian Inference with Python</title>
   
@@ -15,53 +14,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter6/chapter6_part2';</script>
@@ -78,28 +73,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -121,12 +111,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -142,6 +140,8 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../chapter_overview/intro.html">
@@ -160,7 +160,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -231,6 +242,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -245,7 +286,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -254,14 +295,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -386,10 +427,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -397,14 +438,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -449,10 +490,10 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="mcmc">
-<h1>MCMC诊断<a class="headerlink" href="#mcmc" title="Permalink to this heading">#</a></h1>
+<h1>MCMC诊断<a class="headerlink" href="#mcmc" title="Link to this heading">#</a></h1>
 <p>在上一课中，我们已经介绍了PyMC的基本用法。</p>
 <ul class="simple">
 <li><p>其实，PyMC 就是一种 概率编程语言（PPL）框架，它帮助我们在 Python 中进行贝叶斯模型的构建和后验推断。</p></li>
@@ -461,7 +502,7 @@ document.write(`
 <li><p>PyMC 只是 PPL 框架的一个代表，不同的 PPL 框架（如 Stan）在设计和功能上各有特色。</p></li>
 </ul>
 <section id="ppl-probabilistic-programming-language">
-<h2>什么是概率编程语言（PPL，probabilistic programming language）<a class="headerlink" href="#ppl-probabilistic-programming-language" title="Permalink to this heading">#</a></h2>
+<h2>什么是概率编程语言（PPL，probabilistic programming language）<a class="headerlink" href="#ppl-probabilistic-programming-language" title="Link to this heading">#</a></h2>
 <p>概率编程语言的关键在于**自动进行概率分布（尤其是贝叶斯后验分布）**的推理过程。</p>
 <ul class="simple">
 <li><p>传统贝叶斯后验分布的推理过程中，我们需要定义先验，确定似然函数，然后使用 MCMC 等方法来计算后验分布：</p></li>
@@ -499,7 +540,7 @@ document.write(`
 }
 </style>
 <div class="center">
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>功能</p></th>
 <th class="head text-center"><p>描述</p></th>
@@ -538,6 +579,7 @@ document.write(`
 </tbody>
 </table>
 </div>
+</div>
 <p><strong>贝叶斯概率编程中的核心术语</strong></p>
 <p>这些术语在贝叶斯统计和概率编程中具有重要应用。除了已经讲过的部分概念外，本节课将涉及一些新概念：</p>
 <style>
@@ -550,7 +592,7 @@ document.write(`
 }
 </style>
 <div class="center">
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>术语（中英文全称）</p></th>
 <th class="head text-center"><p>定义</p></th>
@@ -596,14 +638,15 @@ document.write(`
 </tbody>
 </table>
 </div>
+</div>
 <p><strong>使用后验分布进行统计推断</strong></p>
 <p>下面是我们使用PyMC等概率编程语言来实现模型推断的大致步骤：</p>
-<p><img alt="alt text" src="../_images/image-52.png" /></p>
+<p><img alt="alt text" src="../_images/image-56.png" /></p>
 <p>🤔思考：</p>
 <p>如何判断我们得到的mcmc结果是可靠的？通过mcmc得到的后验能告诉我们什么？</p>
 </section>
 <section id="markov-chain-diagnostics">
-<h2>对马尔科夫链的诊断 (Markov chain diagnostics)<a class="headerlink" href="#markov-chain-diagnostics" title="Permalink to this heading">#</a></h2>
+<h2>对马尔科夫链的诊断 (Markov chain diagnostics)<a class="headerlink" href="#markov-chain-diagnostics" title="Link to this heading">#</a></h2>
 <p>🤔在使用我们的采样结果前需要思考一个问题，这些采样结果是否可信呢？</p>
 <ul class="simple">
 <li><p>由于这些采样来自于 MCMC 算法，即马尔科夫链蒙特卡洛算法，而模拟采样方法的关键是 “近似 “和 “收敛” 。也就是说，最终是否达到一个稳定的状态，表现为高概率的地方有更多的样本，低概率的地方对应更少的样本，并且是一种稳定的收敛的状态。</p></li>
@@ -621,20 +664,20 @@ document.write(`
 <li><p>量化诊断指标：有效样本大小 ESS(effective sample size)、自相关性 (autocorrelation)和<span class="math notranslate nohighlight">\(\widehat{R}\)</span>(R-hat)。</p></li>
 </ul>
 <section id="trace-plots">
-<h3>轨迹图（trace plots）<a class="headerlink" href="#trace-plots" title="Permalink to this heading">#</a></h3>
+<h3>轨迹图（trace plots）<a class="headerlink" href="#trace-plots" title="Link to this heading">#</a></h3>
 <p>轨迹图 (trace plot) 是一种可视化方法，用于显示马尔可夫链的轨迹，即马尔可夫链在参数空间中的位置。</p>
 <ul class="simple">
 <li><p>图中的横坐标是时间步长（即每一次的采样），纵坐标是参数的值，Chain就是不同的链（绝大部分的PPL里默认的都是4条链）。</p></li>
 <li><p>轨迹图往往结合参数的后验分布一起展示，以便于观察采样样本对于参数分布的代表性。</p></li>
 </ul>
 <p>我们先来看一下正常的轨迹图（之前 Beta-Binomial model 的示例）是什么样的：</p>
-<p><img alt="alt text" src="../_images/image-63.png" /></p>
+<p><img alt="alt text" src="../_images/image-67.png" /></p>
 <ul class="simple">
 <li><p>上图：轨迹图看起来像一堆白噪声，没有明显的趋势或现象（例如出现明显的跳跃或者隔断），这意味着<strong>链是稳定的</strong>。</p></li>
 <li><p>下右：展示了正常的参数后验分布的情况。</p></li>
 </ul>
 <p>相比之下，我们再来看一个糟糕的轨迹图：</p>
-<p><img alt="alt text" src="../_images/image-72.png" /></p>
+<p><img alt="alt text" src="../_images/image-76.png" /></p>
 <p><em><strong>图中上部分链 A：</strong></em></p>
 <ul class="simple">
 <li><p>链 A 中的轨迹图显示，它在 5000 次迭代后还没有稳定下来，并且它只探索了 0.6 到 0.9 之间的参数值。</p></li>
@@ -657,7 +700,7 @@ document.write(`
 </ul>
 </section>
 <section id="ess-effective-sample-size-autocorrelation">
-<h3>有效样本大小 ESS(effective sample size)和自相关性 (autocorrelation)<a class="headerlink" href="#ess-effective-sample-size-autocorrelation" title="Permalink to this heading">#</a></h3>
+<h3>有效样本大小 ESS(effective sample size)和自相关性 (autocorrelation)<a class="headerlink" href="#ess-effective-sample-size-autocorrelation" title="Link to this heading">#</a></h3>
 <p>🤔在进行mcmc采样过程中，我们希望样本之间呈现什么样的特点？</p>
 <ul class="simple">
 <li><p>最理想的状态是每次采样都是相互独立的，这样的样本实际上能够更好地代表总体。例如，我们想要了解中国人的某个特点，如果我们全部从南师大进行抽样，可能样本之间在某些维度上存在高度相关，最后也就很难代表总体的特征。</p></li>
@@ -683,7 +726,7 @@ document.write(`
 <div><p>这就像托布勒的地理学第一定律：万事万物都与其他事物相关，<strong>但近处的事物比远处的事物更相关。</strong></p>
 </div></blockquote>
 <p>一个自相关良好的例子：</p>
-<p><img alt="alt text" src="../_images/image-83.png" /></p>
+<p><img alt="alt text" src="../_images/image-87.png" /></p>
 <ul class="simple">
 <li><p>图左是之前提到的轨迹图(trace plot)。</p></li>
 <li><p>右图是自相关图，x轴是样本之间的间隔距离，y 轴为自相关性。</p></li>
@@ -692,7 +735,7 @@ document.write(`
 <li><p>对于间隔解释的例子：如果有100个参数形成的样本，编号为 1-100。 那么间隔10，就代表，10-100组成的样本。为了让 10-100 和原始的样本长度相同，我们可以使用 1-90和 10-100 的样本进行相关分析。需要注意的是，存在更好的数学方法可以避免间隔越大，样本量越小的问题。扩展阅读: <a class="reference external" href="https://zhuanlan.zhihu.com/p/77072803">https://zhuanlan.zhihu.com/p/77072803</a></p></li>
 </ul>
 <p>一个自相关比较糟糕的例子：</p>
-<p><img alt="alt text" src="../_images/image-93.png" /></p>
+<p><img alt="alt text" src="../_images/image-97.png" /></p>
 <ul class="simple">
 <li><p>自相关曲线的缓慢下降表明，链值之间的依赖关系不会很快消失。</p></li>
 <li><p>相差整整 20 步的马尔可夫链值之间存在大约 0.9 的相关性！</p></li>
@@ -701,7 +744,7 @@ document.write(`
 </ul>
 </section>
 <section id="fast-vs-slow-mixing-markov-chains">
-<h3>重要概念：Fast vs slow mixing Markov chains<a class="headerlink" href="#fast-vs-slow-mixing-markov-chains" title="Permalink to this heading">#</a></h3>
+<h3>重要概念：Fast vs slow mixing Markov chains<a class="headerlink" href="#fast-vs-slow-mixing-markov-chains" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>快速混合：指链表现出与独立样本的行为，即混合链值之间的自相关性迅速下降，有效样本大小比相当大。</p></li>
 <li><p>慢速混合：指链不具有独立样本的特征，即混合链值之间的自相关性下降非常缓慢，有效样本大小比很小。换句话说，链在后验可信值范围内 “缓慢 “移动。</p></li>
@@ -715,7 +758,7 @@ document.write(`
 <li><p>通过舍弃中间的抽样，我们可以消除低间隔带来的强相关性。（<span class="math notranslate nohighlight">\(\pi_{20}\)</span>与稀疏链中的前一个值<span class="math notranslate nohighlight">\(\pi_{10}\)</span>的相关性小于与原始链中的前1个值<span class="math notranslate nohighlight">\(\pi_{19}的相关性\)</span>）</p></li>
 </ul>
 <p><strong>一个使 MCMC 链变得更薄(thin)来减少自相关的示例：</strong></p>
-<p><img alt="alt text" src="../_images/image-103.png" /></p>
+<p><img alt="alt text" src="../_images/image-107.png" /></p>
 <ul class="simple">
 <li><p>可以观察到，我们使用thin=10来将链变薄10倍，也就是从5000个样本中，每间隔10个样本保留1个，总共保留500个样本。</p></li>
 <li><p>虽然自相关性快速下降，但这可能仍然无法完全消除自相关性。</p></li>
@@ -727,7 +770,7 @@ document.write(`
 <p>实际上，我们可以通过增加步长或迭代的次数来尝试解决这一问题，而不是一味地将链变薄。</p>
 </section>
 <section id="effective-sample-size-ratio">
-<h3>有效样本量比率 Effective sample size ratio<a class="headerlink" href="#effective-sample-size-ratio" title="Permalink to this heading">#</a></h3>
+<h3>有效样本量比率 Effective sample size ratio<a class="headerlink" href="#effective-sample-size-ratio" title="Link to this heading">#</a></h3>
 <p>为了避免链中相关性的影响，有效样本量(effective sample size)被提出，以用于描述链中独立样本的数量。因为根据 MCMC 的特性，我们需要链存在<strong>无记忆性</strong>，也就是大于两个间隔的参数样本间不存在或者存在很小的相关性。</p>
 <ul class="simple">
 <li><p>有效样本量计算了这些不存在或者存在很小的相关性样本的数量。</p></li>
@@ -751,28 +794,28 @@ document.write(`
 </div></blockquote>
 </section>
 <section id="r-hat-and-comparing-parallel-chains">
-<h3>R-hat and comparing parallel chains<a class="headerlink" href="#r-hat-and-comparing-parallel-chains" title="Permalink to this heading">#</a></h3>
+<h3>R-hat and comparing parallel chains<a class="headerlink" href="#r-hat-and-comparing-parallel-chains" title="Link to this heading">#</a></h3>
 <p>自相关和有效样本量仅针对于描述一条MCMC链的有效性。假如我们获得了四条并行的马尔可夫链。我们不仅希望看到每条链的稳定性，还希望看到<strong>四条链的一致性</strong>。</p>
 <p>可以想象，如果四条链的结果并不一致，那么推断结果的可靠性就很难保证。</p>
 <p>同样，我们首先展示一个良好的并行链的结果：</p>
-<p><img alt="alt text" src="../_images/image-112.png" /></p>
+<p><img alt="alt text" src="../_images/image-1110.png" /></p>
 <ul class="simple">
 <li><p>四条链产生的后验近似值几乎没有差别，这证明我们的模拟是稳定的。（也就是说，这4条链虽然起点不一样，但是最后的形状几乎混合在一起，说明mcmc的指标比较良好）</p></li>
 </ul>
 <p>为了便于比较和展示一个糟糕的并行链的结果，我们用更短的马尔可夫链模拟来演示：</p>
-<p><img alt="alt text" src="../_images/image-122.png" /></p>
+<p><img alt="alt text" src="../_images/image-126.png" /></p>
 <ul class="simple">
 <li><p>运行四条并行链仅进行 100 次迭代，其中 50 次为warmup (burn-in)</p></li>
 <li><p>虽然这些链的轨迹图表现出相似的随机行为，但它们对应的密度图却不尽相同，因此产生的后验近似值也不尽相同。</p></li>
 </ul>
 <p>这表明，如果我们只进行了 100 次迭代就停止模拟，那结果是不稳的。</p>
 <p><strong>不同链样本之间的变异性的一致性也很重要：</strong></p>
-<p><img alt="alt text" src="../_images/image-112.png" /></p>
+<p><img alt="alt text" src="../_images/image-1110.png" /></p>
 <ul class="simple">
 <li><p>中图显示，4条链的可变性几乎是相同的。右图中，所有链的变异与综合为单个链的变异性相似。</p></li>
 </ul>
 <p>我们再来看一个糟糕的例子：</p>
-<p><img alt="alt text" src="../_images/image-132.png" /></p>
+<p><img alt="alt text" src="../_images/image-136.png" /></p>
 <ul class="simple">
 <li><p>观察轨迹图（左图）可以发现，4条链的范围均不一致，并且涉及的变异性也存在较明显的差异。</p></li>
 <li><p>四条平行链产生了相互冲突的后验近似值（中图）</p></li>
@@ -800,12 +843,12 @@ R̂ = \frac{V_{combined}}{V_{within}}
 <li><p>虽然不存在黄金法则，但大于1.05会给模拟的稳定性带来危险信号，此时需要谨慎考虑。如果更大，例如大于1.1或1.2，需要重新进行考虑，此时审稿人也可能会表示质疑。</p></li>
 </ul>
 <p>对于示例1：</p>
-<p><img alt="alt text" src="../_images/image-112.png" /></p>
+<p><img alt="alt text" src="../_images/image-1110.png" /></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(R̂=1\)</span>，这反映了4个并行链之间和链内部的变异性存在很好的一致性。</p></li>
 </ul>
 <p>对于示例2：</p>
-<p><img alt="alt text" src="../_images/image-132.png" /></p>
+<p><img alt="alt text" src="../_images/image-136.png" /></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(R̂=5.35\)</span>，这表明所有链值的方差总和是每个链内方差的5倍多。这远远超过了1.05的标准，充分证明平行链并未产生一致的后验近似值。</p></li>
 </ul>
@@ -813,13 +856,13 @@ R̂ = \frac{V_{combined}}{V_{within}}
 </section>
 </section>
 <section id="id1">
-<h2>代码演示–MCMC诊断<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<h2>代码演示–MCMC诊断<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>使用 PyMC 建模的模型默认使用 MCMC 方法进行参数估计。</p>
 <p>并且我们可以很方便的使用 arviz 对MCMC进行可视化和基于数学化标准的诊断</p>
 <p>首先，我们建立一个简单的 beta 模型，并对该模型使用MCMC采样方法 (以下术语可见课件上分术语表)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
-<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="c1"># 设置数据</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">Y</span> <span class="o">=</span> <span class="mi">9</span>
@@ -850,7 +893,7 @@ R̂ = \frac{V_{combined}}{V_{within}}
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">legend</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-142.png" /></p>
+<p><img alt="alt text" src="../_images/image-146.png" /></p>
 <ul class="simple">
 <li><p>可以看到，每条链的后验分布都重合在一起。</p></li>
 <li><p>MCMC链的行为表现得类似噪音一样，这是一个好的表现。</p></li>
@@ -859,7 +902,7 @@ R̂ = \frac{V_{combined}}{V_{within}}
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_autocorr</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">combined</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-151.png" /></p>
+<p><img alt="alt text" src="../_images/image-155.png" /></p>
 <ul class="simple">
 <li><p>可以看到，随着间隔的下降，自相关也快速下降</p></li>
 </ul>
@@ -871,13 +914,13 @@ R̂ = \frac{V_{combined}}{V_{within}}
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;diagnostics&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-161.png" /></p>
+<p><img alt="alt text" src="../_images/image-164.png" /></p>
 <ul class="simple">
 <li><p>根据前面的内容，我们通过mcmc找到了后验，首先需要诊断这个后验是否靠谱，接下来则是用这个后验分布帮助我们解决实际感兴趣的问题，也就是需要进行一些统计推断。</p></li>
 </ul>
 </section>
 <section id="posterior-estimation">
-<h2>Posterior estimation<a class="headerlink" href="#posterior-estimation" title="Permalink to this heading">#</a></h2>
+<h2>Posterior estimation<a class="headerlink" href="#posterior-estimation" title="Link to this heading">#</a></h2>
 <p>当我们确定 MCMC 采样的结果的可信后，我们就可以将其当作后验分布进行统计推断。</p>
 <p>在此之前，我们需要回顾后验分布的含义和意义。</p>
 <ul class="simple">
@@ -887,15 +930,15 @@ R̂ = \frac{V_{combined}}{V_{within}}
 <p>a. 参与者正确判断的概率大概在80%</p>
 <p>b. 参与者正确判断的概率比例最有可能是80%，但这个比例也可能是60%到99%中的某一个。</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入数字和向量处理包：numpy</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="c1"># 导入基本绘图工具：matplotlib</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="c1"># 导入高级绘图工具 seaborn 为 sns</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="c1"># 导入概率分布计算和可视化包：preliz</span>
-<span class="kn">import</span> <span class="nn">preliz</span> <span class="k">as</span> <span class="nn">pz</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">preliz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pz</span>
 
-<span class="k">def</span> <span class="nf">bayesian_analysis_plot</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bayesian_analysis_plot</span><span class="p">(</span>
     <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> 
     <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
     <span class="n">plot_prior</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
@@ -963,7 +1006,7 @@ R̂ = \frac{V_{combined}}{V_{within}}
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-171.png" /></p>
+<p><img alt="alt text" src="../_images/image-174.png" /></p>
 <p>选项b是更符合贝叶斯取向的回答。 为什么？ ➡</p>
 <ul class="simple">
 <li><p>我们来考虑另一种调查情况下得出的后验分布：</p></li>
@@ -986,7 +1029,7 @@ Y|\pi \sim Bin(118,\pi)
 <blockquote>
 <div><p>黑线表示众数，即在后验分布中最可能出现的值</p>
 </div></blockquote>
-<p><img alt="alt text" src="../_images/image-181.png" /></p>
+<p><img alt="alt text" src="../_images/image-182.png" /></p>
 <p>根据上面两种分布，<span class="math notranslate nohighlight">\(\pi\)</span>最可能的取值都在83%-84%左右</p>
 <ul class="simple">
 <li><p>如果只关注众数，两种截然不同的情况却会导致相似的结论。但很明显，我们可以看到两个图中<span class="math notranslate nohighlight">\(\pi\)</span>的分布范围是不同的。</p></li>
@@ -995,16 +1038,16 @@ Y|\pi \sim Bin(118,\pi)
 <p>因此，在贝叶斯统计中，<strong>汇报不确定性</strong>是一个非常重要的工作。不确定性反映了你的数据量到底有多大，你的信心到底有多大。</p>
 <p><strong>为了同时了解<span class="math notranslate nohighlight">\(\pi\)</span>的集中趋势和离散趋势，我们可以使用95%的可信区间(credible intervals)来描述<span class="math notranslate nohighlight">\(\pi\)</span></strong></p>
 <section id="credible-intervals">
-<h3>可信区间(credible intervals)<a class="headerlink" href="#credible-intervals" title="Permalink to this heading">#</a></h3>
+<h3>可信区间(credible intervals)<a class="headerlink" href="#credible-intervals" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>后验分布的2.5%百分位数和97.5%百分位数包含的区域共同组成了95%的后验可信区间，可信区间表示了参数出现在这个区域的概率。</p></li>
 <li><p>比如，Beta(101, 21) 95%的可信区间为(0.756, 0.889)。这意味着我们可以说，在随机点运动任务中参与者成功的真实概率出现在(0.756, 0.889)的可能性是95%。</p></li>
 </ul>
 <p>一种理解是，有95%的人在随机点运动任务中参与者成功概率很高，大概为 0.756 到 0.889。</p>
 <p>下面是可视化的例子：</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">beta</span>
 
 <span class="c1"># 定义 Beta 分布的参数 Beta(101, 21)</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="mi">21</span><span class="p">)]</span>
@@ -1042,7 +1085,7 @@ Y|\pi \sim Bin(118,\pi)
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-191.png" /></p>
+<p><img alt="alt text" src="../_images/image-192.png" /></p>
 <p>注意：贝叶斯的可信区间和频率主义的置信区间解读不同，不要混淆这两个概念。</p>
 <p><strong>在报告可信区间时，95%是最常见的选项，但并不是唯一的选项。</strong></p>
 <p>我们也可以创建其他可信区间，比如Beta(101, 21)的分布之下：</p>
@@ -1054,9 +1097,9 @@ Y|\pi \sim Bin(118,\pi)
 <div><p>在95%CI的图中，由于后验分布是一个偏态分布，可以看到相较于前半部分，后半部分包含的值对应的概率更低。
 当后验分布是偏态分布时，有时我们不以中位数为中心构建95%的可信区间，而是基于<strong>最高后验概率密度(众数)</strong>。</p>
 </div></blockquote>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">beta</span>
 
 <span class="c1"># 定义 Beta 分布的参数 Beta(101, 21)</span>
 <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">21</span>
@@ -1106,19 +1149,19 @@ Y|\pi \sim Bin(118,\pi)
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-20.png" /></p>
+<p><img alt="alt text" src="../_images/image-202.png" /></p>
 </section>
 <section id="the-highest-density-interval-hdi">
-<h3>最大后验概率密度区间(the highest density interval, HDI)<a class="headerlink" href="#the-highest-density-interval-hdi" title="Permalink to this heading">#</a></h3>
+<h3>最大后验概率密度区间(the highest density interval, HDI)<a class="headerlink" href="#the-highest-density-interval-hdi" title="Link to this heading">#</a></h3>
 <p>最大概率密度区间HDI与中心区间是非常接近的。但是<strong>当后验分布为非正态分布时，两者存在区别</strong>，比如：</p>
-<p><img alt="alt text" src="../_images/image-211.png" /></p>
+<p><img alt="alt text" src="../_images/image-216.png" /></p>
 <ul class="simple">
 <li><p>左图是中央后验区间，从中位数的两侧开始展开</p></li>
 <li><p>右图是HDI，从y轴最高的两处（众数）开始展开</p></li>
 </ul>
 <p>这个HDI是现在大家常见的并且比较推荐的一种报告方法。</p>
 <p><em><strong>直觉理解：想象有一根水平的线从后验概率密度最高点往下滑，如果是95%HDI，则意味着黄色部分的面积占曲线下面积的95%</strong></em></p>
-<p><img alt="alt text" src="../_images/image-22.png" /></p>
+<p><img alt="alt text" src="../_images/image-223.png" /></p>
 <blockquote>
 <div><p>source: <a class="reference external" href="https://mathematica.stackexchange.com/questions/173282/computing-credible-region-highest-posterior-density-from-empirical-distributio">https://mathematica.stackexchange.com/questions/173282/computing-credible-region-highest-posterior-density-from-empirical-distributio</a></p>
 </div></blockquote>
@@ -1127,14 +1170,14 @@ Y|\pi \sim Bin(118,\pi)
 <ul class="simple">
 <li><p>从下面的两幅图可以看出，95% CI 和 95%HDI实际上存在一些细微的差别。</p></li>
 </ul>
-<p><img alt="alt text" src="../_images/image-23.png" /></p>
+<p><img alt="alt text" src="../_images/image-232.png" /></p>
 <p>此外，非正态分布后验的平均值，中位数和众数并不相等。</p>
 <ul class="simple">
 <li><p>其中众数为分布最高点对应的参数值</p></li>
 <li><p>中位数左右两侧分布的面积各占50%</p></li>
 <li><p>平均值的位置接近中位数，并且它容易分布形态的影响</p></li>
 </ul>
-<p><img alt="alt text" src="../_images/image-24.png" /></p>
+<p><img alt="alt text" src="../_images/image-242.png" /></p>
 </section>
 </section>
 </section>
@@ -1166,7 +1209,7 @@ Y|\pi \sim Bin(118,\pi)
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -1195,6 +1238,7 @@ Y|\pi \sim Bin(118,\pi)
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1265,8 +1309,8 @@ By Dr. Hu Chuan-Peng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

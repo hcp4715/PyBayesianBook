@@ -1,0 +1,932 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>练习：当自变量为连续变量 &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter10/chapter10_part2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Logistic Regression" href="../chapter11/chapter11_part1.html" />
+    <link rel="prev" title="Evaluating Regression Models" href="chapter10_part1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Bayes Factor</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part1.html">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part2.html">8.1 贝叶斯因子的计算与应用</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Multivariable linear regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part1.html">9.0 三水平的简单线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part2.html">9.1 2×3的多元线性回归模型：无交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter10/chapter10_part2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter10/chapter10_part2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>练习：当自变量为连续变量</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">模型回顾</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mae">计算MAE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elpd-loo">计算elpd_loo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dic">计算DIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">总结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>练习：当自变量为连续变量<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>模型回顾<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>在第十课的练习部分，我们探究了自我控制水平是否压力和吸烟有关，分别建立了三个回归模型，本节课的练习将基于上节课建立的三个模型进行。</p>
+<p>💡 如果上节课的练习没有完成，是无法完成本节课的练习的哦！（难度 🔝🔝🔝）</p>
+<table>
+    <tr>
+        <td>模型</td> 
+        <td>model1</td> 
+        <td>model2</td> 
+        <td>model3</td>
+   </tr>
+    <tr>
+  		<td>自变量</td> 
+        <td>压力(连续变量)</td> 
+        <td>压力(连续变量)，吸烟(离散变量)【无交互】</td> 
+        <td>压力(连续变量)，吸烟(离散变量)【有交互】</td> 
+    </tr>
+    <tr>
+        <td>自变量含义</td> 
+        <td colspan="3">压力（14-70的压力评级）；吸烟（`0` 表示不吸烟，`1` 表示吸烟）</td> 
+    </tr>
+    <tr>
+        <td>先验</td> 
+        <td>β0 ~ N(50, 10);
+            β1 ~ N(0, 10);
+            σ ~ Exp(0.6)</td> 
+        <td>β0 ~ N(50, 10);
+            β1 ~ N(0, 10);
+            β2 ~ N(0, 10);
+            σ ~ Exp(0.6)</td> 
+        <td>β0 ~ N(50, 10);
+            β1 ~ N(0, 10);
+            β2 ~ N(0, 10);
+            β3 ~ N(0, 10);
+            σ ~ Exp(0.6)</td>
+   </tr>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入 pymc 模型包，和 arviz 等分析工具 </span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># 忽略不必要的警告</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 通过 pd.read_csv 加载数据 Data_Sum_HPP_Multi_Site_Share.csv</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">df_re</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/mw/input/bayes3797/Data_Sum_HPP_Multi_Site_Share.csv&#39;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">df_re</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/Data_Sum_HPP_Multi_Site_Share.csv&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># 筛选站点为&quot;Tsinghua&quot;的数据</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df_re</span><span class="p">[</span><span class="n">df_re</span><span class="p">[</span><span class="s2">&quot;Site&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Tsinghua&quot;</span><span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;stress&quot;</span><span class="p">,</span><span class="s2">&quot;scontrol&quot;</span><span class="p">,</span><span class="s2">&quot;smoke&quot;</span><span class="p">]]</span>
+
+<span class="c1">#1 表示吸烟，2表示不吸烟</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;smoke&quot;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;smoke&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;smoke_recode&quot;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;smoke&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">)</span>
+
+
+<span class="c1">#设置索引</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">##-------------------------------------------------</span>
+<span class="c1">#     定义模型4、5、6，补全...部分</span>
+<span class="c1">#---------------------------------------------------</span>
+
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model4</span><span class="p">:</span>
+
+    <span class="n">beta_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>            
+    <span class="n">beta_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>        
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>               
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;smoke&quot;</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">stress</span><span class="p">)</span>                   
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="n">beta_0</span> <span class="o">+</span> <span class="n">beta_1</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>          
+
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y_est&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">scontrol</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model5</span><span class="p">:</span>
+
+    <span class="n">beta_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>                
+    <span class="n">beta_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>          
+    <span class="n">beta_2</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_2&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>           
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>                   
+
+    <span class="n">stress</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;stress&quot;</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">stress</span><span class="p">)</span>                          
+    <span class="n">smoke</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;smoke&quot;</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">smoke</span><span class="p">)</span>                              
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="n">beta_0</span> <span class="o">+</span> <span class="n">beta_1</span><span class="o">*</span><span class="n">stress</span> <span class="o">+</span> <span class="n">beta_2</span><span class="o">*</span><span class="n">smoke</span><span class="p">)</span>    
+
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y_est&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">scontrol</span><span class="p">)</span> 
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model6</span><span class="p">:</span>
+    <span class="n">beta_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>        
+    <span class="n">beta_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>        
+    <span class="n">beta_2</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_2&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>        
+    <span class="n">beta_3</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_3&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=...</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=...</span><span class="p">)</span>          
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>                 
+
+    <span class="n">stress</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;stress&quot;</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">stress</span><span class="p">)</span>      
+    <span class="n">smoke</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;smoke&quot;</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">smoke</span><span class="p">)</span>         
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="n">beta_0</span> <span class="o">+</span> 
+                                <span class="n">beta_1</span><span class="o">*</span><span class="n">stress</span> <span class="o">+</span> 
+                                <span class="n">beta_2</span><span class="o">*</span><span class="n">smoke</span> <span class="o">+</span>
+                                <span class="n">beta_3</span><span class="o">*</span><span class="n">stress</span><span class="o">*</span><span class="n">smoke</span><span class="p">)</span>      
+
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y_est&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">scontrol</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#========================================</span>
+<span class="c1">#     注意！！！以下代码可能需要运行 5 分钟左右,直接运行即可</span>
+<span class="c1">#     直接运行即可，无需修改</span>
+<span class="c1">#========================================</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_model_sampling</span><span class="p">(</span><span class="n">save_name</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    运行模型采样，并在结果不存在时进行采样，存在时直接加载结果。</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - save_name: 用于保存或加载结果的文件名（无扩展名）</span>
+<span class="sd">    - model: pymc 模型</span>
+<span class="sd">    - draws: 采样次数 (默认5000)</span>
+<span class="sd">    - tune: 调整采样策略的次数 (默认1000)</span>
+<span class="sd">    - chains: 链数 (默认4)</span>
+<span class="sd">    - random_seed: 随机种子 (默认84735)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - trace: 采样结果</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># 检查是否存在保存的.nc文件</span>
+    <span class="n">nc_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_name</span><span class="si">}</span><span class="s2">.nc&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">nc_file</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;加载现有的采样结果：</span><span class="si">{</span><span class="n">nc_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># 如果文件存在，则加载采样结果</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_netcdf</span><span class="p">(</span><span class="n">nc_file</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">assert</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;模型未定义，请先定义模型&quot;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;没有找到现有的采样结果，正在执行采样：</span><span class="si">{</span><span class="n">save_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># 如果文件不存在，则进行采样计算</span>
+        <span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+            <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="n">draws</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span>
+            <span class="n">idata</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="n">draws</span><span class="p">,</span>                   <span class="c1"># 使用mcmc方法进行采样，draws为采样次数</span>
+                              <span class="n">tune</span><span class="o">=</span><span class="n">tune</span><span class="p">,</span>                    <span class="c1"># tune为调整采样策略的次数</span>
+                              <span class="n">chains</span><span class="o">=</span><span class="n">chains</span><span class="p">,</span>                <span class="c1"># 链数</span>
+                              <span class="n">discard_tuned_samples</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>   <span class="c1"># tune的结果将在采样结束后被丢弃</span>
+                              <span class="n">idata_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;log_likelihood&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+                              <span class="n">random_seed</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span>      <span class="c1"># 后验采样</span>
+
+            <span class="n">trace</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">idata</span><span class="p">)</span>
+            <span class="c1"># 进行后验预测并扩展推断数据</span>
+            <span class="n">pm</span><span class="o">.</span><span class="n">sample_posterior_predictive</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">extend_inferencedata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span>
+            
+            <span class="c1"># 保存结果到指定文件</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">nc_file</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">trace</span>
+
+
+<span class="c1"># 运行所有三个模型</span>
+<span class="n">model4_trace</span> <span class="o">=</span> <span class="n">run_model_sampling</span><span class="p">(</span><span class="s2">&quot;lec10_model4&quot;</span><span class="p">,</span><span class="n">model4</span><span class="p">)</span>
+<span class="n">model5_trace</span> <span class="o">=</span> <span class="n">run_model_sampling</span><span class="p">(</span><span class="s2">&quot;lec10_model5&quot;</span><span class="p">,</span><span class="n">model5</span><span class="p">)</span>
+<span class="n">model6_trace</span> <span class="o">=</span> <span class="n">run_model_sampling</span><span class="p">(</span><span class="s2">&quot;lec10_model6&quot;</span><span class="p">,</span><span class="n">model6</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 直接运行即可，无需修改</span>
+<span class="c1"># 将3个模型中的inference data 中的 y_est 统一改为 Y_obs</span>
+
+<span class="n">model4_trace</span> <span class="o">=</span> <span class="n">model4_trace</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;y_est&quot;</span><span class="p">:</span> <span class="s2">&quot;Y_obs&quot;</span><span class="p">})</span>
+<span class="n">model5_trace</span> <span class="o">=</span> <span class="n">model5_trace</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;y_est&quot;</span><span class="p">:</span> <span class="s2">&quot;Y_obs&quot;</span><span class="p">})</span>
+<span class="n">model6_trace</span> <span class="o">=</span> <span class="n">model6_trace</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;y_est&quot;</span><span class="p">:</span> <span class="s2">&quot;Y_obs&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="mae">
+<h2>计算MAE<a class="headerlink" href="#mae" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 直接运行即可，无需修改</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_mae</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">observed_data</span><span class="p">,</span> <span class="n">dv</span> <span class="o">=</span> <span class="s2">&quot;Y_obs&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    计算后验预测均值和 MAE (Median Absolute Error)。</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - trace: PyMC 模型的采样结果 (InferenceData 对象)。</span>
+<span class="sd">    - observed_data: 包含真实观测值的 Pandas DataFrame。</span>
+<span class="sd">    - dv: 需要计算 MAE 的数据列名，默认为 &quot;Y_obs&quot;。</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - posterior_mean: 后验预测值的均值。</span>
+<span class="sd">    - mae: 后验预测均值与观测值之间的 MAE。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># 提取后验预测值</span>
+    <span class="n">posterior_predictive</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="n">dv</span><span class="p">]</span>
+    
+    <span class="c1"># 计算后验预测均值（在 draw 和 chain 两个维度上取平均值）</span>
+    <span class="n">posterior_mean</span> <span class="o">=</span> <span class="n">posterior_predictive</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">])</span>
+    
+    <span class="c1"># 计算 MAE（绝对误差的中位数）</span>
+    <span class="n">mae</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">observed_data</span> <span class="o">-</span> <span class="n">posterior_mean</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">mae</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">##================================================</span>
+<span class="c1">#                练习，修改... 部分</span>
+<span class="c1">#                </span>
+<span class="c1">#================================================</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Model 4&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">calculate_mae</span><span class="p">(</span><span class="n">model4_trace</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;...&quot;</span><span class="p">],</span> <span class="s2">&quot;...&quot;</span><span class="p">)],</span>
+    <span class="s2">&quot;Model 5&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">calculate_mae</span><span class="p">(</span><span class="n">model5_trace</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;...&quot;</span><span class="p">],</span> <span class="s2">&quot;...&quot;</span><span class="p">)],</span>
+    <span class="s2">&quot;Model 6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">calculate_mae</span><span class="p">(</span><span class="n">model6_trace</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;...&quot;</span><span class="p">],</span> <span class="s2">&quot;...&quot;</span><span class="p">)],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p>Model4</p></th>
+<th class="head text-center"><p>Model5</p></th>
+<th class="head text-center"><p>Model6</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>0</p></td>
+<td class="text-center"><p>3.417442</p></td>
+<td class="text-center"><p>3.525749</p></td>
+<td class="text-center"><p>3.548162</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="elpd-loo">
+<h2>计算elpd_loo<a class="headerlink" href="#elpd-loo" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">##================================================</span>
+<span class="c1">#                练习，修改... 部分       </span>
+<span class="c1">#================================================</span>
+
+<span class="n">comparison_list</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model4(contiunous)&quot;</span><span class="p">:</span><span class="o">...</span><span class="p">,</span>
+    <span class="s2">&quot;model5(multivariate )&quot;</span><span class="p">:</span><span class="o">...</span><span class="p">,</span>
+    <span class="s2">&quot;model6(interaction)&quot;</span><span class="p">:</span><span class="o">...</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">az</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">comparison_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="dic">
+<h2>计算DIC<a class="headerlink" href="#dic" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 直接运行即可，无需修改</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_dic</span><span class="p">(</span><span class="n">log_likelihood</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    根据 log-likelihood 计算 DIC (Deviance Information Criterion)。 参考 Evans, N. J. (2019). Assessing the practical differences between model selection methods in inferences about choice response time tasks. Psychonomic Bulletin &amp; Review, 26(4), 1070–1098. https://doi.org/10.3758/s13423-018-01563-9</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - log_likelihood: xarray 数据集，包含每个链和样本的 log-likelihood 值。</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - dic: 计算得到的 DIC 值。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 计算每个样本的Deviance</span>
+    <span class="n">deviance_samples</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">log_likelihood</span>
+    
+    <span class="c1"># 计算平均Deviance</span>
+    <span class="n">D_bar</span> <span class="o">=</span> <span class="n">deviance_samples</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    
+    <span class="c1"># 计算有效自由度 p_D</span>
+    <span class="n">p_D</span> <span class="o">=</span> <span class="n">deviance_samples</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">D_bar</span>
+    
+    <span class="c1"># 计算DIC</span>
+    <span class="n">DIC</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">D_bar</span> <span class="o">-</span> <span class="n">p_D</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">DIC</span><span class="p">[</span><span class="s2">&quot;Y_obs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">##================================================</span>
+<span class="c1">#                练习，修改... 部分</span>
+<span class="c1">#                </span>
+<span class="c1">#================================================</span>
+
+<span class="n">DIC_list</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;m4_dic_value&quot;</span><span class="p">:</span><span class="n">calculate_dic</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="s2">&quot;m5_dic_value&quot;</span><span class="p">:</span><span class="n">calculate_dic</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+    <span class="s2">&quot;m6_dic_value&quot;</span><span class="p">:</span><span class="n">calculate_dic</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>总结<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>本节课从不同模型评估的角度，介绍了模型评估与比较的基本思想。</p>
+<p>通过学习，我们对贝叶斯分析的整体流程（Bayesian workflow）有了初步的理解。</p>
+<p>在接下来的课程中，我们将不断实践这一流程，帮助大家更深入地领略贝叶斯分析的独特魅力。</p>
+<p><img alt="alt text" src="../_images/image-15.png" /></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter10"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chapter10_part1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Evaluating Regression Models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter11/chapter11_part1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Logistic Regression</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">模型回顾</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mae">计算MAE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elpd-loo">计算elpd_loo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dic">计算DIC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">总结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

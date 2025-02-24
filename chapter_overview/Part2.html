@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Part 2: Three examples &#8212; Bayesian Inference with Python</title>
   
@@ -15,53 +14,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter_overview/Part2';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -76,28 +71,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -119,12 +109,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -140,6 +138,8 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="intro.html">
@@ -158,7 +158,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -229,6 +240,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -243,7 +284,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -252,14 +293,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -384,10 +425,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -395,14 +436,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -435,12 +476,12 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="part-2-three-examples">
-<h1>Part 2: Three examples<a class="headerlink" href="#part-2-three-examples" title="Permalink to this heading">#</a></h1>
+<h1>Part 2: Three examples<a class="headerlink" href="#part-2-three-examples" title="Link to this heading">#</a></h1>
 <section id="id1">
-<h2>1、例1 —— 社会关系地位与幸福感的关系<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<h2>1、例1 —— 社会关系地位与幸福感的关系<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <font size=3>
 <p>  实例的数据来自 Many Labs 2 项目中的一个研究。</p>
 <p>  该研究探究了社会关系地位对于幸福感的影响 “Sociometric status and well-being”， (Anderson, Kraus, Galinsky, &amp; Keltner, 2012)。</p>
@@ -448,21 +489,21 @@ document.write(`
 <p>参考文献：</p>
 <p>Anderson, C., Kraus, M. W., Galinsky, A. D., &amp; Keltner, D. (2012). The local-ladder effect: Social status and subjective well-being. Psychological Science, 23(7), 764-771. <a class="reference external" href="https://doi.org/10.1177/0956797611434537">https://doi.org/10.1177/0956797611434537</a></p>
 <p>In [1]:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">levene</span>
-<span class="kn">from</span> <span class="nn">pingouin</span> <span class="kn">import</span> <span class="n">ttest</span><span class="p">,</span> <span class="n">tost</span><span class="p">,</span> <span class="n">bayesfactor_ttest</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">pytensor.tensor</span> <span class="k">as</span> <span class="nn">pt</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">pytensor.tensor</span> <span class="kn">import</span> <span class="n">TensorVariable</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">pearsonr</span>
-<span class="kn">import</span> <span class="nn">graphviz</span>
-<span class="kn">from</span> <span class="nn">graphviz</span> <span class="kn">import</span> <span class="n">Digraph</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">levene</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pingouin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ttest</span><span class="p">,</span> <span class="n">tost</span><span class="p">,</span> <span class="n">bayesfactor_ttest</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytensor.tensor</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pytensor.tensor</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorVariable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">pearsonr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">graphviz</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphviz</span><span class="w"> </span><span class="kn">import</span> <span class="n">Digraph</span>
 
 <span class="c1"># 设置随机种子</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">202409</span><span class="p">)</span>
@@ -518,7 +559,7 @@ document.write(`
 <p>  图中横坐标代表高低两种社会关系地位，纵坐标代表了主观幸福感评分。</p>
 <p>In [4]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义绘图函数</span>
-<span class="k">def</span> <span class="nf">adjacent_values</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q3</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">adjacent_values</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q3</span><span class="p">):</span>
     <span class="n">upper_adjacent_value</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="p">(</span><span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span>
     <span class="n">upper_adjacent_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper_adjacent_value</span><span class="p">,</span> <span class="n">q3</span><span class="p">,</span> <span class="n">vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
@@ -526,14 +567,14 @@ document.write(`
     <span class="n">lower_adjacent_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower_adjacent_value</span><span class="p">,</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lower_adjacent_value</span><span class="p">,</span> <span class="n">upper_adjacent_value</span>
 
-<span class="k">def</span> <span class="nf">set_axis_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_axis_style</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s1">&#39;out&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Soceity Status&#39;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">plot_violin_apa7</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_labels</span><span class="p">,</span> <span class="n">y_label</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_violin_apa7</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_labels</span><span class="p">,</span> <span class="n">y_label</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># 调整图形大小</span>
 
@@ -747,7 +788,7 @@ document.write(`
 <br>
 </section>
 <section id="hierarchical-multi-level-model">
-<h2>2、例2 —— 贝叶斯分层模型（Hierarchical/Multi-level Model） 可以更准确地估计信度<a class="headerlink" href="#hierarchical-multi-level-model" title="Permalink to this heading">#</a></h2>
+<h2>2、例2 —— 贝叶斯分层模型（Hierarchical/Multi-level Model） 可以更准确地估计信度<a class="headerlink" href="#hierarchical-multi-level-model" title="Link to this heading">#</a></h2>
 <p>  在前面的内容中，我们通过社会关系地位（高与低）对幸福感的影响进行了可视化，并使用贝叶斯因子和贝叶斯推断对模型进行了进一步的分析。<br>
   现实世界的数据往往存在分层结构（例如，数据可能来自不同的群体、地区、时间段等），如何更好地处理数据内在的层次结构，更加准确地估计出感兴趣的效应（如社会关系地位对幸福感的影响），正是分层模型所能解决的。</p>
 <ul class="simple">
@@ -828,7 +869,7 @@ In [16]:
 <br>
 <p>In [19]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 经过数据预处理后，定义函数，计算time 1和time 2数据的皮尔逊相关系数</span>
-<span class="k">def</span> <span class="nf">pearson_df</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">):</span> <span class="c1"># 定义函数，用于计算皮尔逊相关系数</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pearson_df</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">):</span> <span class="c1"># 定义函数，用于计算皮尔逊相关系数</span>
     <span class="n">contrast_cor</span> <span class="o">=</span> <span class="n">pearsonr</span><span class="p">(</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">)</span> <span class="c1"># 计算皮尔逊相关系数</span>
     <span class="n">contrast_coef</span> <span class="o">=</span> <span class="n">contrast_cor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">ci_low</span><span class="p">,</span> <span class="n">ci_high</span> <span class="o">=</span> <span class="n">contrast_cor</span><span class="o">.</span><span class="n">confidence_interval</span><span class="p">(</span><span class="n">confidence_level</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span> <span class="c1"># 计算置信区间</span>
@@ -876,8 +917,8 @@ In [16]:
 <p>  分析逻辑：
   贝叶斯分层模型的思路认为：一个人在两个测验上的表现都能反映出他的能力，因此需要从个体层面（subject level）估计，再进行群体层面（group level）的估计。</p>
 <p>In [21]:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logshift_model</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">shifted_lognormal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">logshift_model</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shifted_lognormal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">loc</span> <span class="o">+</span> <span class="n">pm</span><span class="o">.</span><span class="n">LogNormal</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
 
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cond&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Condition&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span>
@@ -982,7 +1023,7 @@ In [16]:
 <br>
 <p>In [22]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 根据不同的方法选择不同的模型</span>
-<span class="k">def</span> <span class="nf">process_model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">distribution</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">distribution</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">distribution</span> <span class="o">==</span> <span class="s1">&#39;log_shift&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">logshift_model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
@@ -990,7 +1031,7 @@ In [16]:
 <br>
 <p>In [23]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进行先验预测检验并输出</span>
-<span class="k">def</span> <span class="nf">prior_predictive_check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">43201</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prior_predictive_check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">43201</span><span class="p">):</span>
     <span class="n">model_prior_check</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">(</span>
         <span class="n">samples</span><span class="o">=</span><span class="n">samples</span><span class="p">,</span>
         <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
@@ -1012,7 +1053,7 @@ In [16]:
 <br>
 <p>In [24]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 进行采样</span>
-<span class="k">def</span> <span class="nf">model_sampling</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_sampling</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>            <span class="c1"># 使用mcmc方法进行采样，draws为采样次数</span>
                     <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>                    <span class="c1"># tune为调整采样策略的次数，可以决定这些结果是否要被保留</span>
                     <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>                     <span class="c1"># 链数</span>
@@ -1027,7 +1068,7 @@ In [16]:
 <br>
 <p>In [25]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 对重测信度参数进行总结</span>
-<span class="k">def</span> <span class="nf">diagnostic_summary</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">diagnostic_summary</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
     <span class="n">diagnostic</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span>
                                <span class="n">var_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rho_R_mu&quot;</span><span class="p">,</span> <span class="s2">&quot;rho_R_sigma&quot;</span><span class="p">],</span>
                                <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
@@ -1043,9 +1084,9 @@ In [16]:
 <br>
 <p>In [26]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 集合需要的结果并输出</span>
-<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gc</span>
 
-<span class="k">def</span> <span class="nf">result_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">distribution</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">result_output</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">distribution</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">process_model</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="n">distribution</span><span class="p">)</span>
     <span class="n">prior_plot</span> <span class="o">=</span> <span class="n">prior_predictive_check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">43201</span><span class="p">)</span>
     <span class="n">trace</span> <span class="o">=</span> <span class="n">model_sampling</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -1063,7 +1104,7 @@ In [16]:
 </div>
 <p>In [28]:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 对变量名进行修改</span>
-<span class="k">def</span> <span class="nf">rename_hdi</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rename_hdi</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
     <span class="n">data</span><span class="p">[</span><span class="s2">&quot;level_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;level_1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;rho_R_mu[0]&#39;</span><span class="p">:</span> <span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="s1">&#39;rho_R_sigma[0]&#39;</span><span class="p">:</span> <span class="s1">&#39;sigma&#39;</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">data</span>
@@ -1107,7 +1148,7 @@ In [16]:
 </ul>
 </section>
 <section id="id2">
-<h2>3、例3 —— 贝叶斯推断在认知模型中的应用<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2>3、例3 —— 贝叶斯推断在认知模型中的应用<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p>  在实验数据的收集时，研究者往往会采集个体反应的正确率与反应时。</p>
 <p>  而传统分析方法并不能同时对两种数据进行分析，从而推断潜在的认知机制。比如，个体是否愿意牺牲更多的反应时间去获得一个更准确的判断。</p>
 <p>  <strong>认知模型能有效的弥补这一问题，比如 drift-diffusion model, DDM (<a class="reference external" href="https://osf.io/preprints/psyarxiv/6uzga">Pan et al, 2022</a>)。</strong></p>
@@ -1143,7 +1184,7 @@ In [16]:
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -1172,6 +1213,7 @@ In [16]:
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1230,8 +1272,8 @@ By Dr. Hu Chuan-Peng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

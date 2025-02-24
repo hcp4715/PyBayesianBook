@@ -1,0 +1,847 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lecture14 : Hierarchical Regression Models &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter13/chapter13_part1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Partial pooling &amp; hierarchical model" href="chapter13_part2.html" />
+    <link rel="prev" title="开放式练习" href="../chapter12/chapter12_part4.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Bayes Factor</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part1.html">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part2.html">8.1 贝叶斯因子的计算与应用</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Multivariable linear regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part1.html">9.0 三水平的简单线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part2.html">9.1 2×3的多元线性回归模型：无交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter13/chapter13_part1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter13/chapter13_part1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture14 : Hierarchical Regression Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intro">Intro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model0-complete-pooling">Model0: Complete pooling</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture14-hierarchical-regression-models">
+<h1>Lecture14 : Hierarchical Regression Models<a class="headerlink" href="#lecture14-hierarchical-regression-models" title="Link to this heading">#</a></h1>
+<section id="intro">
+<h2>Intro<a class="headerlink" href="#intro" title="Link to this heading">#</a></h2>
+<p>在上一节课中，我们学习了<strong>分层模型 (Hierarchical Models) 的基本概念</strong>，并探讨了分层模型的应用，然而这些模型没有考虑实验条件的影响。</p>
+<p>因此，为了检验实验条件在每个被试中的效应大小，需要结合回归分析方法。</p>
+<ul class="simple">
+<li><p>本节课将<strong>分层模型与回归模型相结合</strong>，重点讲解分层线性模型 (Hierarchical Regression Models) 的应用。</p></li>
+</ul>
+<p>在前几次课的练习中讨论了“压力与自我控制关系”的例子，本节课将以该例子介绍<strong>分层线性模型</strong>的基本概念，在练习阶段时再回到随机点运动范式的情境。</p>
+<p><img alt="alt text" src="../_images/image-110.png" /></p>
+<p><img alt="alt text" src="../_images/image3.png" /></p>
+<p>在上节课的练习中仅考虑了<strong>自我控制分数在不同站点和不同个体间的变化。</strong></p>
+<p>🤔 然而，我们更想回答的问题是，压力对自我控制的影响是否在不同站点间存在差异？</p>
+<p><img alt="alt text" src="../_images/image-210.png" /></p>
+<ul class="simple">
+<li><p>如图A：一种不太可能的情景是，不同站点间的自我控制分数没有差异，并且压力对自我控制的影响在不同站点间也相同。</p></li>
+<li><p>如图B：一种可能是，自我控制分数在不同站点间存在差异，但是压力对自我控制的影响在不同站点不存在差异。</p></li>
+<li><p>如图C：另一种可能是，站点只调节压力对自我控制的影响，而各站点间自我控制分数相当。</p></li>
+<li><p>如图D：最后，站点可能既影响自我控制分数，又影响压力对自我控制的效应。</p></li>
+</ul>
+<p><strong>在本节课中，将介绍引入包含自变量时的分层模型，并通过不同的模型验证不同的假设：</strong></p>
+<p><img alt="alt text" src="../_images/image-36.png" /></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(H_0(model 0)\)</span>，图A，普通线性模型，仅考虑压力对自我控制的影响。</p></li>
+<li><p><span class="math notranslate nohighlight">\(H_1(model 1)\)</span>，图B，变化截距模型(斜率相同)，在模型0的基础上考虑自我控制在不同站点的变化。</p></li>
+<li><p><span class="math notranslate nohighlight">\(H_2(model 2)\)</span>，图C，变化斜率模型（截距相同），在模型0的基础上不同站点间的压力影响的变化。</p></li>
+<li><p><span class="math notranslate nohighlight">\(H_3(model 3)\)</span>，图D，变化截距和斜率模型，结合模型1和模型2，同时考虑站点对自我控制以及压力影响的变化。</p></li>
+</ul>
+<p><strong>回顾：贝叶斯回归模型的数学表达式</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\beta_0 \sim N(m_0,s_0^2)\\
+\beta_1 \sim N(m_1,s_1^2)\\
+\sigma \sim Exp(\lambda)\\
+\downarrow\\
+\mu_i=\beta_0+\beta_1X_i\\
+\downarrow\\
+Y_i|\beta_0,\beta_1,\sigma \sim N(\mu_i,\sigma^2)
+\end{split}\]</div>
+<p><strong>回归模型需满足如下假设：</strong></p>
+<ul class="simple">
+<li><p>独立观测假设：每个观测值<span class="math notranslate nohighlight">\(Y_i\)</span>是相互独立的。</p></li>
+<li><p>线性关系假设：预测值<span class="math notranslate nohighlight">\(\mu_i\)</span>和自变量<span class="math notranslate nohighlight">\(X_i\)</span>之间可以用线性关系来描述，即：<span class="math notranslate nohighlight">\(\mu_i=\beta_0+\beta_1X_i\)</span></p></li>
+<li><p>方差同质性假设：在任意自变量的取值下，观测值<span class="math notranslate nohighlight">\(Y_i\)</span>都会以<span class="math notranslate nohighlight">\(\mu_i\)</span>为中心，以相同的标准差<span class="math notranslate nohighlight">\(\sigma\)</span>呈正态分布变化。</p></li>
+</ul>
+<p><strong>贝叶斯回归模型的优势：</strong></p>
+<p>允许将实验假设以回归参数的形式进行表达，并通过后验分布来量化这些假设的合理性。</p>
+<div class="math notranslate nohighlight">
+\[
+RT_{sec} \sim N(\beta_0+\beta_1·Label,\sigma^2)
+\]</div>
+<ul class="simple">
+<li><p>通过后验分布检验<span class="math notranslate nohighlight">\(\beta_1\)</span>是否显著，例如计算<span class="math notranslate nohighlight">\(\beta_1&gt;0\)</span>或<span class="math notranslate nohighlight">\(\beta_1&lt;0\)</span>的概率，计算最高密度区间HDI。如果95%HDI不包含0，可以认为自我条件和他人条件在反应时上的差异是显著的。</p></li>
+<li><p>在贝叶斯框架下，不仅可以观察参数的点估计（如<span class="math notranslate nohighlight">\(\beta_1\)</span>的均值），还可以通过后验分布和 HDI 提供更加直观的置信水平解释。</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-43.png" /></p>
+<blockquote>
+<div><p>改编自：https: // <a class="reference external" href="http://saylordotorg.github.io/text_introductory-statistics/s14-03-modelling-linear-relationships.html">saylordotorg.github.io/text_introductory-statistics/s14-03-modelling-linear-relationships.html</a></p>
+</div></blockquote>
+</section>
+<section id="model0-complete-pooling">
+<h2>Model0: Complete pooling<a class="headerlink" href="#model0-complete-pooling" title="Link to this heading">#</a></h2>
+<p>以 “压力与自我控制关系” 为例， 如果忽略数据的分层结构，认为所有数据都来自一个更大的总体(不区分站点)，只需要用一个回归方程来描述自变量与因变量的关系。</p>
+<p>data:</p>
+<div class="math notranslate nohighlight">
+\[
+Y_i|\beta_0,\beta_1,\sigma~~\overset{ind}{\sim}~~N(\mu_i,\sigma^2)~~with~~\mu_i=\beta_0+\beta_1X_i
+\]</div>
+<p>priors:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\beta_0~~\sim~~N(0,50^2)\\
+\beta_1~~\sim~~N(0,5^2)\\
+\sigma~~\sim~~Exp(1)
+\end{split}\]</div>
+<ul class="simple">
+<li><p>其中，<span class="math notranslate nohighlight">\(Y_i\)</span>是第i个被试的自我控制分数</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_i\)</span>是第i个被试的压力得分</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_0和\beta_1\)</span>是回归系数，<span class="math notranslate nohighlight">\(\sigma\)</span>是残差的标准差</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_1\)</span>代表了压力与自我控制之间的关系</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-53.png" /></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入 pymc 模型包，和 arviz 等分析工具 </span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymc</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ipywidgets</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bambi</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bmb</span>
+
+<span class="c1"># 忽略不必要的警告</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 通过 pd.read_csv 加载数据 Data_Sum_HPP_Multi_Site_Share.csv</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/mw/input/bayes3797/Data_Sum_HPP_Multi_Site_Share.csv&#39;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/Data_Sum_HPP_Multi_Site_Share.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 选取所需站点</span>
+<span class="n">first5_site</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Southampton&#39;</span><span class="p">,</span><span class="s1">&#39;Portugal&#39;</span><span class="p">,</span><span class="s1">&#39;Kassel&#39;</span><span class="p">,</span><span class="s1">&#39;Tsinghua&#39;</span><span class="p">,</span><span class="s1">&#39;UCSB&#39;</span><span class="p">]</span>
+<span class="n">df_first5</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;Site in @first5_site&quot;</span><span class="p">)</span>
+<span class="c1"># 生成站点索引</span>
+<span class="n">df_first5</span><span class="p">[</span><span class="s2">&quot;site_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">df_first5</span><span class="o">.</span><span class="n">Site</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># 生成被试数索引</span>
+<span class="n">df_first5</span><span class="p">[</span><span class="s2">&quot;obs_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_first5</span><span class="p">))</span>
+<span class="c1"># 将站点、被试id设置为索引</span>
+<span class="n">df_first5</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Site&#39;</span><span class="p">,</span><span class="s1">&#39;obs_id&#39;</span><span class="p">],</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df_first5</span>
+</pre></div>
+</div>
+<p>在处理数据之前，我们先按照完全池化的方式进行可视化，即不区分站点，把所有被试当成一个群体。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 通过完全池化的方式可视化数据</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">df_first5</span><span class="p">,</span>
+           <span class="n">x</span><span class="o">=</span><span class="s2">&quot;stress&quot;</span><span class="p">,</span>
+           <span class="n">y</span><span class="o">=</span><span class="s2">&quot;scontrol&quot;</span><span class="p">,</span>
+           <span class="n">height</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-63.png" /></p>
+<p><strong>模型定义与采样</strong></p>
+<p>data:</p>
+<div class="math notranslate nohighlight">
+\[
+Y_i|\beta_0,\beta_1,\sigma~~\overset{ind}{\sim}~~N(\mu_i,\sigma^2)~~with~~\mu_i=\beta_0+\beta_1X_i
+\]</div>
+<p>priors:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\beta_0~~\sim~~N(0,50^2)\\
+\beta_1~~\sim~~N(0,5^2)\\
+\sigma~~\sim~~Exp(1)
+\end{split}\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义坐标映射</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;obs_id&quot;</span><span class="p">:</span> <span class="n">df_first5</span><span class="o">.</span><span class="n">obs_id</span><span class="p">}</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span> <span class="k">as</span> <span class="n">complete_pooled_model</span><span class="p">:</span>
+
+    <span class="n">beta_0</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>                <span class="c1">#定义beta_0          </span>
+    <span class="n">beta_1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>                 <span class="c1">#定义beta_1</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                          <span class="c1">#定义sigma</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">df_first5</span><span class="o">.</span><span class="n">stress</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>    <span class="c1">#x是自变量压力水平</span>
+
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span><span class="n">beta_0</span> <span class="o">+</span> <span class="n">beta_1</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> 
+                          <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>                        <span class="c1">#定义mu，讲自变量与先验结合</span>
+
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;y_est&quot;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">df_first5</span><span class="o">.</span><span class="n">scontrol</span><span class="p">,</span>
+                           <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;obs_id&quot;</span><span class="p">)</span>                       <span class="c1">#定义似然：预测值y符合N(mu, sigma)分布</span>
+                                                                <span class="c1">#通过 observed 传入实际数据y 自我控制水平</span>
+    <span class="n">complete_trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span><span class="o">.</span><span class="n">model_to_graphviz</span><span class="p">(</span><span class="n">complete_pooled_model</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-73.png" /></p>
+<p><strong>后验参数估计：</strong></p>
+<p>结果显示：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mu_i=\beta_0+\beta_1X_i\\
+\beta_0=63.17\\
+\beta_1=-0.58
+\end{split}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_1=-0.58\)</span>表明，在给定站点的情况下，自我控制水平与压力水平之间存在负相关关系。并且，压力分数每增加1分，自我控制水平平均下降0.58分。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">complete_trace</span><span class="p">,</span>
+           <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;~mu&quot;</span><span class="p">],</span>
+           <span class="n">filter_vars</span><span class="o">=</span><span class="s2">&quot;like&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-83.png" /></p>
+<p><strong>后验预测回归线</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#提取不同站点数据对应的索引并储存，便于后续将后验预测数据按照站点进行提取</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_group_index</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">group_index</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Site&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+        <span class="n">group_index</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Site == &#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">))[</span><span class="s2">&quot;obs_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">return</span> <span class="n">group_index</span>
+
+<span class="c1">#定义函数，绘制不同站点下的后验预测回归线</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_regression</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">group_index</span><span class="p">):</span>
+    <span class="c1"># 定义画布，根据站点数量定义画布的列数</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Site&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()),</span> 
+                       <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                       <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                       <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    
+    <span class="c1"># 根据站点数来分别绘图</span>
+    <span class="c1"># 需要的数据有原始数据，每一个因变量的后验预测均值</span>
+    <span class="c1"># 这些数据都储存在后验参数采样结果中，也就是这里所用的trace</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Site&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+        <span class="c1">#绘制真实数据的散点图</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">constant_data</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">obs_id</span> <span class="o">=</span> <span class="n">group_index</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">observed_data</span><span class="o">.</span><span class="n">y_est</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">obs_id</span> <span class="o">=</span> <span class="n">group_index</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">obs_id</span> <span class="o">=</span> <span class="n">group_index</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;C</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="c1">#绘制回归线</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span><span class="s2">&quot;draw&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;C</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="c1">#绘制预测值95%HDI</span>
+        <span class="n">az</span><span class="o">.</span><span class="n">plot_hdi</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span>
+            <span class="n">hdi_prob</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+            <span class="n">fill_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="s2">&quot;linewidth&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+            <span class="n">color</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;C</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1"># 生成横坐标名称</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Stress&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="c1"># 生成纵坐标名称</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;Self control&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="c1"># 生成标题</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Posterior regression models&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+        
+    <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 获取每个站点数据的索引</span>
+<span class="n">first5_index</span> <span class="o">=</span> <span class="n">get_group_index</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_first5</span><span class="p">)</span>
+<span class="c1"># 进行可视化</span>
+<span class="n">plot_regression</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_first5</span><span class="p">,</span>
+                <span class="n">trace</span><span class="o">=</span><span class="n">complete_trace</span><span class="p">,</span>
+                <span class="n">group_index</span><span class="o">=</span><span class="n">first5_index</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-93.png" /></p>
+<ul class="simple">
+<li><p>通过上面的图可以直观地看出，不同站点回归线的斜率和截距几乎是一致的。</p></li>
+<li><p>完全池化模型假设，所有站点中自我控制分数一致，并且压力的影响也一致。</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter13"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter12/chapter12_part4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">开放式练习</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter13_part2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Partial pooling &amp; hierarchical model</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intro">Intro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model0-complete-pooling">Model0: Complete pooling</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

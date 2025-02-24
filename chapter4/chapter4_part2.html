@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>4.1 Grid approximation 网格近似 &#8212; Bayesian Inference with Python</title>
   
@@ -15,53 +14,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapter4/chapter4_part2';</script>
@@ -78,28 +73,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -121,12 +111,20 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -142,6 +140,8 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../chapter_overview/intro.html">
@@ -160,7 +160,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -231,6 +242,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -245,7 +286,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -254,14 +295,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -386,10 +427,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -397,14 +438,14 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -455,11 +496,11 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="grid-approximation">
-<h1>4.1 Grid approximation 网格近似<a class="headerlink" href="#grid-approximation" title="Permalink to this heading">#</a></h1>
-<p><img alt="alt text" src="../_images/image-42.png" /></p>
+<h1>4.1 Grid approximation 网格近似<a class="headerlink" href="#grid-approximation" title="Link to this heading">#</a></h1>
+<p><img alt="alt text" src="../_images/image-46.png" /></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>想象有一张图像(图三)，但你不能完整地看到它。不过你可以从左到右每次取一个这个图像中的一个小格来观察它。</p></li>
@@ -475,7 +516,7 @@ document.write(`
 <p>3.对于所有的<span class="math notranslate nohighlight">\(θ\)</span>值，计算<span class="math notranslate nohighlight">\(f(θ)\)</span>和<span class="math notranslate nohighlight">\(L(θ|y)\)</span>二者的乘积并相加，再进行归一化</p>
 <p>4.归一化后，根据<span class="math notranslate nohighlight">\(θ\)</span>值的后验概率分布，随机抽取N个<span class="math notranslate nohighlight">\(θ\)</span>值</p>
 <section id="a-beta-binomial-example">
-<h2>A Beta-Binomial example<a class="headerlink" href="#a-beta-binomial-example" title="Permalink to this heading">#</a></h2>
+<h2>A Beta-Binomial example<a class="headerlink" href="#a-beta-binomial-example" title="Link to this heading">#</a></h2>
 <p>假设先验<span class="math notranslate nohighlight">\(\pi\)</span>服从Beta分布：</p>
 <div class="math notranslate nohighlight">
 \[
@@ -518,20 +559,20 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <p>这个结果可以用来对我们使用网络近似的后验进行验证。</p>
 </section>
 <section id="id1">
-<h2>示例：网络近似估计后验分布<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<h2>示例：网络近似估计后验分布<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <section id="step1">
-<h3>Step1<a class="headerlink" href="#step1" title="Permalink to this heading">#</a></h3>
+<h3>Step1<a class="headerlink" href="#step1" title="Link to this heading">#</a></h3>
 <p>首先，我们先在0.5到1这个区间内取一系列的值，总共取11个值，也就是每隔0.05取一个。</p>
 <div class="math notranslate nohighlight">
 \[
 \pi \in {0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1}
 \]</div>
 <p>导入需要的包：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 </pre></div>
 </div>
 <p>从0.5到1之间取出11个值：</p>
@@ -541,7 +582,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 </div>
 </section>
 <section id="step2-3">
-<h3>Step2&amp;3<a class="headerlink" href="#step2-3" title="Permalink to this heading">#</a></h3>
+<h3>Step2&amp;3<a class="headerlink" href="#step2-3" title="Link to this heading">#</a></h3>
 <p>在每一个<span class="math notranslate nohighlight">\(\pi\)</span>下，计算先验分布<span class="math notranslate nohighlight">\(Beta(70,30)\)</span>，与似然函数<span class="math notranslate nohighlight">\(Bin(100,\pi)(Y=90)\)</span>的乘积，计算总和并进行归一化：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prior</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">pi_grid</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
 <span class="n">likelihood</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">pi_grid</span><span class="p">)</span>
@@ -569,7 +610,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <p>图中每个黑点就是<span class="math notranslate nohighlight">\(\pi\)</span>的取值，分别计算出后验概率，对他进行归一化，最后就得到了后验分布。但这个分别和我们真正的后验分布还差的很多，因此我们可以进一步进行可视化。</p>
 </section>
 <section id="step4">
-<h3>Step4<a class="headerlink" href="#step4" title="Permalink to this heading">#</a></h3>
+<h3>Step4<a class="headerlink" href="#step4" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>得到后验结果<span class="math notranslate nohighlight">\((π)\)</span>的分布后，从这个分布中抽样10000次，对后验进行可视化。</p></li>
 </ul>
@@ -595,7 +636,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-62.png" /></p>
+<p><img alt="alt text" src="../_images/image-66.png" /></p>
 <p><strong>抽样结果图示</strong></p>
 <p>抽样结果显示，<span class="math notranslate nohighlight">\(π\)</span>大多数集中在 0.80 附近，少部分在 0.75 和 0.85 附近。</p>
 <ul class="simple">
@@ -619,7 +660,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-71.png" /></p>
+<p><img alt="alt text" src="../_images/image-75.png" /></p>
 <p>这里可以看出，网络近似得到的后验分布与<span class="math notranslate nohighlight">\(Beta(160,40)\)</span>具有几分相似，但由于取值较少，形状上还差的较多，因此我们增大取值的个数。</p>
 <p><strong>增加网格数</strong></p>
 <ul class="simple">
@@ -649,7 +690,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-81.png" /></p>
+<p><img alt="alt text" src="../_images/image-85.png" /></p>
 <p>其实我们要做的就是把likelihood的数量增加即可，甚至可以增加到1001个<span class="math notranslate nohighlight">\(\pi\)</span>值。可以看到，在这次的取样中，<span class="math notranslate nohighlight">\(\pi\)</span>的取值更加多样。</p>
 <p>接下来，和上面的步骤一样，从后验中抽取10000个样本形成后验分布：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">84735</span><span class="p">)</span>
@@ -695,20 +736,20 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-91.png" /></p>
+<p><img alt="alt text" src="../_images/image-95.png" /></p>
 <ul class="simple">
 <li><p>大家可以看到，网络近似获得的后验分布已经非常接近共轭分布。如果继续增大网格数，那么会越来越接近。</p></li>
 </ul>
 </section>
 </section>
 <section id="id2">
-<h2>练习<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2>练习<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <blockquote>
 <div><p>📃以Normal-Normal模型为例来练习网格近似</p>
 </div></blockquote>
 <p>在 Normal-Normal 模型 中，观测数据和参数之间的关系是通过正态分布来表示的。</p>
 <section id="id3">
-<h3>模型设定<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<h3>模型设定<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>假设<span class="math notranslate nohighlight">\(\mu\)</span>是参与者在随机点运动任务中的平均反应时间（单位：ms）,<span class="math notranslate nohighlight">\(\sigma\)</span>是参与者在随机点运动任务中的标准差（单位：ms）。</p></li>
 <li><p>先验分布设为正态分布，我们假设参与者的平均反应时间约为 500 ms，标准差为 100 ms。</p></li>
@@ -736,9 +777,9 @@ Y_i|\mu \stackrel{ind}{\sim} Normal(\mu,\sigma^2)
 \]</div>
 <p>首先，我们仅考虑只有一种参数的情况。 即假设我们已知<span class="math notranslate nohighlight">\(\sigma\)</span>为80，而<span class="math notranslate nohighlight">\(\mu\)</span>未知。</p>
 <p><span class="math notranslate nohighlight">\(\mu\)</span>的先验为正态分布，即<span class="math notranslate nohighlight">\(N(500,200)\)</span></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="c1"># 生成模拟数据</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -828,7 +869,7 @@ likelihood = np.array(
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-101.png" /></p>
+<p><img alt="alt text" src="../_images/image-105.png" /></p>
 <blockquote>
 <div><p>plt.vlines是绘制垂直线，x轴对应的是均值，最低点是y轴的0值，最高点是max。
 plt.legend是指集中显示图例，也就是左上角的小方块。</p>
@@ -860,7 +901,7 @@ plt.legend是指集中显示图例，也就是左上角的小方块。</p>
 </div>
 </section>
 <section id="mu-sigma">
-<h3>增加难度：估计<span class="math notranslate nohighlight">\(\mu\)</span> 和 <span class="math notranslate nohighlight">\(\sigma\)</span><a class="headerlink" href="#mu-sigma" title="Permalink to this heading">#</a></h3>
+<h3>增加难度：估计<span class="math notranslate nohighlight">\(\mu\)</span> 和 <span class="math notranslate nohighlight">\(\sigma\)</span><a class="headerlink" href="#mu-sigma" title="Link to this heading">#</a></h3>
 <p>上面只考虑了估计<span class="math notranslate nohighlight">\(\mu\)</span>参数，下面我们增加难度，增加考虑估计<span class="math notranslate nohighlight">\(\sigma\)</span>参数。</p>
 <p>我们假设<span class="math notranslate nohighlight">\(\mu\)</span>和<span class="math notranslate nohighlight">\(\sigma\)</span>的先验服从正态分布，即：</p>
 <ul class="simple">
@@ -964,14 +1005,14 @@ plt.legend是指集中显示图例，也就是左上角的小方块。</p>
 </section>
 </section>
 <section id="id4">
-<h2>网格近似的局限性<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
+<h2>网格近似的局限性<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <p>😎或许你也注意到了，上述模型还是只有一到俩个参数的情况</p>
 <p>当模型的参数越来越多时，网格近似就会遇到“维数灾难问题”，例如当参数增加到3个、4个甚至更多。</p>
 <p>在这里我们只需要简单理解为：<strong>当模型参数越来越多时，网格近似需要的计算成本也越来越高。</strong></p>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="markov-chain-monte-carlo-mcmc">
-<h1>Markov chain Monte Carlo(MCMC)<a class="headerlink" href="#markov-chain-monte-carlo-mcmc" title="Permalink to this heading">#</a></h1>
+<h1>Markov chain Monte Carlo(MCMC)<a class="headerlink" href="#markov-chain-monte-carlo-mcmc" title="Link to this heading">#</a></h1>
 <p>在计算具有多个参数的后验分布时，有一种有效的方法叫做马尔科夫链蒙特卡洛(MCMC)，可以用于模拟和近似后验概率分布。</p>
 <p><em><strong>Markov chain</strong></em></p>
 <ul class="simple">
@@ -985,10 +1026,10 @@ plt.legend是指集中显示图例，也就是左上角的小方块。</p>
 <li><p>而后一个MC (Monte Carlo)则是一个赌场的名字。据说来自于 20 世纪 40 年代绝密核武器项目的，其中斯坦尼斯拉夫-乌拉姆、约翰-冯-诺伊曼和他们在洛斯阿拉莫斯国家实验室的合作者使用马尔可夫链来模拟和更好地理解中子旅行现象（Eckhardt，1987）。洛斯阿拉莫斯团队将他们的工作称为 “蒙特卡洛”，据说这一选择是受到法国里维埃拉富丽堂皇的蒙特卡洛赌场的启发。</p></li>
 </ul>
 <section id="mcmc">
-<h2>MCMC 的采样特点<a class="headerlink" href="#mcmc" title="Permalink to this heading">#</a></h2>
+<h2>MCMC 的采样特点<a class="headerlink" href="#mcmc" title="Link to this heading">#</a></h2>
 <p>1、和网格法类似，MCMC并不会从后验分布<span class="math notranslate nohighlight">\(f(\theta |y)\)</span>中直接采样</p>
 <p>2、并且区分与网格法，MCMC的样本不是互相独立的——下一个样本值依赖于上一个样本值</p>
-<p><img alt="alt text" src="../_images/image-111.png" /></p>
+<p><img alt="alt text" src="../_images/image-117.png" /></p>
 <blockquote>
 <div><p>source: <a class="reference external" href="https://zhuanlan.zhihu.com/p/250146007">https://zhuanlan.zhihu.com/p/250146007</a></p>
 </div></blockquote>
@@ -1019,7 +1060,7 @@ f(\theta^{(i+1)}|\theta^{(1)},\theta^{(2)},...\theta^{(i)},y) = f(\theta^{(i+1)}
 <li><p><a class="reference external" href="https://turinglang.org/docs/tutorials/docs-00-getting-started/index.html">julia turing</a></p></li>
 </ul>
 <p><strong>What is PyMC ?</strong></p>
-<p><img alt="alt text" src="../_images/image-121.png" /></p>
+<p><img alt="alt text" src="../_images/image-125.png" /></p>
 <p>PyMC是一个在Python中基于 概率编程语音(probabilistic program language, PPL) 的工具，允许用户使用简单的Python API构建贝叶斯模型，并使用马尔可夫链蒙特卡洛（MCMC）方法进行拟合。</p>
 <p>特点：</p>
 <ul class="simple">
@@ -1100,10 +1141,10 @@ posterior mean = \theta \frac{\sigma^2}{n\tau^2+\sigma^2}+\overline{y}\frac{n\ta
 posterior variance = \frac{\tau^2\sigma^2}{n\tau^2+\sigma^2}
 \]</div>
 <p>随着样本量<span class="math notranslate nohighlight">\(n\)</span>的增加，后验均值逐渐依赖于观测数据，而对先验的依赖减小。同时，后验方差随着样本量的增加而减小，意味着我们对<span class="math notranslate nohighlight">\(μ\)</span>的估计将变得更加精确。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
 <span class="c1"># 定义正确率范围</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>  <span class="c1"># 正确率在0到1之间</span>
@@ -1185,7 +1226,7 @@ f(y)=\frac{\lambda^ye^{-\lambda}}{y^!}
 <p>例如，假设研究者平均每天可以招募 12 个被试（<span class="math notranslate nohighlight">\(\lambda\)</span>=12），那么在一天内招募到 5 个被试的概率<span class="math notranslate nohighlight">\(f(5)\)</span>招募到 10 名被试的概率<span class="math notranslate nohighlight">\(f(10)\)</span>，或招募到 15 名被试的概率<span class="math notranslate nohighlight">\(f(15)\)</span>都可以通过Poisson分布进行计算。</p>
 <p><strong>Poisson分布图示</strong></p>
 <p>下图展示了不同<span class="math notranslate nohighlight">\(\lambda\)</span>下，事件发生y次的可能性分布</p>
-<p><img alt="alt text" src="../_images/image-131.png" /></p>
+<p><img alt="alt text" src="../_images/image-135.png" /></p>
 <p><strong>Potential priors</strong></p>
 <p>🤔思考：</p>
 <p>我们有如下形式的Poisson 似然函数：</p>
@@ -1259,7 +1300,7 @@ f(\lambda|\alpha,\beta) = \frac{\beta^\alpha \lambda^{\alpha-1}e^{-\beta\lambda}
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -1288,6 +1329,7 @@ f(\lambda|\alpha,\beta) = \frac{\beta^\alpha \lambda^{\alpha-1}e^{-\beta\lambda}
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -1364,8 +1406,8 @@ By Dr. Hu Chuan-Peng
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
