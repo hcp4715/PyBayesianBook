@@ -231,6 +231,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -460,7 +490,7 @@ document.write(`
 <p>（1）任务难度由点的运动一致性决定。一致性低，点的主要方向不明显，任务难度大；一致性高，点的主要方向明显，任务难度小。</p>
 <p>（2）正确率随一致性的增加而提高，通常在心理物理曲线中展示。</p>
 <p>  根据正确率的数据，我们可以使用心理物理曲线描述运动强度（点的一致性百分比）与决策正确率之间的关系：</p>
-<p><img alt="alt text" src="../_images/image.png" /></p>
+<p><img alt="alt text" src="../_images/image5.png" /></p>
 <blockquote>
 <div><p>Shooshtari, S. V., Sadrabadi, J. E., Azizi, Z., &amp; Ebrahimpour, R. (2019). Confidence representation of perceptual decision by EEG and eye data in a random dot motion task. Neuroscience, 406, 510–527. <a class="reference external" href="https://doi.org/10.1016/j.neuroscience.2019.03.031">https://doi.org/10.1016/j.neuroscience.2019.03.031</a></p>
 </div></blockquote>
@@ -626,7 +656,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-41.png" /></p>
+<p><img alt="alt text" src="../_images/image-45.png" /></p>
 <p><em><strong>从上面这些图可以看出来，当参数不同时，会得到不同形状的概率分布。</strong></em></p>
 <p>  例如，当<span class="math notranslate nohighlight">\( β=5 \)</span>时，在接近0的这个区间内概率非常高，从0到慢慢接近1的这个区间，概率会逐渐下降。</p>
 <p>  当<span class="math notranslate nohighlight">\( α=1，β=1 \)</span>时，概率分布就是一个完全平的形状，我们一般称之为“uniform”，也叫做均匀分布，即从0到1之间的所有取值被抽取到的概率都是一样的。</p>

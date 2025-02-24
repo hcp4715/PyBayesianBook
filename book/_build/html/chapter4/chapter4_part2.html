@@ -231,6 +231,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -459,7 +489,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="grid-approximation">
 <h1>4.1 Grid approximation 网格近似<a class="headerlink" href="#grid-approximation" title="Permalink to this heading">#</a></h1>
-<p><img alt="alt text" src="../_images/image-42.png" /></p>
+<p><img alt="alt text" src="../_images/image-46.png" /></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>想象有一张图像(图三)，但你不能完整地看到它。不过你可以从左到右每次取一个这个图像中的一个小格来观察它。</p></li>
@@ -595,7 +625,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-62.png" /></p>
+<p><img alt="alt text" src="../_images/image-66.png" /></p>
 <p><strong>抽样结果图示</strong></p>
 <p>抽样结果显示，<span class="math notranslate nohighlight">\(π\)</span>大多数集中在 0.80 附近，少部分在 0.75 和 0.85 附近。</p>
 <ul class="simple">
@@ -619,7 +649,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-71.png" /></p>
+<p><img alt="alt text" src="../_images/image-75.png" /></p>
 <p>这里可以看出，网络近似得到的后验分布与<span class="math notranslate nohighlight">\(Beta(160,40)\)</span>具有几分相似，但由于取值较少，形状上还差的较多，因此我们增大取值的个数。</p>
 <p><strong>增加网格数</strong></p>
 <ul class="simple">
@@ -649,7 +679,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-81.png" /></p>
+<p><img alt="alt text" src="../_images/image-85.png" /></p>
 <p>其实我们要做的就是把likelihood的数量增加即可，甚至可以增加到1001个<span class="math notranslate nohighlight">\(\pi\)</span>值。可以看到，在这次的取样中，<span class="math notranslate nohighlight">\(\pi\)</span>的取值更加多样。</p>
 <p>接下来，和上面的步骤一样，从后验中抽取10000个样本形成后验分布：</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">84735</span><span class="p">)</span>
@@ -695,7 +725,7 @@ Y+\alpha=90+70, \beta+n-Y=30+100-90
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-91.png" /></p>
+<p><img alt="alt text" src="../_images/image-95.png" /></p>
 <ul class="simple">
 <li><p>大家可以看到，网络近似获得的后验分布已经非常接近共轭分布。如果继续增大网格数，那么会越来越接近。</p></li>
 </ul>
@@ -828,7 +858,7 @@ likelihood = np.array(
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-101.png" /></p>
+<p><img alt="alt text" src="../_images/image-105.png" /></p>
 <blockquote>
 <div><p>plt.vlines是绘制垂直线，x轴对应的是均值，最低点是y轴的0值，最高点是max。
 plt.legend是指集中显示图例，也就是左上角的小方块。</p>
@@ -988,7 +1018,7 @@ plt.legend是指集中显示图例，也就是左上角的小方块。</p>
 <h2>MCMC 的采样特点<a class="headerlink" href="#mcmc" title="Permalink to this heading">#</a></h2>
 <p>1、和网格法类似，MCMC并不会从后验分布<span class="math notranslate nohighlight">\(f(\theta |y)\)</span>中直接采样</p>
 <p>2、并且区分与网格法，MCMC的样本不是互相独立的——下一个样本值依赖于上一个样本值</p>
-<p><img alt="alt text" src="../_images/image-111.png" /></p>
+<p><img alt="alt text" src="../_images/image-117.png" /></p>
 <blockquote>
 <div><p>source: <a class="reference external" href="https://zhuanlan.zhihu.com/p/250146007">https://zhuanlan.zhihu.com/p/250146007</a></p>
 </div></blockquote>
@@ -1019,7 +1049,7 @@ f(\theta^{(i+1)}|\theta^{(1)},\theta^{(2)},...\theta^{(i)},y) = f(\theta^{(i+1)}
 <li><p><a class="reference external" href="https://turinglang.org/docs/tutorials/docs-00-getting-started/index.html">julia turing</a></p></li>
 </ul>
 <p><strong>What is PyMC ?</strong></p>
-<p><img alt="alt text" src="../_images/image-121.png" /></p>
+<p><img alt="alt text" src="../_images/image-125.png" /></p>
 <p>PyMC是一个在Python中基于 概率编程语音(probabilistic program language, PPL) 的工具，允许用户使用简单的Python API构建贝叶斯模型，并使用马尔可夫链蒙特卡洛（MCMC）方法进行拟合。</p>
 <p>特点：</p>
 <ul class="simple">
@@ -1185,7 +1215,7 @@ f(y)=\frac{\lambda^ye^{-\lambda}}{y^!}
 <p>例如，假设研究者平均每天可以招募 12 个被试（<span class="math notranslate nohighlight">\(\lambda\)</span>=12），那么在一天内招募到 5 个被试的概率<span class="math notranslate nohighlight">\(f(5)\)</span>招募到 10 名被试的概率<span class="math notranslate nohighlight">\(f(10)\)</span>，或招募到 15 名被试的概率<span class="math notranslate nohighlight">\(f(15)\)</span>都可以通过Poisson分布进行计算。</p>
 <p><strong>Poisson分布图示</strong></p>
 <p>下图展示了不同<span class="math notranslate nohighlight">\(\lambda\)</span>下，事件发生y次的可能性分布</p>
-<p><img alt="alt text" src="../_images/image-131.png" /></p>
+<p><img alt="alt text" src="../_images/image-135.png" /></p>
 <p><strong>Potential priors</strong></p>
 <p>🤔思考：</p>
 <p>我们有如下形式的Poisson 似然函数：</p>

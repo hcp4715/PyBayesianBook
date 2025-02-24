@@ -231,6 +231,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -486,7 +516,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-6.png" /></p>
+<p><img alt="alt text" src="../_images/image-64.png" /></p>
 </section>
 <section id="id2">
 <h2>随机点运动任务中的正确率分布<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
@@ -542,7 +572,7 @@ document.write(`
 <span class="c1"># g.show()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-7.png" /></p>
+<p><img alt="alt text" src="../_images/image-74.png" /></p>
 <p>  上图可以看出，随着ACC的增大，ACC越高，正确判断次数高的情况越可能出现；相反，ACC越低，正确判断次数低的情况则更可能出现，这很符合我们的直觉。</p>
 <p>  在随机点运动任务中，假设参与者在50次试验中有30次正确（即Y=30），我们可以写出在不同正确率ACC下发生这一结果的可能性，具体公式如下：</p>
 <center>
@@ -553,7 +583,7 @@ document.write(`
 <p><span class="math notranslate nohighlight">\(f(Y=30|ACC=0.9)=(^{50}_{30})0.9^{30}(1-0.9)^{20}\)</span></p>
 </center>
 <p>我们可以<strong>仅仅关注各个正确率下，正确判断次数Y=30发生的概率（下图黑点）</strong></p>
-<p><img alt="alt text" src="../_images/image-8.png" /></p>
+<p><img alt="alt text" src="../_images/image-84.png" /></p>
 <ul class="simple">
 <li><p>思考：上面的分布图中Y=30对应的可能性应当叫做概率还是似然？</p></li>
 </ul>
@@ -602,7 +632,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-9.png" /></p>
+<p><img alt="alt text" src="../_images/image-94.png" /></p>
 <ul class="simple">
 <li><p>可以清晰地看出，当ACC=0.6时Y=30出现的可能性最大，并且Likelihood相加不太可能等于1，很容易就超过1了。</p></li>
 </ul>

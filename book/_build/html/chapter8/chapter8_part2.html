@@ -231,6 +231,36 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part1.html">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -463,7 +493,7 @@ document.write(`
 \Downarrow\\
 Y_i|\beta_0,\beta_1,\sigma \sim N(\mu_i,\sigma^2)
 \end{split}\]</div>
-<p><img alt="alt text" src="../_images/image-26.png" /></p>
+<p><img alt="alt text" src="../_images/image-218.png" /></p>
 <ul class="simple">
 <li><p>这里涉及从t检验到用简单回归模型做t检验的一个过渡</p></li>
 </ul>
@@ -614,11 +644,11 @@ Y_i = \beta_0,\beta_1,\sigma \sim N(\mu_i,\sigma^2)
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-38.png" /></p>
+<p><img alt="alt text" src="../_images/image-317.png" /></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-46.png" /></p>
+<p><img alt="alt text" src="../_images/image-410.png" /></p>
 <p><strong>Arviz 实现计算贝叶斯因子</strong></p>
 <p>现在，我们有了<span class="math notranslate nohighlight">\(\beta_1\)</span>的先验分布和后验分布，我们分别计算贝叶斯因子<span class="math notranslate nohighlight">\(BF_{10}和BF_{01}\)</span>,分别表示数据支持备择假设和零假设的证据强度。</p>
 <p>在 Python 的 Arviz 库中，<code class="docutils literal notranslate"><span class="pre">arviz.plot_bf</span></code> 函数提供了直接计算贝叶斯因子的方法，并且可以对先验和后验分布在零假设点处的概率密度值进行可视化。</p>
@@ -638,7 +668,7 @@ Y_i = \beta_0,\beta_1,\sigma \sim N(\mu_i,\sigma^2)
 <span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-53.png" /></p>
+<p><img alt="alt text" src="../_images/image-57.png" /></p>
 <ul class="simple">
 <li><p>结果显示<span class="math notranslate nohighlight">\(BF_{10}=6\)</span>，证明更多的证据支持<span class="math notranslate nohighlight">\(H_1\)</span>。</p></li>
 </ul>
@@ -809,7 +839,7 @@ BF_{10}=\frac{P(Data|H_1)}{P(Data|H_0)}=\frac{P(Data|\beta_1\notin[-0.05,0.05])}
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-64.png" /></p>
+<p><img alt="alt text" src="../_images/image-68.png" /></p>
 <ul class="simple">
 <li><p>这里的Null实际上就是我们设定的零区间[-0.05,0.05]，它是用紫色部分的面积来表示。因此，Prior odds实际上就是紫色部分与黄色部分面积的比值。</p></li>
 </ul>
@@ -832,7 +862,7 @@ BF_{10}=\frac{P(Data|H_1)}{P(Data|H_0)}=\frac{P(Data|\beta_1\notin[-0.05,0.05])}
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-73.png" /></p>
+<p><img alt="alt text" src="../_images/image-77.png" /></p>
 <p>通过先前的贝叶斯因子计算公式，我们可以知道贝叶斯因子为先验概率比和后验概率比的比值：</p>
 <div class="math notranslate nohighlight">
 \[
@@ -882,7 +912,7 @@ BF_{10}=\frac{posterior~odds}{prior~odds}
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="alt text" src="../_images/image-84.png" /></p>
+<p><img alt="alt text" src="../_images/image-88.png" /></p>
 <p>总结：通过可视化，可以发现先验分布的较大部分在零假设区域内，而后验分布则主要集中在零假设区域外，表明数据对备择假设提供了支持，尽管支持的力度相对有限。</p>
 <p>同时，通过直接计算贝叶斯因子的结果也可得出：数据提供了2.3879倍的证据证明<span class="math notranslate nohighlight">\(\beta_1\)</span>落在[-0.05,0.05]区间外的概率更大。</p>
 <ul class="simple">

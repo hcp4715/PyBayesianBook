@@ -1,0 +1,1353 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Logistic Regression &#8212; Bayesian Inference with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter11/chapter11_part1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="练习" href="chapter11_part2.html" />
+    <link rel="prev" title="练习：当自变量为连续变量" href="../chapter10/chapter10_part2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../chapter_overview/intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Bayesian Inference with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Bayesian Inference with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../chapter_overview/intro.html">
+                    序言
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. 课程概述</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part1.html">为什么要学习贝叶斯推断?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part2.html">贝叶斯推断的三个例子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_overview/Part3.html">本课程的主要内容与形式</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. 初识贝叶斯法则(Bayes'Rule)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part1.html">1.0 本课程演示平台: 和鲸平台</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part2.html">1.1 单一事件的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part3.html">1.2 随机变量的贝叶斯模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter1_Bayesrule/Bayesrule_part4.html">1.3 贝叶斯与频率主义的简单对比</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. 一个真正的贝叶斯模型——Beta-Binomial Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part1.html">2.0 先验分布: Beta分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part2.html">2.1 似然函数: Binomial分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part3.html">2.2 后验分布</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2_Beta_Binomial/BetaBinomial_part4.html">2.3 通过模拟可视化来观察模型</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Balance and Sequentiality in Bayesian Analyses</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part1.html">3.0 回顾Bayes'Rule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part2.html">3.1 不同数据对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part3.html">3.2 不同似然对后验的影响</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/Lecture4_part4.html">3.3 不同先验对后验的影响</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Bayesian Inference:From Traditional Foundations to Current Practices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part1.html">4.0 内容回顾</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4/chapter4_part2.html">4.1 Grid approximation 网格近似</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Markov Chain Monte Carlo(MCMC)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part1.html">5.0 Monte Carlo &amp; Markov Chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5/chapter5_part2.html">5.1 Metropolis-Hastings(MH)算法</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Posterior Inference &amp; Estimation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part1.html">6.0 A Beta-Binomial example in pymc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6/chapter6_part2.html">6.1 MCMC诊断</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. A Simple Linear Regression Model with PyMC</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part1.html">7.0 贝叶斯一般线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part2.html">7.1 先验预测</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter7/chapter7_part3.html">7.2 后验预测</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Bayes Factor</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part1.html">8.0 传统零假设显著性检验 vs 贝叶斯因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter8/chapter8_part2.html">8.1 贝叶斯因子的计算与应用</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Multivariable linear regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part1.html">9.0 三水平的简单线性回归模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part2.html">9.1 2×3的多元线性回归模型：无交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part3.html">9.2 2×3的多元线性回归模型：有交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter9/chapter9_part4.html">9.3 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Evaluating Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part1.html">10.0 贝叶斯回顾模型的评估</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/chapter10_part2.html">10.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">11. Logistic Regression</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11.0 贝叶斯逻辑回归</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter11_part2.html">11.1 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">12. Hierarchical Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part1.html">12.0 层级数据结构与完全池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part2.html">12.1 非池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part3.html">12.2 部分池化模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/chapter12_part4.html">12.3 开放式练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">13. Hierarchical Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part1.html">13.0 普通线性模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part2.html">13.1 变化截距模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part3.html">13.2 变化斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part4.html">13.3 变化截距和斜率模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part5.html">13.4 分层模型中的组层面预测因子</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/chapter13_part6.html">13.5 练习</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">14. 课程回顾与复习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/chapter14.html">14.0 课程回顾与复习</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/hcp4715/PyBayesianBook/issues/new?title=Issue%20on%20page%20%2Fchapter11/chapter11_part1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter11/chapter11_part1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Logistic Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">回顾：贝叶斯视角下的回归模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">以随机点运动任务为例：贝叶斯逻辑回归</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">问题：我们能否使用线性回归分析正确率数据？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-odds">Probability &amp; odds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-linear-model-glm">广义线性模型(Generalized Linear Model, GLM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">贝叶斯广义线性模型的定义与代码实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bambilogistic">补充：使用bambi建立logistic回归模型</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="logistic-regression">
+<h1>Logistic Regression<a class="headerlink" href="#logistic-regression" title="Permalink to this heading">#</a></h1>
+<section id="id1">
+<h2>回顾：贝叶斯视角下的回归模型<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>在贝叶斯统计框架下，回归模型的构建与检验方法与传统频率学派有所不同。</p>
+<ul class="simple">
+<li><p>在贝叶斯回归中，模型的参数被视为随机变量，通过数据来更新其概率分布。</p></li>
+<li><p>贝叶斯方法通过<strong>对参数的后验分布进行推断</strong>，从而评估模型的适应性与显著性。</p></li>
+<li><p>这种方法使得我们不仅能得到参数的点估计，还能获得关于这些参数的不确定性的信息。</p></li>
+</ul>
+<p>在之前的课程中，我们以自我优势匹配范式为例，建立了一个简单的线性回归模型：</p>
+<div class="math notranslate nohighlight">
+\[
+RT_{sec} \sim \mathcal{N}(\beta_0+\beta_1·Label, \sigma^2)
+\]</div>
+<ul class="simple">
+<li><p>在这个模型中，反应时（RT）是一个连续的因变量。</p></li>
+</ul>
+<p>然而，在许多心理学研究中，另一个最常见的因变量就是<strong>反应是否正确</strong>，这通常是一个<strong>二分变量（正确 / 错误）</strong>。</p>
+<p>🤔<strong>思考：当因变量是二分变量时，传统的线性回归模型是否仍然适用呢？</strong></p>
+</section>
+<section id="id2">
+<h2>以随机点运动任务为例：贝叶斯逻辑回归<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>接下来，我们以之前介绍过的随机点运动任务（Random Motion Dot Task）为例，来理解贝叶斯逻辑回归模型的应用。</p>
+<ul class="simple">
+<li><p>在这个实验中，参与者观察屏幕上随机运动的点，<strong>这些点的运动方向具有一定的一致性（即大部分点朝某一方向移动）</strong>。</p></li>
+<li><p>参与者的任务是<strong>判断这些点的主要移动方向（例如，向左还是向右）</strong>。</p></li>
+<li><p>实验设计可以控制点的<strong>运动一致性（如10%或40%）</strong>，从而影响参与者作出正确决策的难度。</p></li>
+</ul>
+<p><em><strong>和之前的内容不同，本次课我们将研究点的运动一致性与判断是否正确之间的关系：</strong></em></p>
+<p>1.自变量：点的运动一致性（10%一致性，40%一致性）</p>
+<p>2.因变量：判断是否正确（即被试是否准确判断了点的主要运动方向，1代表反应正确，0代表反应错误）</p>
+<p><strong>我们本次将研究点的运动一致性与判断是否正确之间的关系：</strong></p>
+<p>1.自变量：点的运动一致性（10%一致性和40%一致性）</p>
+<p>2.因变量：判断是否正确即被试是否准确判断了点的主要运动方向，1代表反应正确，0代表反应错误）</p>
+<p>以Evans et al.（2020, Exp. 1） 的数据为例进行探索。</p>
+<blockquote>
+<div><p>Evans, N. J., Hawkins, G. E., &amp; Brown, S. D. (2020). The role of passing time in decision-making. Journal of Experimental Psychology: Learning, Memory, and Cognition, 46(2), 316–326. <a class="reference external" href="https://doi.org/10.1037/xlm0000725">https://doi.org/10.1037/xlm0000725</a></p>
+</div></blockquote>
+<p>首先，我们导入数据并查看其分布情况：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入 pymc 模型包，和 arviz 等分析工具 </span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span>
+
+<span class="c1"># 忽略不必要的警告</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用 pandas 导入示例数据</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;/home/mw/input/bayes3797/evans2020JExpPsycholLearn_exp1_full_data.csv&quot;</span><span class="p">)</span> 
+<span class="k">except</span><span class="p">:</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/evans2020JExpPsycholLearn_exp1_full_data.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 筛选编号为 31727 的数据，并且筛选出两个不同的 percentCoherence</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">31727</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;percentCoherence&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">]))]</span>
+<span class="n">df_clean</span>  <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="s2">&quot;percentCoherence&quot;</span><span class="p">,</span> <span class="s2">&quot;correct&quot;</span><span class="p">]]</span>
+
+<span class="n">df_clean</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_clean</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;percentCoherence&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">correct</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:
+percentCoherence
+10    0.686047
+40    0.926316
+Name: correct, dtype: float64</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 因变量分布</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">df_clean</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;percentCoherence&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">correct</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;accuracy&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-81.png" /></p>
+<p>通过散点图，我们可以直观地观察到数据中不同变量的分布情况：</p>
+<p><img alt="alt text" src="../_images/image-91.png" /></p>
+<p>在示例数据中中，</p>
+<ul class="simple">
+<li><p><strong>因变量“correct”是一个二分类变量</strong>，表示被试是否获得正确反应。</p></li>
+<li><p>我们考虑的<strong>自变量“percentCoherence”可以是连续变量</strong>，表示被试的刺激强度 (percentCoherence 或 motion strength)。</p></li>
+<li><p>我们感觉兴趣的是“correct”与“percentCoherence”之间的关系。</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>问题：我们能否使用线性回归分析正确率数据？<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>在我们传统的认知实验研究的数据分析中，一般最简单的方法就是使用<strong>t检验或者方差分析</strong>（线性回归模型的特例）对正确率进行分析，这就是我们常说的“<strong>遵循领域内的传统</strong>”。</p>
+<ul>
+<li><p>然而，这样处理的前提是<strong>将正确率作为一个连续数据看待</strong>，并采用线性回归模型对它进行分析，这实际上严格来说是存在问题的。</p></li>
+</ul>
+</li>
+</ul>
+<p><em><strong>1、我们能否对每一个试次的数据进行分析？</strong></em></p>
+<p>如果只是将所有试次的数据求一个平均的话，实际上并没有体现出数据量的大小所带来的影响（丢失了这一部分的信息），例如在之前贝叶斯基本原理的课程中所介绍的“数据不一样，后验更新也会不同”。</p>
+<p><em><strong>2、如果我们使用线性回归模型对正确率进行分析，会存在什么问题？</strong></em></p>
+<p>首先，我们需要建立起因变量y(取值为0或1)和自变量x的线性关系：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+y_i = \beta_0+\beta_1*x_i \\
+or\\
+Y_i \sim N(\mu,\sigma),\mu=\beta_0+\beta_1*x_i
+\end{split}\]</div>
+<ul class="simple">
+<li><p>存在的问题：</p>
+<ul>
+<li><p>线性回归模型中的因变量y服从一个正态分布，它的理论取值应当是负无穷到正无穷，但是我们每个试次的取值只能为0或1，并不满足y的理论取值。</p></li>
+</ul>
+</li>
+</ul>
+<p><em><strong>3、如果对二分变量的模型参数进行回归分析，会存在什么问题？</strong></em></p>
+<ul class="simple">
+<li><p>正确反应的概率可以看作是一个伯努利分布，即<span class="math notranslate nohighlight">\(Y_i|\pi_i \sim Bern(\pi_i)\)</span>，其中<span class="math notranslate nohighlight">\(\pi_i\)</span>是在刺激强度（运动一致性）<span class="math notranslate nohighlight">\(x_i\)</span>下被试获得正确反应的概率。</p></li>
+<li><p>曲线上的每一个点都服从伯努利分布<span class="math notranslate nohighlight">\(Y_i|\pi_i \sim Bern(\pi_i)\)</span>。</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image1.png" /></p>
+<ul class="simple">
+<li><p>存在的问题：</p></li>
+</ul>
+<p>我们在做后验预测时仍然可能存在问题，因为仍然是根据正态分布对<span class="math notranslate nohighlight">\(\pi\)</span>进行后验预测，此时还是会很容易出现0-1区间以外的取值。</p>
+<ul class="simple">
+<li><p>至此，我们引入一个新概念———发生比（odds）</p></li>
+</ul>
+</section>
+<section id="probability-odds">
+<h2>Probability &amp; odds<a class="headerlink" href="#probability-odds" title="Permalink to this heading">#</a></h2>
+<p>与概率不同，发生比（odds）描述的是<strong>事件发生概率</strong>与<strong>事件不发生概率</strong>之比，而概率描述的是事件发生的绝对可能性。</p>
+<div class="math notranslate nohighlight">
+\[
+odds=\frac{\pi}{1-\pi},\pi=\frac{odds}{1+odds}
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi\)</span>为因变量Y发生的概率</p></li>
+</ul>
+<p>举例：明天是否会下雨？</p>
+<ul class="simple">
+<li><p>我们假设明天下雨发生的概率是<span class="math notranslate nohighlight">\(\pi=2/3\)</span>，那么明天不下雨的概率为<span class="math notranslate nohighlight">\(1-\pi=1/3\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+odds~of~rain=\frac{2/3}{1-2/3}=2
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi\)</span>的取值为（0，1），odds的取值为[0，+∞）</p></li>
+</ul>
+<p>将发生比与1进行比较来衡量事件发生的不确定性：</p>
+<p>1.当事件发生的概率<span class="math notranslate nohighlight">\(\pi&lt;0.5\)</span>时，事件的发生比小于1</p>
+<p>2.当事件发生的概率<span class="math notranslate nohighlight">\(\pi=0.5\)</span>时，事件的发生比等于1</p>
+<p>3.当事件发生的概率<span class="math notranslate nohighlight">\(\pi&gt;0.5\)</span>时，事件的发生比大于1</p>
+<ul class="simple">
+<li><p>虽然我们将<span class="math notranslate nohighlight">\(\pi\)</span>的取值范围扩大到了[0, +∞），但仍然无法满足（-∞，+∞）的取值范围。</p></li>
+</ul>
+<p>因此，我们还需要继续进行转换。</p>
+<p><em><strong>进一步对odds进行转换，让其在正负无穷上均有取值——log（odds）</strong></em></p>
+<div class="math notranslate nohighlight">
+\[
+log(odds_i)=\beta_0+\beta_1X_{i1}
+\]</div>
+<ul class="simple">
+<li><p>log后，取值范围符合（-∞，+∞）。</p></li>
+</ul>
+<p>总结起来：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+y_i\sim Bern(\pi)\\
+odds=\frac{\pi}{1-\pi}\\
+log(odds)=\beta_0+\beta_1X
+\end{split}\]</div>
+<ul class="simple">
+<li><p>在广义线性模型中，我们需要连接函数(link function)g(⋅)，使得参数<span class="math notranslate nohighlight">\(g(\pi_i)\)</span>可以被表示为自变量<span class="math notranslate nohighlight">\(X_{i1}\)</span>的线性组合。</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-16.png" /></p>
+<ul class="simple">
+<li><p>总的来说，对于其他的数据类型，我们也可以先找到符合其特点的统计分布以及这种分布的参数，然后对它进行相应的转换并符合我们回归模型的特征，最后基于连接函数建立起自变量和因变量之间的线性关系。</p></li>
+</ul>
+<section id="generalized-linear-model-glm">
+<h3>广义线性模型(Generalized Linear Model, GLM)<a class="headerlink" href="#generalized-linear-model-glm" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>对线性回归模型的推广</p></li>
+<li><p>在因变量不满足线性模型的预设条件时，仍然使用线性模型的思路。</p></li>
+<li><p>核心在于通过连接函数对因变量进行变换，使其满足线性模型的条件。</p></li>
+<li><p><strong>对二分变量的广义线性模型称为逻辑回归</strong>，还有大量适用于其他数据的广义线性模型，本质上是一致的。</p></li>
+<li><p>回归系数的解释是难点，需要领域特殊的知识。<strong>最关键的在于，x每变化一个单位y是如何变化的，以及所对应的beta值如果显著，它所对应的特定含义是什么。</strong></p></li>
+</ul>
+<p><strong>公式中各参数的意义</strong></p>
+<div class="math notranslate nohighlight">
+\[
+log(odds)=log(\frac{\pi}{1-\pi})=\beta_0+\beta_1X_1+...+\beta_pX_p
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_0\)</span>是截距项，也称为常数项，它表示当所有自变量（<span class="math notranslate nohighlight">\(X_1,X_2,...,X_p\)</span>）都为0时，log（odds）的基线值。换句话说，<span class="math notranslate nohighlight">\(\beta_0\)</span>表示模型在无任何预测变量影响时的log（odds）。</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_1,\beta_2,...,\beta_p\)</span>是回归系数，分别表示每个预测变量（<span class="math notranslate nohighlight">\(X_1,X_2,...,X_p\)</span>）对log（odds）的影响。即，每个<span class="math notranslate nohighlight">\(\beta_i\)</span>表示对应自变量<span class="math notranslate nohighlight">\(X_i\)</span>增加一个单位时，log（odds）变化的大小。</p></li>
+</ul>
+<blockquote>
+<div><p>Gelman, A., &amp; Hill, J. (2006). Data Analysis Using Regression and Multilevel/Hierarchical Models. Cambridge: Cambridge University Press.</p>
+</div></blockquote>
+<p>也可以写成：</p>
+<div class="math notranslate nohighlight">
+\[
+odds=e^{\beta_0+\beta_1X_1+...+\beta_pX_p}
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_0\)</span></p>
+<ul>
+<li><p>当（<span class="math notranslate nohighlight">\(X_1,X_2,...,X_p）=0时，odds=e^{\beta_0}，即e^{\beta_0}\)</span>表示当所有自变量为0时，事件的发生比</p></li>
+</ul>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\beta_1\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\beta_1=log(odds_{x+1})-log(odds_x) \rightarrow e^{\beta_1}=\frac{odds_{x+1}}{odds_x}\)</span></p></li>
+<li><p>当其他自变量保持不变时，<span class="math notranslate nohighlight">\(X_1\)</span>每增加一个单位（从<span class="math notranslate nohighlight">\(X \rightarrow X+1\)</span>），<span class="math notranslate nohighlight">\(e^{\beta_1}\)</span>表示事件发生比的倍数变化。</p></li>
+</ul>
+</li>
+<li><p>计算</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+log(\frac{\pi_i}{1-\pi_i})=\beta_0+\beta_1X_{i1} \rightarrow \frac{\pi_i}{1-\pi_i}=e^{\beta_0+\beta_1X_{i1}} \rightarrow \pi_i=\frac{e^{\beta_0+\beta_1X_{i1}}}{1+e^{\beta_0+\beta_1X_{i1}}}
+\]</div>
+<p><strong>补充知识：更多可用的分布</strong></p>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>分布类型</p></th>
+<th class="head text-center"><p>描述概率</p></th>
+<th class="head text-center"><p>描述发生比</p></th>
+<th class="head text-center"><p>适用情况说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>二项分布</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>否</p></td>
+<td class="text-center"><p>描述n次独立伯努利试验中成功次数的概率分布</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>贝塔分布</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>描述伯努利试验中成功概率的先验分布，也可以用来描述发生比</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>对数正态分布</p></td>
+<td class="text-center"><p>否</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>描述正态分布变量取对数后的分布，常用于描述正比于发生比的数据</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>泊松分布</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>否</p></td>
+<td class="text-center"><p>描述在固定时间或空间内发生某事件的次数的概率分布</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>伽马分布</p></td>
+<td class="text-center"><p>否</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>描述等待时间的分布，常用于作为泊松分布中事件发生率的先验分布，因此可以用来描述发生比</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>负二项分布</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>否</p></td>
+<td class="text-center"><p>描述在获得r次成功之前经历n次试验的概率分布，适用于成功概率不固定的情况</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>多项分布</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>否</p></td>
+<td class="text-center"><p>描述多项式试验中各种结果次数的概率分布</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Dirichlet分布</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>是</p></td>
+<td class="text-center"><p>描述多项分布中各种结果概率的先验分布，也可以用来描述发生比</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id4">
+<h3>贝叶斯广义线性模型的定义与代码实现<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<p>现在，我们已经了解了逻辑回归模型的基本结构，我们可以开始定义模型：</p>
+<ul class="simple">
+<li><p>我们需要确定变量类型和分布。</p></li>
+<li><p>需要根据连接函数（link function）来设置转化参数。</p></li>
+<li><p>并且为转化后的参数设置先验分布。</p></li>
+</ul>
+<p>首先，为转换后的参数设置先验分布：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+data:~~Y_i|\beta_0,\beta_1~\overset{ind}{\sim}Bern(\pi_i) with \pi_i=\frac{e^{\beta_0+\beta_1X_{i1}}}{1+e^{\beta_0+\beta_1X_{i1}}}\\
+priors:~~\beta_0 \sim N(0,10^2)~~;~~\beta_1 \sim N(0,10^2)
+\end{split}\]</div>
+<p><strong>注意：这里的参数先验是经过 logit 转后后的值，而不是概率。 因此，我们需要根据先验预测检验来确定先验分布参数设置是否正确。</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 数据准备</span>
+<span class="n">Treatment_Coding</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;percentCoherence&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">factorize</span><span class="p">()</span> <span class="c1"># 适用 treatment 编码</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;correct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># 目标变量</span>
+
+<span class="c1"># 模型构建</span>
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">log_model1</span><span class="p">:</span>
+
+    <span class="c1"># 添加数据，方便后续绘图</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">MutableData</span><span class="p">(</span><span class="s2">&quot;percentCoherence&quot;</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;percentCoherence&#39;</span><span class="p">])</span>
+
+    <span class="c1"># 设置先验</span>
+    <span class="c1"># 通常我们会为截距和系数设置正态分布的先验</span>
+    <span class="n">intercept</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;beta_0&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">coefficient</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;beta_1&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    
+    <span class="c1"># 线性预测</span>
+    <span class="n">linear_predictor</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">coefficient</span> <span class="o">*</span> <span class="n">Treatment_Coding</span>
+    
+    <span class="c1"># 似然函数</span>
+    <span class="c1"># 使用逻辑函数将线性预测转换为概率</span>
+    <span class="c1"># 方法一：自行进行 logit link 转换</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">invlogit</span><span class="p">(</span><span class="n">linear_predictor</span><span class="p">))</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="s1">&#39;likelihood&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">pi</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+    <span class="c1"># 方法二：直接使用 logit_p 进行转换</span>
+    <span class="c1"># likelihood = pm.Bernoulli(&#39;likelihood&#39;, logit_p=linear_predictor, observed=y)</span>
+</pre></div>
+</div>
+<p>注意代码中使用了<code class="docutils literal notranslate"><span class="pre">pm.math.invlogit</span></code>函数，它相当于计算了 Logistic sigmoid function，即<span class="math notranslate nohighlight">\(1/(1+e^{-\mu})\)</span></p>
+<p>为了方便我们自行进行转化，我们可以自行定义这个函数，如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>先验预测检验</strong></p>
+<p>使用<code class="docutils literal notranslate"><span class="pre">pm.sample_prior_predictive</span></code>进行先验预测检验，来查看由当前先验组合生成的<span class="math notranslate nohighlight">\(\pi\)</span>是否都在0至1的范围内</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">log1_prior</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_prior_predictive</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+                                          <span class="n">model</span><span class="o">=</span><span class="n">log_model1</span><span class="p">,</span>
+                                          <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>
+<span class="n">log1_prior</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>在模型定义中我们已经对pi进行定义，因此<code class="docutils literal notranslate"><span class="pre">pm.sample_prior_predictive</span></code>就会自动生成对pi的预测</p></li>
+<li><p>该预测储存在prior中</p></li>
+<li><p>我们设置抽样数为50，这体现在维度draw中</p></li>
+<li><p>结合循环，使用<code class="docutils literal notranslate"><span class="pre">sns.lineplot</span></code>绘制出每个回避分数对应的π值并连接成光滑的曲线</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#对于一次抽样，可以绘制出一条曲线，结合循环绘制出50条曲线</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">log1_prior</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="s2">&quot;draw&quot;</span><span class="p">]):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log1_prior</span><span class="o">.</span><span class="n">constant_data</span><span class="p">[</span><span class="s2">&quot;percentCoherence&quot;</span><span class="p">],</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">log1_prior</span><span class="o">.</span><span class="n">prior</span><span class="p">[</span><span class="s2">&quot;pi&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span> <span class="p">)</span>
+
+<span class="c1">#设置x、y轴标题和总标题    </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;percentCoherence&quot;</span><span class="p">,</span>
+           <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;probability of correct&quot;</span><span class="p">,</span>
+           <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Relationships between percentCoherence and the probability of correct&quot;</span><span class="p">,</span>
+           <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-21.png" /></p>
+<ul class="simple">
+<li><p>我们可以看到，在一致性10%和40%这两种条件下，所对应的正确率基本上都在0-1范围之间，因此是可以接受。当然，也可以对prior进行优化，但需要比较谨慎地去考虑。</p></li>
+</ul>
+<p><em><strong>注意：prior的优化需要很谨慎地进行</strong></em></p>
+<ul class="simple">
+<li><p>在贝叶斯中，如果为了得到一个特定的后验去把先验改的特别精确，最后导致数据的作用很小，这实际上类似于我们传统零假设检验中的“P hacking”，也就是为了让P值变小做各种各样数据的优化。因此，为了避免这种嫌疑，先验优化是需要非常谨慎的。</p></li>
+</ul>
+<p><strong>MCMC采样 &amp; 模型诊断</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#===========================</span>
+<span class="c1">#     注意！！！以下代码可能需要运行35s~1分钟左右</span>
+<span class="c1">#===========================</span>
+<span class="k">with</span> <span class="n">log_model1</span><span class="p">:</span>
+    <span class="c1"># 模型编译和采样</span>
+    <span class="n">log_model1_trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>                 
+                                <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>                  
+                                <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>                     
+                                <span class="n">discard_tuned_samples</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                <span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">log_model1_trace</span><span class="p">,</span>
+              <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span><span class="s2">&quot;beta_1&quot;</span><span class="p">],</span>
+              <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+              <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-61.png" /></p>
+<p><strong>后验参数解释</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fitted_parameters</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">log_model1_trace</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span><span class="s2">&quot;beta_1&quot;</span><span class="p">])</span>
+<span class="n">fitted_parameters</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-31.png" /></p>
+<p>为了将发生比转换为概率，我们需要计算适用逆运算，如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">log_odds</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_odds</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_odds</span><span class="p">))</span>
+
+<span class="n">p_coh10</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span> <span class="n">fitted_parameters</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;beta_0&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">])</span>
+<span class="n">p_coh40</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span> 
+    <span class="n">fitted_parameters</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">]</span> <span class="o">+</span> \
+        <span class="n">fitted_parameters</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;beta_1&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p(coherence=10) = </span><span class="si">{</span><span class="n">p_coh10</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;p(coherence=40) = </span><span class="si">{</span><span class="n">p_coh40</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>p(coherence=10) = 0.687 p(coherence=40) = 0.972</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 通过 inv_logit 将 beta 参数进行转换</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">log_model1_trace</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;beta_0&quot;</span><span class="p">],</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-41.png" /></p>
+<p>结果显示：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_0=0.786，那么e^{\beta_0}=2.195，X_{i1}=0时，则事件发生的odds为e^{\beta_0}为2.195\)</span>。</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_1=1.765，e^{\beta_1}=5.859，X_{i1}每增加1个单位，odds将增加e^{\beta_1}的5.859倍\)</span>。</p></li>
+<li><p>然而，<span class="math notranslate nohighlight">\(\beta_1\)</span>的4%HDI包括0，说明点的一致性方向概率不能有效预测判断是否正确的概率。</p></li>
+</ul>
+<p><strong>后验回归模型</strong></p>
+<p><strong>绘制后验预测回归线</strong></p>
+<ul class="simple">
+<li><p>和先验预测模型类似的，通过MCMC采样，也同样生成了对π的估计，储存在posterior中。</p></li>
+<li><p>有4条马尔科夫链，每条链上的采样数为2000，所以对于每一个x，都生成了20000个预测值π，这样就对应着20000条后验预测回归线</p></li>
+<li><p>这里我们只需要画出100条即可</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">log_model1_trace</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#对于一次抽样，可以绘制出一条曲线，结合循环绘制出50条曲线</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">log_model1_trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;pi&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log_model1_trace</span><span class="o">.</span><span class="n">constant_data</span><span class="p">[</span><span class="s2">&quot;percentCoherence&quot;</span><span class="p">],</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">ys</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> 
+            <span class="n">c</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+    
+<span class="c1">#设置x、y轴标题和总标题    </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;percentCoherence&quot;</span><span class="p">,</span>
+           <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;probability of correct&quot;</span><span class="p">,</span>
+           <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;100 posterior plausible models&quot;</span><span class="p">,</span>
+           <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-51.png" /></p>
+<p><strong>对新数据进行预测&amp;分类</strong></p>
+<ul class="simple">
+<li><p>除了对当前数据结果做出解释，也可以使用当前的参数预测值，对新数据做出预测</p></li>
+<li><p>现在假设有一批新数据，那么被试在“percentCoherence”为 40的情况下，对新数据进行正确判断的概率是多少？</p></li>
+<li><p>即当<span class="math notranslate nohighlight">\(X_i=40\)</span>时，对新数据进行预测和分类</p></li>
+<li><p>由于例子中的自变量使用了treatment coding的编码方式，所以<span class="math notranslate nohighlight">\(X_i=40\)</span>对应为<span class="math notranslate nohighlight">\(X_i=1\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+Y|\beta_0,\beta_1 \sim Bern(\pi)~with~log(\frac{\pi}{1-\pi})=\beta_0+\beta_1*1
+\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">odds</span> <span class="o">=</span> <span class="n">log_model1_trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;beta_0&quot;</span><span class="p">]</span><span class="o">+</span> <span class="n">log_model1_trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;beta_1&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span>
+<span class="n">pi</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">odds</span><span class="p">)</span>
+<span class="n">Y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">pi</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># 统计其中0和1的个数，并除以总数，得到0和1对应的比例值</span>
+<span class="n">y_pred_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">Y_hat</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_hat</span><span class="p">)</span>
+
+<span class="c1"># 绘制柱状图</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">y_pred_freq</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#70AD47&quot;</span><span class="p">)</span>
+
+<span class="c1"># 用于在柱状图上标明比例值</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">y_pred_freq</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">(),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">freq</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+
+<span class="c1">#对刻度、标题、坐标轴标题进行设置</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Out-of-sample prediction(X=1)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;correct&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;proportion&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-71.png" /></p>
+<p><strong>评估分类结果</strong></p>
+<ul class="simple">
+<li><p>我们可以使用<strong>混淆矩阵(confusion matrix)<strong>来对</strong>真实结果</strong>与<strong>预测结果</strong>进行比较和评估(0为阴性，1为阳性)：</p></li>
+</ul>
+<p>这种矩阵类似于我们的信号检测论、一类错误二类错误矩阵等等，虽然她们有不同的术语，但是基本原理是相同的。</p>
+<ul class="simple">
+<li><p>a: 真阴性（True Negative，TN）表示被正确预测为负例的样本数</p></li>
+<li><p>b: 假阳性（False Positive，FP）表示被错误预测为正例的样本数</p></li>
+<li><p>c: 假阴性（False Negative，FN）表示被错误预测为负例的样本数</p></li>
+<li><p>d: 真阳性（True Positive，TP）表示被正确预测为正例的样本数</p></li>
+</ul>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(\hat{Y}=0\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(\hat{Y}=1\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(Y=0\)</span></p></td>
+<td class="text-center"><p>a</p></td>
+<td class="text-center"><p>b</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(Y=1\)</span></p></td>
+<td class="text-center"><p>c</p></td>
+<td class="text-center"><p>d</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在二分类问题中，准确性（Accuracy）、敏感性（Sensitivity）和特异性（Specificity）是常用的评估指标，可以通过在得到 a b c d 的数量之后进行计算：</p>
+<ol class="arabic simple">
+<li><p><strong>准确性(accuracy)</strong> ：准确性是指分类模型正确预测的样本数占总样本数的比例。</p></li>
+</ol>
+<ul class="simple">
+<li><p>准确性衡量了模型总体的分类正确率，数值越高表示模型的整体性能越好。</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+accuracy=\frac{(TP+TN)}{(TP+TN+FP+FN)}=\frac{a+d}{a+b+d+d}
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>敏感性(sensitivity)</strong> ：敏感性也称为召回率（Recall），它是指在所有实际为正例的样本中，被正确预测为正例的比例。</p></li>
+</ol>
+<ul class="simple">
+<li><p>敏感性衡量了模型对于正例的识别能力，数值越高表示模型对于正例的预测能力越好。</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+sensitivity=\frac{TP}{(TP+FN)}=\frac{d}{c+d}
+\]</div>
+<p>3.<strong>特异性(specificity)</strong> ：特异性是指在所有实际为负例的样本中，被正确预测为负例的比例。</p>
+<ul class="simple">
+<li><p>特异性衡量了模型对于负例的识别能力，数值越高表示模型对于负例的预测能力越好。</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+specificity=\frac{TN}{(TN+FP)}=\frac{a}{a+b}
+\]</div>
+<p>现在，我们来计算一下这三个指标：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ys</span> <span class="o">=</span> <span class="n">log_model1_trace</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;pi&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s2">&quot;pi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df_clean</span><span class="p">[</span><span class="s2">&quot;pi&quot;</span><span class="p">]:</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+
+<span class="n">df_clean</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions</span>
+<span class="n">df_clean</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_contingency_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;correct&quot;</span><span class="p">,</span> <span class="n">yhat</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">):</span>
+    
+    <span class="c1"># 计算各种情况的数量</span>
+    <span class="n">TN</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">yhat</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># 真阴性</span>
+    <span class="n">FP</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">yhat</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># 假阳性</span>
+    <span class="n">FN</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">yhat</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># 假阴性</span>
+    <span class="n">TP</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">yhat</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># 真阳性</span>
+    
+    <span class="c1"># 创建一个DataFrame来表示列联表</span>
+    <span class="n">contingency_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">hat</span><span class="si">{Y}</span><span class="s1"> = 0$&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">TN</span><span class="p">,</span> <span class="n">FN</span><span class="p">],</span>
+        <span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">hat</span><span class="si">{Y}</span><span class="s1"> = 1$&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">FP</span><span class="p">,</span> <span class="n">TP</span><span class="p">]</span>
+    <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;$Y=0$&#39;</span><span class="p">,</span> <span class="s1">&#39;$Y=1$&#39;</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">TN</span><span class="p">,</span> <span class="n">FP</span><span class="p">,</span> <span class="n">TN</span><span class="p">,</span> <span class="n">FN</span><span class="p">),</span> <span class="n">contingency_df</span>
+
+<span class="c1"># 计算两个 percentCoherence 值下的列联表</span>
+<span class="p">(</span><span class="n">true_positive</span><span class="p">,</span> <span class="n">false_positive</span><span class="p">,</span> <span class="n">true_negative</span><span class="p">,</span> <span class="n">false_negative</span><span class="p">),</span> <span class="n">contingency_table</span> <span class="o">=</span> <span class="n">calculate_contingency_table</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span>
+
+<span class="n">contingency_table</span>
+</pre></div>
+</div>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(\hat{Y}=0\)</span></p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(\hat{Y}=1\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(Y=0\)</span></p></td>
+<td class="text-center"><p>30</p></td>
+<td class="text-center"><p>72</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(Y=1\)</span></p></td>
+<td class="text-center"><p>69</p></td>
+<td class="text-center"><p>372</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义计算指标函数</span>
+<span class="k">def</span> <span class="nf">calculate_metrics</span><span class="p">(</span><span class="n">TP</span><span class="p">,</span> <span class="n">FP</span><span class="p">,</span> <span class="n">TN</span><span class="p">,</span> <span class="n">FN</span><span class="p">):</span>
+    <span class="c1"># 计算准确性</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">TN</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">TN</span> <span class="o">+</span> <span class="n">FP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span>
+
+    <span class="c1"># 计算敏感性</span>
+    <span class="n">sensitivity</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c1"># 计算特异性</span>
+    <span class="n">specificity</span> <span class="o">=</span> <span class="n">TN</span> <span class="o">/</span> <span class="p">(</span><span class="n">TN</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">TN</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">sensitivity</span><span class="p">,</span> <span class="n">specificity</span>
+
+<span class="c1"># 计算指标</span>
+<span class="n">accuracy</span><span class="p">,</span> <span class="n">sensitivity</span><span class="p">,</span> <span class="n">specificity</span> <span class="o">=</span> <span class="n">calculate_metrics</span><span class="p">(</span><span class="n">true_positive</span><span class="p">,</span> <span class="n">false_positive</span><span class="p">,</span> <span class="n">true_negative</span><span class="p">,</span> <span class="n">false_negative</span><span class="p">)</span>
+
+<span class="c1"># 打印结果</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;True Positive: </span><span class="si">{</span><span class="n">true_positive</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;False Positive: </span><span class="si">{</span><span class="n">false_positive</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;True Negative: </span><span class="si">{</span><span class="n">true_negative</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;False Negative: </span><span class="si">{</span><span class="n">false_negative</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;准确性: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;敏感性: </span><span class="si">{</span><span class="n">sensitivity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;特异性: </span><span class="si">{</span><span class="n">specificity</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>输出结果：
+True Positive: 30
+False Positive: 72
+True Negative: 30
+False Negative: 69
+准确性: 0.29850746268656714
+敏感性: 0.30303030303030304
+特异性: 0.29411764705882354</p>
+</div></blockquote>
+<p>可以看出，这里的准确率和敏感性都不是很高。由于在这个示例中我们是使用每一种条件下后验分布的均值进行计算，并未考虑整个后验分布。大家可以思考一下，如果考虑所有整个后验分布后，预测的结果是否会发生变化？</p>
+<p><em><strong>如果新数据的自变量是一个新的取值呢？</strong></em></p>
+<p>当前我们只考虑了percentCoherence为10或40。我们还可以进一步探究当percentCoherence为25时的判断正确率，即<span class="math notranslate nohighlight">\(X_i=25\)</span>。</p>
+<p>🔔注意：</p>
+<ul class="simple">
+<li><p>需要注意的是，我们的自变量percentCoherence是<strong>连续变量</strong>，但是我们在编码的时候仍然按照<strong>离散变量</strong>的标准进行设定，即按照treatment coding 的方式进行0和1的编码。</p></li>
+<li><p><strong>因此，这里可能存在一些问题，我们在处理连续变量的时候实际上不需要做这种编码，而是直接带入自变量取值即可。</strong></p></li>
+<li><p>例如，当新数据的自变量取值为<span class="math notranslate nohighlight">\(X_i=25\)</span>时，我们直接将其带入进方程即可，而不需要将其按照离散变量编码为0.5。需要注意的是，新带入的数据需要和最开始建模数据的单位保持一致。</p></li>
+</ul>
+</section>
+<section id="bambilogistic">
+<h3>补充：使用bambi建立logistic回归模型<a class="headerlink" href="#bambilogistic" title="Permalink to this heading">#</a></h3>
+<p>这里我们使用bambi 提供的默认先验来构建模型。 可以看到：</p>
+<ul class="simple">
+<li><p>先验为：</p></li>
+</ul>
+<p>Intercept ~ Normal(mu: 0.0, sigma: 3.6269)</p>
+<p>C(percentCoherence) ~ Normal(mu: 0.0, sigma: 5.0062)</p>
+<ul class="simple">
+<li><p>模型分布为：bernoulli</p></li>
+<li><p>链接函数为：p = logit</p></li>
+<li><p>C(percentCoherence) 代表将 percentCoherence 变量编码为分类变量 (categorical variable)。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">log_odds</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_odds</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_odds</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">bambi</span> <span class="k">as</span> <span class="nn">bmb</span>
+
+<span class="n">bambi_logit</span> <span class="o">=</span> <span class="n">bmb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s2">&quot;correct ~ C(percentCoherence)&quot;</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;bernoulli&quot;</span><span class="p">)</span>
+<span class="n">bambi_logit</span>
+</pre></div>
+</div>
+<p><strong>模型拟合</strong></p>
+<p>这里使用 bambi 提供的默认拟合设置。</p>
+<ul class="simple">
+<li><p>包括 4 条 MCMC 链，每个链 2000 个迭代，其中前 1000 个为 burn-in 阶段。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_fitted</span> <span class="o">=</span> <span class="n">bambi_logit</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">random_seed</span><span class="o">=</span><span class="mi">84735</span><span class="p">)</span>
+<span class="n">model_fitted</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fitted_parameters</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">model_fitted</span><span class="p">)</span>
+<span class="n">fitted_parameters</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-101.png" /></p>
+<p>由此可见，使用 bambi 建立的 logistic 回归模型得到的结果与我们使用 PyMC 建立的模型结果几乎一致：</p>
+<ul class="simple">
+<li><p>C(percentCoherence)[40] 的均值为 1.762，与 beta_1 的均值 1.766 非常接近。</p></li>
+<li><p>Intercept 的均值为 0.785，与 beta_0 的均值 0.784 差异微小。</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p_coh10</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span> <span class="n">fitted_parameters</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Intercept&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">])</span>
+<span class="n">p_coh40</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span> 
+    <span class="n">fitted_parameters</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;Intercept&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">]</span> <span class="o">+</span> \
+        <span class="n">fitted_parameters</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;C(percentCoherence)[40]&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p(coherence=10) = </span><span class="si">{</span><span class="n">p_coh10</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;p(coherence=40) = </span><span class="si">{</span><span class="n">p_coh40</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">posterior_predictive</span> <span class="o">=</span> <span class="n">bambi_logit</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model_fitted</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;pps&quot;</span><span class="p">)</span>
+<span class="n">model_fitted</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_ppc</span><span class="p">(</span><span class="n">model_fitted</span><span class="p">,</span> <span class="n">num_pp_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><img alt="alt text" src="../_images/image-111.png" /></p>
+<p><strong>总结</strong></p>
+<p>本节课学习了如何通过广义线性模型(Generalized linear model, GLM)拟合二元决策变量。</p>
+<p>重点在于：</p>
+<ul class="simple">
+<li><p>了解二元决策变量适合的分布，伯努利(Bernoulli)分布。</p></li>
+<li><p>了解如何通过概率、发生率和链接函数(link function)来表示线性模型。</p></li>
+<li><p>学习模型评估指标：准确性（Accuracy）、敏感性（Sensitivity）和特异性（Specificity）。</p></li>
+</ul>
+<p><img alt="alt text" src="../_images/image-161.png" /></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter11"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter10/chapter10_part2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">练习：当自变量为连续变量</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chapter11_part2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">练习</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">回顾：贝叶斯视角下的回归模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">以随机点运动任务为例：贝叶斯逻辑回归</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">问题：我们能否使用线性回归分析正确率数据？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-odds">Probability &amp; odds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-linear-model-glm">广义线性模型(Generalized Linear Model, GLM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">贝叶斯广义线性模型的定义与代码实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bambilogistic">补充：使用bambi建立logistic回归模型</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Hu Chuan-Peng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
